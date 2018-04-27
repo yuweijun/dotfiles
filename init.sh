@@ -1,5 +1,8 @@
 #!/bin/bash
 
+git submodule init
+git submodule update --remote --recursive
+
 if type apt 2>/dev/null; then
     sudo apt install -y tmux neovim mycli bash-completion
 elif type yum 2>/dev/null; then

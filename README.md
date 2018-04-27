@@ -1,5 +1,3 @@
-## run
+## run init script
 
-    $ git submodule init
-    $ git submodule update --remote --recursive
     $ ./init.sh
