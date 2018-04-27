@@ -34,7 +34,7 @@ ln -sfn mycli/my.vim ~/.my.vim
 ln -sfn fzf ~/.fzf
 ~/.fzf/install
 
-lns -sfn bash-completion/bash_completion ~/.bash_completion
+ln -sfn bash-completion/bash_completion ~/.bash_completion
 
 cat bashrc >> ~/.bashrc
 
