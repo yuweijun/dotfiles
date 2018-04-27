@@ -25,13 +25,25 @@ ln -sfn ${dir}/mycli/my.cnf ~/.my.cnf
 ln -sfn ${dir}/mycli/my.vim ~/.my.vim
 
 ln -sfn ${dir}/fzf ~/.fzf
-ln -sfn ${dir}/bash-completion/bash_completion ~/.bash_completion
+~/.fzf/install
 
+ln -sfn ${dir}/bash-completion/bash_completion ~/.bash_completion
 if grep -q bash_completion ~/.bashrc; then
     echo "bash_completion config found in ~/.bashrc"
 else
-    cat bashrc >> ~/.bashrc
-    ~/.fzf/install
+    echo "[ -f ~/.bash_completion ] && source ~/.bash_completion" >> ~/.bashrc
+fi
+
+if grep -q gitprompt.sh ~/.bashrc; then
+    echo "gitprompt.sh config found in ~/.bashrc"
+else
+    echo "if [ -f ~/.bash-git-prompt/gitprompt.sh ]; then" >> ~/.bashrc
+    echo "    GIT_PROMPT_ONLY_IN_REPO=1" >> ~/.bashrc
+    echo "    GIT_PROMPT_FETCH_REMOTE_STATUS=0" >> ~/.bashrc
+    echo "    GIT_PROMPT_IGNORE_SUBMODULES=1" >> ~/.bashrc
+    echo "    GIT_PROMPT_THEME=Minimal" >> ~/.bashrc
+    echo "    source ~/.bash-git-prompt/gitprompt.sh" >> ~/.bashrc
+    echo "fi" >> ~/.bashrc
 fi
 
 ln -sfn ${dir}/vim ~/.vim
@@ -42,7 +54,7 @@ mkdir -p vim/bundle
 mkdir -p vim/tmp/backup vim/tmp/swap vim/tmp/undo
 mkdir -p ~/.local/share/nvim/tmp/backup ~/.local/share/nvim/tmp/swap ~/.local/share/nvim/tmp/undo
 git clone --depth=1 https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-ln -s ~/.vim/bundle/Vundle.vim ~/.vim/bundle/vundle
+ln -sfn ~/.vim/bundle/Vundle.vim ~/.vim/bundle/vundle
 # install vim plugin at last
 vi +PluginInstall +qall
 
