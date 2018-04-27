@@ -1,7 +1,6 @@
 #!/bin/bash
 
-git submodule init
-git submodule update --remote --recursive
+git submodule update --init
 
 directory=$(dirname "$0")
 cd ${directory}
