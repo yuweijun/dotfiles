@@ -50,6 +50,8 @@ ln -sfn ${dir}/vim/linux.gvimrc ~/.gvimrc
 mkdir vim/bundle
 mkdir -p vim/tmp/backup vim/tmp/swap vim/tmp/undo
 mkdir -p ~/.local/share/nvim/tmp/backup ~/.local/share/nvim/tmp/swap ~/.local/share/nvim/tmp/undo
+git clone --depth=1 https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+ln -s ~/.vim/bundle/Vundle.vim ~/.vim/bundle/vundle
 # install vim plugin at last
 vim +PluginInstall +qall
 
