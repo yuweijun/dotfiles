@@ -28,3 +28,6 @@
 [submodule "fernflower-decompiler"]
 	path = fernflower-decompiler
 	url = https://github.com/yuweijun/fernflower-decompiler.git
+[submodule "jd-cmd"]
+	path = jd-cmd
+	url = https://github.com/kwart/jd-cmd.git
