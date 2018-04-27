@@ -3,7 +3,9 @@
 git submodule init
 git submodule update --remote --recursive
 
-dir=$(dirname "$0")
+directory=$(dirname "$0")
+cd ${directory}
+dir="$(pwd)"
 
 if type apt 2>/dev/null; then
     sudo apt install -y tmux neovim mycli bash-completion
