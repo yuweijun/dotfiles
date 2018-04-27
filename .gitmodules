@@ -1,0 +1,21 @@
+[submodule "vim"]
+	path = vim
+	url = https://github.com/yuweijun/vim.git
+[submodule "tmux"]
+	path = tmux
+	url = https://github.com/yuweijun/tmux.git
+[submodule "oh-my-zsh"]
+	path = oh-my-zsh
+	url = https://github.com/yuweijun/oh-my-zsh.git
+[submodule "bash-git-prompt"]
+	path = bash-git-prompt
+	url = https://github.com/yuweijun/bash-git-prompt.git
+[submodule "mycli"]
+	path = mycli
+	url = https://github.com/yuweijun/mycli.git
+[submodule "bash-completion"]
+	path = bash-completion
+	url = https://github.com/yuweijun/bash-completion.git
+[submodule "fzf"]
+	path = fzf
+	url = https://github.com/junegunn/fzf.git
