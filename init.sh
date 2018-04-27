@@ -16,8 +16,8 @@ elif type brew 2>/dev/null; then
 fi
 
 ln -sfn ${dir}/vim/ ~/.vim
-# ln -sfn vim/terminal.vimrc ~/.vimrc # with powerline font
-ln -sfn ${dir}/vim/server.vimrc ~/.vimrc
+# ln -sfn vim/server.vimrc ~/.vimrc # without powerline font and using plug
+ln -sfn ${dir}/vim/terminal.vimrc ~/.vimrc # with powerline font and using vundle
 ln -sfn ${dir}/vim/linux.gvimrc ~/.gvimrc
 mkdir vim/bundle
 mkdir -p vim/tmp/backup vim/tmp/swap vim/tmp/undo
