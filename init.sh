@@ -24,6 +24,8 @@ ln -sfn ${dir}/mycli/my.vim ~/.my.vim
 ln -sfn ${dir}/fzf ~/.fzf
 ~/.fzf/install
 
+ln -sfn ${dir}/bash-git-prompt ~/.bash-git-prompt
+
 ln -sfn ${dir}/bash-completion/bash_completion ~/.bash_completion
 if grep -q bash_completion ~/.bashrc; then
     echo "bash_completion config found in ~/.bashrc"
