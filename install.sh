@@ -16,21 +16,23 @@ directory=$(dirname "$0")
 cd ${directory}
 dir="$(pwd)"
 
-if type apt 2>/dev/null; then
-    sudo apt install -y tmux mycli
-elif type yum 2>/dev/null; then
-    yum install -y tmux mycli
+if [ ! -e ~/.fzf ]; then
+    ln -sfn ${dir}/fzf ~/.fzf && ~/.fzf/install
+fi
+if [ ! -e ~/.bash-git-prompt ]; then
+    ln -sfn ${dir}/bash-git-prompt ~/.bash-git-prompt
+fi
+if [ ! -f ~/.bash_completion ]; then
+    ln -sfn ${dir}/bash-completion/bash_completion ~/.bash_completion
 fi
 
-mkdir -p ~/.mysql/out
-
-ln -sfn ${dir}/tmux/tmux.linux.conf ~/.tmux.conf
-ln -sfn ${dir}/mycli/myclirc ~/.myclirc
-ln -sfn ${dir}/mycli/my.cnf ~/.my.cnf
-ln -sfn ${dir}/mycli/my.vim ~/.my.vim
-ln -sfn ${dir}/fzf ~/.fzf && ~/.fzf/install
-ln -sfn ${dir}/bash-git-prompt ~/.bash-git-prompt
-ln -sfn ${dir}/bash-completion/bash_completion ~/.bash_completion
+if [ ! -f ~/.my.vim ]; then
+    mkdir -p ~/.mysql/out
+    ln -sfn ${dir}/tmux/tmux.linux.conf ~/.tmux.conf
+    ln -sfn ${dir}/mycli/myclirc ~/.myclirc
+    ln -sfn ${dir}/mycli/my.cnf ~/.my.cnf
+    ln -sfn ${dir}/mycli/my.vim ~/.my.vim
+fi
 
 if grep -q bash_completion ~/.bashrc; then
     echo "bash_completion config found in ~/.bashrc"
@@ -66,7 +68,7 @@ if [ ! -f ~/bin/greys ]; then
     chmod a+x ~/bin/greys
 fi
 
-if [ ! -f ~/.vim ]; then
+if [ ! -e ~/.vim ]; then
     mkdir -p vim/tmp/backup vim/tmp/swap vim/tmp/undo
     mkdir -p ~/.local/share/nvim/tmp/backup ~/.local/share/nvim/tmp/swap ~/.local/share/nvim/tmp/undo
     ln -sfn ${dir}/bundle vim/bundle
@@ -74,3 +76,4 @@ if [ ! -f ~/.vim ]; then
     ln -sfn ${dir}/vim/terminal.vimrc ~/.vimrc
     ln -sfn ${dir}/vim/linux.gvimrc ~/.gvimrc
 fi
+

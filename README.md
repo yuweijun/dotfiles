@@ -12,9 +12,17 @@
 
     $ yum install git
 
+### install tmux mycli on centos
+
+    $ yum install -y tmux mycli
+
 ### github unable to access SSL connect error
 
     $ yum update -y nss curl libcurl
+
+## install tmux mycli on ubuntu
+
+    $ sudo apt install -y tmux mycli
 
 ## install
 
