@@ -15,7 +15,7 @@ elif type brew 2>/dev/null; then
     brew install tmux neovim mycli reattach-to-user-namespace bash-completion
 fi
 
-ln -sfn ${dir}/vim/ ~/.vim
+ln -sfn ${dir}/vim ~/.vim
 # ln -sfn vim/server.vimrc ~/.vimrc # without powerline font and using plug
 ln -sfn ${dir}/vim/terminal.vimrc ~/.vimrc # with powerline font and using vundle
 ln -sfn ${dir}/vim/linux.gvimrc ~/.gvimrc
