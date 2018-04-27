@@ -7,14 +7,11 @@ cd ${directory}
 dir="$(pwd)"
 
 if type apt 2>/dev/null; then
-    sudo apt install -y tmux neovim mycli
+    sudo apt install -y tmux mycli
 elif type yum 2>/dev/null; then
     yum install -y tmux mycli
-elif type brew 2>/dev/null; then
-    brew install tmux neovim mycli reattach-to-user-namespace
 fi
 
-# brew install tmux
 # sudo apt install -y tmux
 # yum install -y tmux
 ln -sfn ${dir}/tmux/tmux.linux.conf ~/.tmux.conf
@@ -46,14 +43,14 @@ else
     echo "fi" >> ~/.bashrc
 fi
 
+mkdir -p vim/bundle
+mkdir -p vim/tmp/backup vim/tmp/swap vim/tmp/undo
+mkdir -p ~/.local/share/nvim/tmp/backup ~/.local/share/nvim/tmp/swap ~/.local/share/nvim/tmp/undo
+ln -sfn ${dir}/Vundle.vim vim/bundle
 ln -sfn ${dir}/vim ~/.vim
 # ln -sfn vim/server.vimrc ~/.vimrc # without powerline font and using plug
 ln -sfn ${dir}/vim/terminal.vimrc ~/.vimrc # with powerline font and using vundle
 ln -sfn ${dir}/vim/linux.gvimrc ~/.gvimrc
-mkdir -p vim/bundle
-mkdir -p vim/tmp/backup vim/tmp/swap vim/tmp/undo
-mkdir -p ~/.local/share/nvim/tmp/backup ~/.local/share/nvim/tmp/swap ~/.local/share/nvim/tmp/undo
-git clone --depth=1 https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 # install vim plugin at last
 vi +PluginInstall +qall
 
