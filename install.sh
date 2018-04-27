@@ -1,6 +1,8 @@
 #!/bin/bash
 
 if grep -q "alias la" ~/.bashrc; then
+    echo "alias la exists"
+else
     echo "alias ls='ls --color=auto'" >> ~/.bashrc
     echo "alias grep='grep --color=auto'" >> ~/.bashrc
     echo "alias ll='ls -alF'" >> ~/.bashrc
