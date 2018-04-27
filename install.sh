@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git submodule update --init --remote --recursive
+
 if grep -q "alias la" ~/.bashrc; then
     echo "alias la exists"
 else
@@ -10,7 +12,9 @@ else
     echo "alias l='ls -CF'" >> ~/.bashrc
 fi
 
-git submodule update --init --remote --recursive
+if grep -q PS1 ~/.bashrc; then
+    echo 'PS1="\033[1;36m\]\$(date \"+%H:%M:%S\") \[\033[00m\]\u@\W\[\033[00m\] \[\033[1;35m\]$\[\033[00m\] "' >> ~/.bashrc
+fi
 
 directory=$(dirname "$0")
 cd ${directory}
