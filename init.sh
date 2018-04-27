@@ -52,5 +52,5 @@ ln -sfn ${dir}/vim ~/.vim
 ln -sfn ${dir}/vim/terminal.vimrc ~/.vimrc # with powerline font and using vundle
 ln -sfn ${dir}/vim/linux.gvimrc ~/.gvimrc
 # install vim plugin at last
-vi +PluginInstall +qall
+vi -u ~/.vimrc +PluginInstall +qall
 
