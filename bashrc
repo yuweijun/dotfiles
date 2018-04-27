@@ -1,4 +1,4 @@
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
 [ -f ~/.bash_completion ] && source ~/.bash_completion
 
 if [ -f ~/.bash-git-prompt/gitprompt.sh ]; then
