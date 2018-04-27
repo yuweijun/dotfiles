@@ -10,7 +10,7 @@ else
     echo "alias l='ls -CF'" >> ~/.bashrc
 fi
 
-git submodule update --init
+git submodule update --init --remote --recursive
 
 directory=$(dirname "$0")
 cd ${directory}
@@ -22,21 +22,16 @@ elif type yum 2>/dev/null; then
     yum install -y tmux mycli
 fi
 
-# sudo apt install -y tmux
-# yum install -y tmux
-ln -sfn ${dir}/tmux/tmux.linux.conf ~/.tmux.conf
-
 mkdir -p ~/.mysql/out
+
+ln -sfn ${dir}/tmux/tmux.linux.conf ~/.tmux.conf
 ln -sfn ${dir}/mycli/myclirc ~/.myclirc
 ln -sfn ${dir}/mycli/my.cnf ~/.my.cnf
 ln -sfn ${dir}/mycli/my.vim ~/.my.vim
-
-ln -sfn ${dir}/fzf ~/.fzf
-~/.fzf/install
-
+ln -sfn ${dir}/fzf ~/.fzf && ~/.fzf/install
 ln -sfn ${dir}/bash-git-prompt ~/.bash-git-prompt
-
 ln -sfn ${dir}/bash-completion/bash_completion ~/.bash_completion
+
 if grep -q bash_completion ~/.bashrc; then
     echo "bash_completion config found in ~/.bashrc"
 else
@@ -55,14 +50,27 @@ else
     echo "fi" >> ~/.bashrc
 fi
 
-mkdir -p vim/bundle
-mkdir -p vim/tmp/backup vim/tmp/swap vim/tmp/undo
-mkdir -p ~/.local/share/nvim/tmp/backup ~/.local/share/nvim/tmp/swap ~/.local/share/nvim/tmp/undo
-ln -sfn ${dir}/Vundle.vim vim/bundle
-ln -sfn ${dir}/vim ~/.vim
-# ln -sfn vim/server.vimrc ~/.vimrc # without powerline font and using plug
-ln -sfn ${dir}/vim/terminal.vimrc ~/.vimrc # with powerline font and using vundle
-ln -sfn ${dir}/vim/linux.gvimrc ~/.gvimrc
-# install vim plugin at last
-vi +PluginInstall +qall
+if [ ! -f ~/bin/decompiler ] && type ant 2>/dev/null; then
+    cd fernflower-decompiler
+    ant clean
+    ant
+    mkdir -p ~/bin
+    echo "#!/bin/bash\njava -jar fernflower.jar $@" > ~/bin/decompiler
+    chmod a+x ~/bin/decompiler
+    cd ..
+fi
 
+if [ ! -f ~/bin/greys ]; then
+    mkdir -p ~/bin
+    echo "#!/bin/bash\nJAVA_HOME=/usr/lib/jvm/java-8-oracle/ greys-anatomy/bin/greys.sh $@" > ~/bin/greys
+    chmod a+x ~/bin/greys
+fi
+
+if [ ! -f ~/.vim ]; then
+    mkdir -p vim/tmp/backup vim/tmp/swap vim/tmp/undo
+    mkdir -p ~/.local/share/nvim/tmp/backup ~/.local/share/nvim/tmp/swap ~/.local/share/nvim/tmp/undo
+    ln -sfn ${dir}/bundle vim/bundle
+    ln -sfn ${dir}/vim ~/.vim
+    ln -sfn ${dir}/vim/terminal.vimrc ~/.vimrc
+    ln -sfn ${dir}/vim/linux.gvimrc ~/.gvimrc
+fi

@@ -25,3 +25,6 @@
 [submodule "bundle"]
 	path = bundle
 	url = git@github.com:yuweijun/vundle
+[submodule "fernflower-decompiler"]
+	path = fernflower-decompiler
+	url = https://github.com/yuweijun/fernflower-decompiler.git

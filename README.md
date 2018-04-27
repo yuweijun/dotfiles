@@ -22,7 +22,3 @@
     $ cd dotfiles
     $ ./install.sh
 
-### greys.sh please set $JAVA_HOME to JDK6+
-
-    $ JAVA_HOME=/usr/lib/jvm/java-8-oracle/ greys-anatomy/bin/greys.sh pid-of-java
-
