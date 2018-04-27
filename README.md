@@ -16,8 +16,13 @@
 
     $ yum update -y nss curl libcurl
 
-## run init script
+## install
 
     $ git clone https://github.com/yuweijun/dotfiles.git
     $ cd dotfiles
-    $ ./init.sh
+    $ ./install.sh
+
+### greys.sh please set $JAVA_HOME to JDK6+
+
+    $ JAVA_HOME=/usr/lib/jvm/java-8-oracle/ greys-anatomy/bin/greys.sh pid-of-java
+
