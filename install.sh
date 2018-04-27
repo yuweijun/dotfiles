@@ -1,5 +1,13 @@
 #!/bin/bash
 
+if grep -q "alias la" ~/.bashrc; then
+    echo "alias ls='ls --color=auto'" >> ~/.bashrc
+    echo "alias grep='grep --color=auto'" >> ~/.bashrc
+    echo "alias ll='ls -alF'" >> ~/.bashrc
+    echo "alias la='ls -A'" >> ~/.bashrc
+    echo "alias l='ls -CF'" >> ~/.bashrc
+fi
+
 git submodule update --init
 
 directory=$(dirname "$0")
