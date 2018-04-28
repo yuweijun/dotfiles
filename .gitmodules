@@ -19,9 +19,6 @@
 [submodule "fzf"]
 	path = fzf
 	url = https://github.com/junegunn/fzf.git
-[submodule "greys-anatomy"]
-	path = greys-anatomy
-	url = https://github.com/oldmanpushcart/greys-anatomy.git
 [submodule "bundle"]
 	path = bundle
 	url = https://github.com/yuweijun/vundle
