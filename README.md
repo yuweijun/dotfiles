@@ -8,6 +8,10 @@
 
     $ yum install http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm
 
+### github unable to access SSL connect error
+
+    $ yum update -y nss curl libcurl
+
 ### install new git vertion
 
     $ yum install git
@@ -15,10 +19,6 @@
 ### install tmux mycli on centos
 
     $ yum install -y tmux mycli
-
-### github unable to access SSL connect error
-
-    $ yum update -y nss curl libcurl
 
 ## install tmux mycli on ubuntu
 
