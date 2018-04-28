@@ -28,12 +28,6 @@ dir="$(pwd)"
 if [ ! -e ~/.fzf ]; then
     ln -sfn ${dir}/fzf ~/.fzf && ~/.fzf/install
 fi
-if [ ! -e ~/.bash-git-prompt ]; then
-    ln -sfn ${dir}/bash-git-prompt ~/.bash-git-prompt
-fi
-if [ ! -f ~/.bash_completion ]; then
-    ln -sfn ${dir}/bash-completion/bash_completion ~/.bash_completion
-fi
 
 if [ ! -f ~/.my.vim ]; then
     mkdir -p ~/.mysql/out
@@ -46,19 +40,25 @@ fi
 if grep -q bash_completion ~/.bashrc; then
     echo "bash_completion config found in ~/.bashrc"
 else
-    echo "[ -f ~/.bash_completion ] && source ~/.bash_completion" >> ~/.bashrc
+    if [ ! -f ~/.bash_completion ]; then
+        ln -sfn ${dir}/bash-completion/bash_completion ~/.bash_completion
+        echo "[ -f ~/.bash_completion ] && source ~/.bash_completion" >> ~/.bashrc
+    fi
 fi
 
 if grep -q gitprompt.sh ~/.bashrc; then
     echo "gitprompt.sh config found in ~/.bashrc"
 else
-    echo "if [ -f ~/.bash-git-prompt/gitprompt.sh ]; then" >> ~/.bashrc
-    echo "    GIT_PROMPT_ONLY_IN_REPO=1" >> ~/.bashrc
-    echo "    GIT_PROMPT_FETCH_REMOTE_STATUS=0" >> ~/.bashrc
-    echo "    GIT_PROMPT_IGNORE_SUBMODULES=1" >> ~/.bashrc
-    echo "    GIT_PROMPT_THEME=Minimal" >> ~/.bashrc
-    echo "    source ~/.bash-git-prompt/gitprompt.sh" >> ~/.bashrc
-    echo "fi" >> ~/.bashrc
+    if [ ! -e ~/.bash-git-prompt ]; then
+        ln -sfn ${dir}/bash-git-prompt ~/.bash-git-prompt
+        echo "if [ -f ~/.bash-git-prompt/gitprompt.sh ]; then" >> ~/.bashrc
+        echo "    GIT_PROMPT_ONLY_IN_REPO=1" >> ~/.bashrc
+        echo "    GIT_PROMPT_FETCH_REMOTE_STATUS=0" >> ~/.bashrc
+        echo "    GIT_PROMPT_IGNORE_SUBMODULES=1" >> ~/.bashrc
+        echo "    GIT_PROMPT_THEME=Minimal" >> ~/.bashrc
+        echo "    source ~/.bash-git-prompt/gitprompt.sh" >> ~/.bashrc
+        echo "fi" >> ~/.bashrc
+    fi
 fi
 
 if [ ! -e ~/.vim ]; then
@@ -68,5 +68,7 @@ if [ ! -e ~/.vim ]; then
     ln -sfn ${dir}/vim ~/.vim
     ln -sfn ${dir}/vim/terminal.vimrc ~/.vimrc
     ln -sfn ${dir}/vim/linux.gvimrc ~/.gvimrc
+else
+    echo ".vim folder exists"
 fi
 
