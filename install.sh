@@ -8,6 +8,7 @@ if grep -q "alias ll" ~/.bashrc; then
 else
     echo "alias ls='ls --color=auto'" >> ~/.bashrc
     echo "alias ll='ls -alF'" >> ~/.bashrc
+    echo "alias ld='ls -ad'" >> ~/.bashrc
     echo "alias la='ls -A'" >> ~/.bashrc
     echo "alias l='ls -CF'" >> ~/.bashrc
 fi
