@@ -14,15 +14,15 @@
 
 ### install new git vertion
 
-    $ yum install git
+    $ yum install -y git
 
-### install tmux mycli on centos
+### install tools on centos
 
-    $ yum install -y tmux mycli
+    $ yum install -y tmux mycli the_silver_searcher
 
-## install tmux mycli on ubuntu
+## install tools on ubuntu
 
-    $ sudo apt install -y tmux mycli
+    $ sudo apt install -y tmux mycli the_silver_searcher
 
 ## install
 
