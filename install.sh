@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "git submodule update --init --remote --recursive"
 git submodule update --init --remote --recursive
 
 if grep -q "alias ll" ~/.bashrc; then
