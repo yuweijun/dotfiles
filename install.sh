@@ -2,14 +2,19 @@
 
 git submodule update --init --remote --recursive
 
-if grep -q "alias la" ~/.bashrc; then
-    echo "alias la exists"
+if grep -q "alias ll" ~/.bashrc; then
+    echo "alias ll exists"
 else
     echo "alias ls='ls --color=auto'" >> ~/.bashrc
-    echo "alias grep='grep --color=auto'" >> ~/.bashrc
     echo "alias ll='ls -alF'" >> ~/.bashrc
     echo "alias la='ls -A'" >> ~/.bashrc
     echo "alias l='ls -CF'" >> ~/.bashrc
+fi
+
+if grep -q "alias grep" ~/.bashrc; then
+    echo "alias grep exists"
+else
+    echo "alias grep='grep --color=auto'" >> ~/.bashrc
 fi
 
 if grep -q PS1 ~/.bashrc; then
