@@ -1,5 +1,8 @@
 #!/bin/bash
 
+cd $(dirname "$0")
+dir="$(pwd)"
+
 echo "git submodule update --init --remote --recursive"
 git submodule update --init --remote --recursive
 
@@ -24,10 +27,6 @@ if grep -q PS1 ~/.bashrc; then
 else
     echo 'export PS1="\033[1;36m\]\$(date \"+%H:%M:%S\") \[\033[00m\]\u@\W\[\033[00m\] \[\033[1;35m\]$\[\033[00m\] "' >> ~/.bashrc
 fi
-
-directory=$(dirname "$0")
-cd ${directory}
-dir="$(pwd)"
 
 if [ ! -e ~/.fzf ]; then
     ln -sfn ${dir}/fzf ~/.fzf && ~/.fzf/install
