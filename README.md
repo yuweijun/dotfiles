@@ -22,7 +22,7 @@
 
 ## install tools on ubuntu
 
-    $ sudo apt install -y tmux mycli the_silver_searcher
+    $ sudo apt install -y tmux mycli silversearcher-ag
 
 ## install
 
