@@ -56,22 +56,6 @@ else
     echo "fi" >> ~/.bashrc
 fi
 
-if [ ! -f ~/bin/decompiler ] && type ant 2>/dev/null; then
-    cd fernflower-decompiler
-    ant clean
-    ant
-    mkdir -p ~/bin
-    echo "#!/bin/bash\njava -jar fernflower.jar $@" > ~/bin/decompiler
-    chmod a+x ~/bin/decompiler
-    cd ..
-fi
-
-if [ ! -f ~/bin/greys ]; then
-    mkdir -p ~/bin
-    echo "#!/bin/bash\nJAVA_HOME=/usr/lib/jvm/java-8-oracle/ greys-anatomy/bin/greys.sh $@" > ~/bin/greys
-    chmod a+x ~/bin/greys
-fi
-
 if [ ! -e ~/.vim ]; then
     mkdir -p vim/tmp/backup vim/tmp/swap vim/tmp/undo
     mkdir -p ~/.local/share/nvim/tmp/backup ~/.local/share/nvim/tmp/swap ~/.local/share/nvim/tmp/undo
