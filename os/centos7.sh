@@ -1,5 +1,6 @@
 #!/bin/bash
 
-yum install -y http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm
+cd $(dirname "$0")
 
+yum install -y http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm
 ./centos.sh
