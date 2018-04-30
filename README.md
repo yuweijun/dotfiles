@@ -1,32 +1,18 @@
-## update git on centos
+## centos 6.5
 
-### centos 6.5
+    $ os/centos6.sh
 
-    $ yum install -y http://opensource.wandisco.com/centos/6/git/x86_64/wandisco-git-release-6-1.noarch.rpm
+## centos 7
 
-### centos 7
+    $ os/centos7.sh
 
-    $ yum install -y http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm
+## ubuntu
 
-### github unable to access SSL connect error
-
-    $ yum update -y nss curl libcurl
-
-### install new git vertion
-
-    $ yum install -y git
-
-### install tools on centos
-
-    $ yum install -y tmux mycli the_silver_searcher
-
-## install tools on ubuntu
-
-    $ sudo apt install -y tmux mycli silversearcher-ag
+    $ os/ubuntu.sh
 
 ## install
 
-    $ git clone https://github.com/yuweijun/dotfiles.git
-    $ cd dotfiles
+    $ git clone https://github.com/yuweijun/dotfiles.git dotfiles.git
+    $ cd dotfiles.git
     $ ./install.sh
 
