@@ -58,7 +58,7 @@ else
         echo "    GIT_PROMPT_ONLY_IN_REPO=1" >> ~/.bashrc
         echo "    GIT_PROMPT_FETCH_REMOTE_STATUS=0" >> ~/.bashrc
         echo "    GIT_PROMPT_IGNORE_SUBMODULES=1" >> ~/.bashrc
-        echo "    GIT_PROMPT_THEME=Minimal" >> ~/.bashrc
+        echo "    GIT_PROMPT_THEME=TruncatedPwd_WindowTitle_NoExitState" >> ~/.bashrc
         echo "    source ~/.bash-git-prompt/gitprompt.sh" >> ~/.bashrc
         echo "fi" >> ~/.bashrc
     fi
