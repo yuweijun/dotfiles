@@ -3,9 +3,6 @@
 cd $(dirname "$0")
 dir="$(pwd)"
 
-echo "git submodule update --init --remote --recursive"
-git submodule update --init --remote --recursive
-
 if grep -q "alias ll" ~/.bashrc; then
     echo "alias ll exists"
 else
@@ -27,6 +24,13 @@ if grep -q PS1 ~/.bashrc; then
     echo "PS1 has been set"
 else
     echo 'export PS1="\033[1;36m\]\$(date \"+%H:%M:%S\") \[\033[00m\]\u@\W\[\033[00m\] \[\033[1;35m\]$\[\033[00m\] "' >> ~/.bashrc
+fi
+
+if [ ! -e ~/.vim/vundle ]; then
+    echo "git submodule update --init --remote --recursive"
+    git submodule update --init --remote --recursive
+else
+    echo "git submodule update --init --remote --recursive # not run because of # ~/.vim/vundle exists"
 fi
 
 if [ ! -e ~/.fzf ]; then
@@ -74,5 +78,11 @@ if [ ! -e ~/.vim ]; then
     ln -sfn ${dir}/vim/linux.gvimrc ~/.gvimrc
 else
     echo ".vim folder exists"
+fi
+
+if [ ! -e ~/.ssh ]; then
+    mkdir ~/.ssh
+    echo "Host *\n    ForwardAgent yes" > ~/.ssh/config
+    chmod -R 600 ~/.ssh
 fi
 
