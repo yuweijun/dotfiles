@@ -26,11 +26,11 @@ else
     echo 'export PS1="\033[1;36m\]\$(date \"+%H:%M:%S\") \[\033[00m\]\u@\W\[\033[00m\] \[\033[1;35m\]$\[\033[00m\] "' >> ~/.bashrc
 fi
 
-if [ ! -e ~/.vim/vundle ]; then
+if [ ! -e ~/.vim/bundle ]; then
     echo "git submodule update --init --remote --recursive"
     git submodule update --init --remote --recursive
 else
-    echo "git submodule update --init --remote --recursive # not run because of # ~/.vim/vundle exists"
+    echo "git submodule update --init --remote --recursive # not run because of # ~/.vim/bundle exists"
 fi
 
 if [ ! -e ~/.fzf ]; then
