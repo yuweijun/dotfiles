@@ -26,7 +26,7 @@ fi
 if grep -q PS1 ~/.bashrc; then
     echo "PS1 has been set"
 else
-    echo 'export PS1="\033[1;36m\]\$(date \"+%H:%M:%S\") \[\033[00m\]\u@\W\[\033[00m\] \[\033[1;35m\]$\[\033[00m\] "' >> ~/.bashrc
+    echo 'export PS1="\033[1;36m\]\$(date \"+%H:%M:%S\") \[\033[00m\][\u@\h: \w]\[\033[00m\] \[\033[1;35m\]$\[\033[00m\] "' >> ~/.bashrc
 fi
 
 if [ ! -e ~/.vim/bundle ]; then
