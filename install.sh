@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+set -x
+
 cd $(dirname "$0")
 dir="$(pwd)"
 
@@ -33,7 +36,6 @@ else
 fi
 
 if [ ! -e ~/.vim/bundle ]; then
-    echo "git submodule update --init --remote --recursive"
     git submodule update --init --remote --recursive
 else
     echo "git submodule update --init --remote --recursive # not run because of # ~/.vim/bundle exists"
