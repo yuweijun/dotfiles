@@ -60,11 +60,11 @@ fi
 
 if grep -q bash_completion ~/.bashrc; then
     echo "bash_completion config found in ~/.bashrc"
-else
-    if [ ! -f ~/.bash_completion ]; then
-        ln -sfn ${dir}/bash-completion/bash_completion ~/.bash_completion
-        echo "[ -f ~/.bash_completion ] && source ~/.bash_completion" >> ~/.bashrc
-    fi
+else type complete 2>/dev/null; then
+    echo "bash command complete exists and not create ~/.bash_completion"
+elif [ ! -f ~/.bash_completion ]; then
+    ln -sfn ${dir}/bash-completion/bash_completion ~/.bash_completion
+    echo "[ -f ~/.bash_completion ] && source ~/.bash_completion" >> ~/.bashrc
 fi
 
 if grep -q gitprompt.sh ~/.bashrc; then
