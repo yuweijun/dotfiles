@@ -17,12 +17,6 @@ else
     echo "alias l='ls -CF'" >> ~/.bashrc
 fi
 
-if grep -q "export LS_COLORS" ~/.bashrc; then
-    echo "export LS_COLORS settings found"
-else
-    echo "export LS_COLORS='rs=0:di=01;33:ln=01;36:mh=00:pi=40;33'" >> ~/.bashrc
-fi
-
 if grep -q "alias grep" ~/.bashrc; then
     echo "alias grep exists"
 else
@@ -39,6 +33,17 @@ if [ ! -e ~/.vim/bundle ]; then
     git submodule update --init --remote --recursive
 else
     echo "git submodule update --init --remote --recursive # not run because of # ~/.vim/bundle exists"
+fi
+
+if [ ! -f ~/.dircolors ] && type dircolors 2>/dev/null; then
+    ln -sfn ${dir}/dircolors-solarized/dircolors.256dark ~/.dircolors
+    echo "$(dircolors ~/.dircolors)" >> ~/.bashrc
+else
+    if grep -q "export LS_COLORS" ~/.bashrc; then
+        echo "export LS_COLORS settings found"
+    else
+        echo "export LS_COLORS='rs=0:di=01;33:ln=01;36:mh=00:pi=40;33'" >> ~/.bashrc
+    fi
 fi
 
 if [ ! -e ~/.fzf ]; then
