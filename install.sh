@@ -14,6 +14,12 @@ else
     echo "alias l='ls -CF'" >> ~/.bashrc
 fi
 
+if grep -q "export LS_COLORS" ~/.bashrc; then
+    echo "export LS_COLORS settings found"
+else
+    echo "export LS_COLORS='rs=0:di=01;33:ln=01;36:mh=00:pi=40;33'" >> ~/.bashrc
+fi
+
 if grep -q "alias grep" ~/.bashrc; then
     echo "alias grep exists"
 else
