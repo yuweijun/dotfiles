@@ -23,10 +23,10 @@ else
     echo "alias grep='grep --color=auto'" >> ~/.bashrc
 fi
 
-if grep -q PS1 ~/.bashrc; then
+if grep -q "export PS1" ~/.bashrc; then
     echo "PS1 has been set"
 else
-    echo 'export PS1="\033[1;36m\]\$(date \"+%H:%M:%S\") \[\033[00m\][\u@\h: \w]\[\033[00m\] \[\033[1;35m\]$\[\033[00m\] "' >> ~/.bashrc
+    echo 'export PS1="\[\033[1;36m\]\$(date \"+%H:%M:%S\")\[\033[00m\] [\u@\h: \w]$ "' >> ~/.bashrc
 fi
 
 if [ ! -e ~/.vim/bundle ]; then
@@ -37,7 +37,7 @@ fi
 
 if [ ! -f ~/.dircolors ] && type dircolors 2>/dev/null; then
     ln -sfn ${dir}/dircolors-solarized/dircolors.256dark ~/.dircolors
-    echo "$(dircolors ~/.dircolors)" >> ~/.bashrc
+    echo 'eval "$(dircolors ~/.dircolors)"' >> ~/.bashrc
 else
     if grep -q "export LS_COLORS" ~/.bashrc; then
         echo "export LS_COLORS settings found"
