@@ -30,7 +30,11 @@ else
 fi
 
 if [ ! -e ~/.vim/bundle ]; then
-    git submodule update --init --remote --recursive
+    if git submodule update --init --remote --recursive 2>/dev/null; then
+        echo "git version is too old"
+    else
+        git submodule update --init --recursive
+    fi
 else
     echo "git submodule update --init --remote --recursive # not run because of # ~/.vim/bundle exists"
 fi
