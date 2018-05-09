@@ -39,9 +39,13 @@ else
     echo "git submodule update --init --remote --recursive # not run because of # ~/.vim/bundle exists"
 fi
 
-if [ ! -f ~/.dircolors ] && type dircolors 2>/dev/null; then
-    ln -sfn ${dir}/dircolors-solarized/dircolors.256dark ~/.dircolors
-    echo 'eval "$(dircolors ~/.dircolors)"' >> ~/.bashrc
+if type dircolors 2>/dev/null; then
+    if [ ! -f ~/.dircolors ]; then
+        ln -sfn ${dir}/dircolors-solarized/dircolors.256dark ~/.dircolors
+        echo 'eval "$(dircolors ~/.dircolors)"' >> ~/.bashrc
+    else
+        echo "~/.dircolors has exists"
+    fi
 else
     if grep -q "export LS_COLORS" ~/.bashrc; then
         echo "export LS_COLORS settings found"
