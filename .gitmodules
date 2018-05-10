@@ -25,3 +25,6 @@
 [submodule "dircolors-solarized"]
 	path = dircolors-solarized
 	url = https://github.com/seebi/dircolors-solarized.git
+[submodule "autojump"]
+	path = autojump
+	url = https://github.com/joelthelion/autojump

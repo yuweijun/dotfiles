@@ -40,11 +40,15 @@ else
 fi
 
 if type dircolors 2>/dev/null; then
-    if [ ! -f ~/.dircolors ]; then
-        ln -sfn ${dir}/dircolors-solarized/dircolors.256dark ~/.dircolors
-        echo 'eval "$(dircolors ~/.dircolors)"' >> ~/.bashrc
-    else
+    if [ -f ~/.dircolors ]; then
         echo "~/.dircolors has exists"
+    else
+        ln -sfn ${dir}/dircolors-solarized/dircolors.256dark ~/.dircolors
+    fi
+    if grep dircolors ~/.bashrc 2>/dev/null; then
+        echo "dircolors config exist in ~/.bashrc"
+    else
+        echo 'eval "$(dircolors ~/.dircolors)"' >> ~/.bashrc
     fi
 else
     if grep -q "export LS_COLORS" ~/.bashrc; then
@@ -88,6 +92,17 @@ else
         echo "    source ~/.bash-git-prompt/gitprompt.sh" >> ~/.bashrc
         echo "fi" >> ~/.bashrc
     fi
+fi
+
+if grep -q autojump.sh ~/.bashrc; then
+    echo "autojump.sh config found in ~/.bashrc"
+else
+    if [ ! -e ~/.autojump ]; then
+        cd ${dir}/autojump
+        ./install.py
+        cd -
+    fi
+    echo "[ -f ~/.autojump/share/autojump/autojump.bash ] && source ~/.autojump/share/autojump/autojump.bash" >> ~/.bashrc
 fi
 
 if [ ! -e ~/.vim ]; then
