@@ -122,6 +122,16 @@ if [ ! -e ~/.ssh ]; then
     chmod -R 600 ~/.ssh
 fi
 
+if [ ${#SSH_AUTH_SOCK} -gt 1 ]; then
+    echo "ssh-agent is running"
+else
+    echo "start running ssh-agent"
+    eval "$(ssh-agent -s)"
+    if [ -f ~/.ssh/id_rsa ]; then
+        ssh-add ~/.ssh/id_rsa
+    fi
+fi
+
 if [ "$SHELL" = "/bin/bash" ]; then
     source ~/.bashrc
 fi
