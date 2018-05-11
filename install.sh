@@ -29,7 +29,7 @@ else
     echo 'export PS1="\[\033[1;36m\]\$(date \"+%H:%M:%S\")\[\033[00m\] [\u@\h: \[\033[1;32m\]\w\[\033[00m\]]\n$ "' >> ~/.bashrc
 fi
 
-if [ $# -eq 0 ]; then
+if [ $# -gt 0 ] && [ "$1" = "init" ]; then
     if git submodule update --init --remote --recursive 2>/dev/null; then
         echo "git version is too old"
     else

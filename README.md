@@ -24,9 +24,14 @@
 
     $ sudo apt install -y tmux mycli silversearcher-ag
 
-## install
+## install with init
 
     $ git clone https://github.com/yuweijun/dotfiles.git
     $ cd dotfiles
+    $ ./install.sh init
+
+### reinstall
+
     $ ./install.sh
+
 
