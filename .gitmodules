@@ -28,3 +28,9 @@
 [submodule "autojump"]
 	path = autojump
 	url = https://github.com/joelthelion/autojump
+[submodule "zsh-syntax-highlighting"]
+	path = zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
+[submodule "Menlo-for-Powerline"]
+	path = Menlo-for-Powerline
+	url = https://github.com/yuweijun/Menlo-for-Powerline.git
