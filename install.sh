@@ -25,29 +25,6 @@ if [ "$SHELL" = "/bin/zsh" ]; then
     fi
 fi
 
-if grep -q "alias ll" ${rcfile}; then
-    echo "alias ll exists"
-else
-    echo "alias ls='ls --color=auto'" >> ${rcfile}
-    echo "alias ll='ls -alF'" >> ${rcfile}
-    echo "alias lt='ls -lt'" >> ${rcfile}
-    echo "alias ld='ls -ad'" >> ${rcfile}
-    echo "alias la='ls -A'" >> ${rcfile}
-    echo "alias l='ls -CF'" >> ${rcfile}
-fi
-
-if grep -q "export PS1" ${rcfile}; then
-    echo "PS1 has been set"
-else
-    if [[ "$SHELL" = "/bin/zsh" ]]; then
-        if [ ! -n "$PROMPT" ]; then
-            echo 'export PS1="%{$fg[cyan]%}\$(date \"+%H:%M:%S\") %{$reset_color%}[%{$fg[magenta]%}%n@%m %{$fg[green]%}%~%{$reset_color%}]$ "' >> ${rcfile}
-        fi
-    else
-        echo 'export PS1="\[\033[1;36m\]\$(date \"+%H:%M:%S\")\[\033[00m\] [\u@\h: \[\033[1;32m\]\w\[\033[00m\]]\n$ "' >> ${rcfile}
-    fi
-fi
-
 if [ ! -e ~/.fzf ]; then
     ln -sfn ${dir}/fzf ~/.fzf
     ~/.fzf/install
@@ -62,31 +39,6 @@ if [ ! -f ~/.my.vim ]; then
     ln -sfn ${dir}/mycli/myclirc ~/.myclirc
     ln -sfn ${dir}/mycli/my.cnf ~/.my.cnf
     ln -sfn ${dir}/mycli/my.vim ~/.my.vim
-fi
-
-if grep -q bash_completion ${rcfile}; then
-    echo "bash_completion config found in ${rcfile}"
-elif type complete 2>/dev/null; then
-    echo "bash command complete exists and not create ~/.bash_completion"
-elif [ ! -f ~/.bash_completion ]; then
-    ln -sfn ${dir}/bash-completion/bash_completion ~/.bash_completion
-    echo "[ -f ~/.bash_completion ] && source ~/.bash_completion" >> ${rcfile}
-fi
-
-if [ ! -e ~/.bash-git-prompt ]; then
-    ln -sfn ${dir}/bash-git-prompt ~/.bash-git-prompt
-fi
-
-if grep -q gitprompt.sh ${rcfile}; then
-    echo "gitprompt.sh config found in ${rcfile}"
-else
-    echo "if [ -f ~/.bash-git-prompt/gitprompt.sh ]; then" >> ${rcfile}
-    echo "    GIT_PROMPT_ONLY_IN_REPO=1" >> ${rcfile}
-    echo "    GIT_PROMPT_FETCH_REMOTE_STATUS=0" >> ${rcfile}
-    echo "    GIT_PROMPT_IGNORE_SUBMODULES=1" >> ${rcfile}
-    echo "    GIT_PROMPT_THEME=TruncatedPwd_WindowTitle_NoExitState" >> ${rcfile}
-    echo "    source ~/.bash-git-prompt/gitprompt.sh" >> ${rcfile}
-    echo "fi" >> ${rcfile}
 fi
 
 if [ ! -e ~/.autojump ]; then
@@ -137,6 +89,25 @@ if [ "$SHELL" = "/bin/zsh" ]; then
     exit 0
 fi
 
+if grep -q "alias ll" ~.bashrc; then
+    echo "alias ll exists"
+else
+    echo "alias ls='ls --color=auto'" >> ~.bashrc
+    echo "alias ll='ls -alF'" >> ~.bashrc
+    echo "alias lt='ls -lt'" >> ~.bashrc
+    echo "alias ld='ls -ad'" >> ~.bashrc
+    echo "alias la='ls -A'" >> ~.bashrc
+    echo "alias l='ls -CF'" >> ~.bashrc
+fi
+
+if grep -q "export PS1" ~/.bashrc; then
+    echo "PS1 has been set"
+else
+    if [[ "$SHELL" = "/bin/bash" ]]; then
+        echo 'export PS1="\[\033[1;36m\]\$(date \"+%H:%M:%S\")\[\033[00m\] [\u@\h: \[\033[1;32m\]\w\[\033[00m\]]\n$ "' >> ~/.bashrc
+    fi
+fi
+
 if grep -q "alias grep" ~/.bashrc; then
     echo "alias grep exists"
 else
@@ -160,6 +131,31 @@ else
     else
         echo "export LS_COLORS='rs=0:di=01;33:ln=01;36:mh=00:pi=40;33'" >> ~/.bashrc
     fi
+fi
+
+if grep -q bash_completion ~.bashrc; then
+    echo "bash_completion config found in ~.bashrc"
+elif type complete 2>/dev/null; then
+    echo "bash command complete exists and not create ~/.bash_completion"
+elif [ ! -f ~/.bash_completion ]; then
+    ln -sfn ${dir}/bash-completion/bash_completion ~/.bash_completion
+    echo "[ -f ~/.bash_completion ] && source ~/.bash_completion" >> ~.bashrc
+fi
+
+if [ ! -e ~/.bash-git-prompt ]; then
+    ln -sfn ${dir}/bash-git-prompt ~/.bash-git-prompt
+fi
+
+if grep -q gitprompt.sh ~.bashrc; then
+    echo "gitprompt.sh config found in ~.bashrc"
+else
+    echo "if [ -f ~/.bash-git-prompt/gitprompt.sh ]; then" >> ~.bashrc
+    echo "    GIT_PROMPT_ONLY_IN_REPO=1" >> ~.bashrc
+    echo "    GIT_PROMPT_FETCH_REMOTE_STATUS=0" >> ~.bashrc
+    echo "    GIT_PROMPT_IGNORE_SUBMODULES=1" >> ~.bashrc
+    echo "    GIT_PROMPT_THEME=TruncatedPwd_WindowTitle_NoExitState" >> ~.bashrc
+    echo "    source ~/.bash-git-prompt/gitprompt.sh" >> ~.bashrc
+    echo "fi" >> ~.bashrc
 fi
 
 source ~/.bashrc
