@@ -21,7 +21,7 @@ if [ "$SHELL" = "/bin/zsh" ]; then
     rcfile="${HOME}/.zshrc"
     if [ ! -f ${rcfile} ]; then
         ln -sfn ${dir}/oh-my-zsh ~/.oh-my-zsh
-        cp ${dir}/oh-my-zsh/zshrc.macosx ${rcfile}
+        cp ${dir}/oh-my-zsh/zshrc.linux ${rcfile}
     fi
 fi
 
