@@ -6,29 +6,6 @@ set -x
 cd $(dirname "$0")
 dir="$(pwd)"
 
-if grep -q "alias ll" ~/.bashrc; then
-    echo "alias ll exists"
-else
-    echo "alias ls='ls --color=auto'" >> ~/.bashrc
-    echo "alias ll='ls -alF'" >> ~/.bashrc
-    echo "alias lt='ls -lt'" >> ~/.bashrc
-    echo "alias ld='ls -ad'" >> ~/.bashrc
-    echo "alias la='ls -A'" >> ~/.bashrc
-    echo "alias l='ls -CF'" >> ~/.bashrc
-fi
-
-if grep -q "alias grep" ~/.bashrc; then
-    echo "alias grep exists"
-else
-    echo "alias grep='grep --color=auto'" >> ~/.bashrc
-fi
-
-if grep -q "export PS1" ~/.bashrc; then
-    echo "PS1 has been set"
-else
-    echo 'export PS1="\[\033[1;36m\]\$(date \"+%H:%M:%S\")\[\033[00m\] [\u@\h: \[\033[1;32m\]\w\[\033[00m\]]\n$ "' >> ~/.bashrc
-fi
-
 if [ $# -gt 0 ] && [ "$1" = "init" ]; then
     if git submodule update --init --remote --recursive 2>/dev/null; then
         echo "git version is too old"
@@ -39,70 +16,109 @@ else
     echo "# git submodule update --init --remote --recursive"
 fi
 
+rcfile="${HOME}/.bashrc"
+if [ "$SHELL" = "/bin/zsh" ]; then
+    rcfile="${HOME}/.zshrc"
+    if [ ! -f ${rcfile} ]; then
+        ln -sfn ${dir}/oh-my-zsh/zshrc.macosx ${rcfile}
+    fi
+fi
+
+if grep -q "alias ll" ${rcfile}; then
+    echo "alias ll exists"
+else
+    echo "alias ls='ls --color=auto'" >> ${rcfile}
+    echo "alias ll='ls -alF'" >> ${rcfile}
+    echo "alias lt='ls -lt'" >> ${rcfile}
+    echo "alias ld='ls -ad'" >> ${rcfile}
+    echo "alias la='ls -A'" >> ${rcfile}
+    echo "alias l='ls -CF'" >> ${rcfile}
+fi
+
+if grep -q "alias grep" ${rcfile}; then
+    echo "alias grep exists"
+else
+    echo "alias grep='grep --color=auto'" >> ${rcfile}
+fi
+
+if grep -q "export PS1" ${rcfile}; then
+    echo "PS1 has been set"
+else
+    if [[ "$SHELL" = "/bin/zsh" ]]; then
+        echo '# export PS1="%{$fg[cyan]%}\$(date \"+%H:%M:%S\") %{$reset_color%}[%{$fg[magenta]%}%n@%m %{$fg[green]%}%~%{$reset_color%}]$ "' >> ${rcfile}
+    else
+        echo 'export PS1="\[\033[1;36m\]\$(date \"+%H:%M:%S\")\[\033[00m\] [\u@\h: \[\033[1;32m\]\w\[\033[00m\]]\n$ "' >> ${rcfile}
+    fi
+fi
+
 if type dircolors 2>/dev/null; then
     if [ -f ~/.dircolors ]; then
         echo "~/.dircolors has exists"
     else
         ln -sfn ${dir}/dircolors-solarized/dircolors.256dark ~/.dircolors
     fi
-    if grep dircolors ~/.bashrc 2>/dev/null; then
-        echo "dircolors config exist in ~/.bashrc"
+    if grep dircolors ${rcfile} 2>/dev/null; then
+        echo "dircolors config exist in ${rcfile}"
     else
-        echo 'eval "$(dircolors ~/.dircolors)"' >> ~/.bashrc
+        echo 'eval "$(dircolors ~/.dircolors)"' >> ${rcfile}
     fi
 else
-    if grep -q "export LS_COLORS" ~/.bashrc; then
+    if grep -q "export LS_COLORS" ${rcfile}; then
         echo "export LS_COLORS settings found"
     else
-        echo "export LS_COLORS='rs=0:di=01;33:ln=01;36:mh=00:pi=40;33'" >> ~/.bashrc
+        echo "export LS_COLORS='rs=0:di=01;33:ln=01;36:mh=00:pi=40;33'" >> ${rcfile}
     fi
 fi
 
 if [ ! -e ~/.fzf ]; then
-    ln -sfn ${dir}/fzf ~/.fzf && ~/.fzf/install
+    ln -sfn ${dir}/fzf ~/.fzf
+    ~/.fzf/install
+fi
+
+if [ ! -f ~/.tmux.conf ]; then
+    ln -sfn ${dir}/tmux/tmux.linux.conf ~/.tmux.conf
 fi
 
 if [ ! -f ~/.my.vim ]; then
     mkdir -p ~/.mysql/out
-    ln -sfn ${dir}/tmux/tmux.linux.conf ~/.tmux.conf
     ln -sfn ${dir}/mycli/myclirc ~/.myclirc
     ln -sfn ${dir}/mycli/my.cnf ~/.my.cnf
     ln -sfn ${dir}/mycli/my.vim ~/.my.vim
 fi
 
-if grep -q bash_completion ~/.bashrc; then
-    echo "bash_completion config found in ~/.bashrc"
+if grep -q bash_completion ${rcfile}; then
+    echo "bash_completion config found in ${rcfile}"
 elif type complete 2>/dev/null; then
     echo "bash command complete exists and not create ~/.bash_completion"
 elif [ ! -f ~/.bash_completion ]; then
     ln -sfn ${dir}/bash-completion/bash_completion ~/.bash_completion
-    echo "[ -f ~/.bash_completion ] && source ~/.bash_completion" >> ~/.bashrc
+    echo "[ -f ~/.bash_completion ] && source ~/.bash_completion" >> ${rcfile}
 fi
 
-if grep -q gitprompt.sh ~/.bashrc; then
-    echo "gitprompt.sh config found in ~/.bashrc"
+if grep -q gitprompt.sh ${rcfile}; then
+    echo "gitprompt.sh config found in ${rcfile}"
 else
     if [ ! -e ~/.bash-git-prompt ]; then
         ln -sfn ${dir}/bash-git-prompt ~/.bash-git-prompt
-        echo "if [ -f ~/.bash-git-prompt/gitprompt.sh ]; then" >> ~/.bashrc
-        echo "    GIT_PROMPT_ONLY_IN_REPO=1" >> ~/.bashrc
-        echo "    GIT_PROMPT_FETCH_REMOTE_STATUS=0" >> ~/.bashrc
-        echo "    GIT_PROMPT_IGNORE_SUBMODULES=1" >> ~/.bashrc
-        echo "    GIT_PROMPT_THEME=TruncatedPwd_WindowTitle_NoExitState" >> ~/.bashrc
-        echo "    source ~/.bash-git-prompt/gitprompt.sh" >> ~/.bashrc
-        echo "fi" >> ~/.bashrc
+        echo "if [ -f ~/.bash-git-prompt/gitprompt.sh ]; then" >> ${rcfile}
+        echo "    GIT_PROMPT_ONLY_IN_REPO=1" >> ${rcfile}
+        echo "    GIT_PROMPT_FETCH_REMOTE_STATUS=0" >> ${rcfile}
+        echo "    GIT_PROMPT_IGNORE_SUBMODULES=1" >> ${rcfile}
+        echo "    GIT_PROMPT_THEME=TruncatedPwd_WindowTitle_NoExitState" >> ${rcfile}
+        echo "    source ~/.bash-git-prompt/gitprompt.sh" >> ${rcfile}
+        echo "fi" >> ${rcfile}
     fi
 fi
 
-if grep -q autojump.sh ~/.bashrc; then
-    echo "autojump.sh config found in ~/.bashrc"
+if grep -q autojump.sh ${rcfile}; then
+    echo "autojump.sh config found in ${rcfile}"
 else
     if [ ! -e ~/.autojump ]; then
         cd ${dir}/autojump
         ./install.py
         cd -
     fi
-    echo "[ -f ~/.autojump/share/autojump/autojump.bash ] && source ~/.autojump/share/autojump/autojump.bash" >> ~/.bashrc
+    echo "[ -f ~/.autojump/share/autojump/autojump.bash ] && source ~/.autojump/share/autojump/autojump.bash" >> ${rcfile}
 fi
 
 if [ ! -e ~/.vim ]; then
@@ -110,10 +126,15 @@ if [ ! -e ~/.vim ]; then
     mkdir -p ~/.local/share/nvim/tmp/backup ~/.local/share/nvim/tmp/swap ~/.local/share/nvim/tmp/undo
     ln -sfn ${dir}/bundle vim/bundle
     ln -sfn ${dir}/vim ~/.vim
+else
+    echo ".vim folder exists"
+fi
+
+if [ ! -e ~/.vimrc ]; then
     ln -sfn ${dir}/vim/terminal.vimrc ~/.vimrc
     ln -sfn ${dir}/vim/linux.gvimrc ~/.gvimrc
 else
-    echo ".vim folder exists"
+    echo ".vimrc file exists"
 fi
 
 if [ ! -e ~/.ssh ]; then
@@ -133,5 +154,6 @@ else
 fi
 
 if [ "$SHELL" = "/bin/bash" ]; then
-    source ~/.bashrc
+    source ${rcfile}
 fi
+

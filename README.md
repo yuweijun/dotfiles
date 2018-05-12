@@ -24,6 +24,13 @@
 
     $ sudo apt install -y tmux mycli silversearcher-ag
 
+## install fonts on linux
+
+    please reference `oh-my-zsh/Menlo-for-Powerline/README.md`
+
+    $ cp oh-my-zsh/Menlo-for-Powerline/*.ttf ~/.fonts
+    $ fc-cache -vf ~/.fonts
+
 ## install with init
 
     $ git clone https://github.com/yuweijun/dotfiles.git
