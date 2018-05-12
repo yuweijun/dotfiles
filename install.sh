@@ -47,12 +47,6 @@ if [ ! -e ~/.autojump ]; then
     cd -
 fi
 
-if grep -q autojump.sh ${rcfile}; then
-    echo "autojump.sh config found in ${rcfile}"
-else
-    echo "[ -f ~/.autojump/share/autojump/autojump.bash ] && source ~/.autojump/share/autojump/autojump.bash" >> ${rcfile}
-fi
-
 if [ ! -e ~/.vim ]; then
     mkdir -p vim/tmp/backup vim/tmp/swap vim/tmp/undo
     mkdir -p ~/.local/share/nvim/tmp/backup ~/.local/share/nvim/tmp/swap ~/.local/share/nvim/tmp/undo
@@ -140,6 +134,12 @@ elif type complete 2>/dev/null; then
 elif [ ! -f ~/.bash_completion ]; then
     ln -sfn ${dir}/bash-completion/bash_completion ~/.bash_completion
     echo "[ -f ~/.bash_completion ] && source ~/.bash_completion" >> ~.bashrc
+fi
+
+if grep -q autojump.sh ~.bashrc; then
+    echo "autojump.sh config found in ~.bashrc"
+else
+    echo "[ -f ~/.autojump/share/autojump/autojump.bash ] && source ~/.autojump/share/autojump/autojump.bash" >> ~.bashrc
 fi
 
 if [ ! -e ~/.bash-git-prompt ]; then
