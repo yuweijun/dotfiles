@@ -17,16 +17,23 @@ else
 fi
 
 rcfile="${HOME}/.bashrc"
-if [ "$SHELL" = "/bin/zsh" ]; then
+if [[ "$SHELL" = "/bin/zsh" ]]; then
     rcfile="${HOME}/.zshrc"
+    if [ ! -e $HOME/.oh-my-zsh ]; then
+        ln -sfn ${dir}/oh-my-zsh $HOME/.oh-my-zsh
+    fi
     if [ ! -f ${rcfile} ]; then
-        ln -sfn ${dir}/oh-my-zsh ~/.oh-my-zsh
-        cp ${dir}/oh-my-zsh/zshrc.linux ${rcfile}
+        cp ${dir}/oh-my-zsh/zshrc ${rcfile}
     fi
 fi
 
 if [ ! -e ~/.fzf ]; then
     ln -sfn ${dir}/fzf ~/.fzf
+fi
+
+if grep -q fzf ${rcfile}; then
+    echo "fzf config exists"
+else
     ~/.fzf/install
 fi
 
@@ -66,7 +73,7 @@ fi
 if type -a j 2>/dev/null; then
     echo "j - autojump command is found"
 else
-    if [ "$SHELL" = "/bin/zsh" ]; then
+    if [[ "$SHELL" = "/bin/zsh" ]]; then
         echo "[ -f ~/.autojump/share/autojump/autojump.zsh ] && source ~/.autojump/share/autojump/autojump.zsh" >> ${rcfile}
     else
         echo "[ -f ~/.autojump/share/autojump/autojump.bash ] && source ~/.autojump/share/autojump/autojump.bash" >> ${rcfile}
@@ -89,7 +96,31 @@ else
     fi
 fi
 
-if [ "$SHELL" = "/bin/zsh" ]; then
+if [ -e $HOME/.jrebel ]; then
+    if grep -q "jdebug" ${rcfile}; then
+        echo "alias jdebug config exists"
+    else
+        echo "alias jrebel=\"MAVEN_OPTS='-agentpath:$HOME/.jrebel/lib/libjrebel64.so' mvn\"" >> ${rcfile}
+        echo "alias jdebug=\"MAVEN_OPTS='-agentpath:$HOME/.jrebel/lib/libjrebel64.so -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000' mvn\"" >> ${rcfile}
+    fi
+fi
+
+if [[ "$SHELL" = "/bin/zsh" ]]; then
+    if grep -q "zsh-syntax-highlighting.zsh" ${rcfile}; then
+        echo "[ -f ${dir}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source ${dir}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${rcfile}
+    fi
+    if type gls 2>&1 >/dev/null; then
+        if grep -q "alias gls" ${rcfile}; then
+            echo "alias gls exists"
+        else
+            echo "alias ls='gls --color=auto'" >> ${rcfile}
+        fi
+    else
+        echo "# brew install coreutils wget" >> ${rcfile}
+        echo "# wget --no-check-certificate https://github.com/seebi/dircolors-solarized/raw/master/dircolors.256dark -O ~/.dir_colors" >> ${rcfile}
+        echo "# gdircolors ~/.dir_colors" >> ${rcfile}
+    fi
+
     exit 0
 fi
 

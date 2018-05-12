@@ -24,6 +24,10 @@
 
     $ sudo apt install -y tmux mycli silversearcher-ag
 
+## install tools on macosx
+
+    $ os/macosx.sh
+
 ## install fonts on linux
 
     please reference `oh-my-zsh/Menlo-for-Powerline/README.md`
