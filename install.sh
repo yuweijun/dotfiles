@@ -41,12 +41,6 @@ if [ ! -f ~/.my.vim ]; then
     ln -sfn ${dir}/mycli/my.vim ~/.my.vim
 fi
 
-if [ ! -e ~/.autojump ]; then
-    cd ${dir}/autojump
-    ./install.py
-    cd -
-fi
-
 if [ ! -e ~/.vim ]; then
     mkdir -p vim/tmp/backup vim/tmp/swap vim/tmp/undo
     mkdir -p ~/.local/share/nvim/tmp/backup ~/.local/share/nvim/tmp/swap ~/.local/share/nvim/tmp/undo
@@ -134,6 +128,12 @@ elif type complete 2>/dev/null; then
 elif [ ! -f ~/.bash_completion ]; then
     ln -sfn ${dir}/bash-completion/bash_completion ~/.bash_completion
     echo "[ -f ~/.bash_completion ] && source ~/.bash_completion" >> ~.bashrc
+fi
+
+if [ ! -e ~/.autojump ]; then
+    cd ${dir}/autojump
+    ./install.py
+    cd -
 fi
 
 if grep -q autojump.sh ~.bashrc; then
