@@ -57,6 +57,22 @@ else
     echo ".vimrc file exists"
 fi
 
+if [ ! -e ~/.autojump ]; then
+    cd ${dir}/autojump
+    ./install.py
+    cd -
+fi
+
+if type -a j 2>/dev/null; then
+    echo "j - autojump command is found"
+else
+    if [ "$SHELL" = "/bin/zsh" ]; then
+        echo "[ -f ~/.autojump/share/autojump/autojump.zsh ] && source ~/.autojump/share/autojump/autojump.zsh" >> ${rcfile}
+    else
+        echo "[ -f ~/.autojump/share/autojump/autojump.bash ] && source ~/.autojump/share/autojump/autojump.bash" >> ${rcfile}
+    fi
+fi
+
 if [ ! -e ~/.ssh ]; then
     mkdir ~/.ssh
     echo "Host *\n    ForwardAgent yes" > ~/.ssh/config
@@ -77,15 +93,15 @@ if [ "$SHELL" = "/bin/zsh" ]; then
     exit 0
 fi
 
-if grep -q "alias ll" ~.bashrc; then
+if grep -q "alias ll" ~/.bashrc; then
     echo "alias ll exists"
 else
-    echo "alias ls='ls --color=auto'" >> ~.bashrc
-    echo "alias ll='ls -alF'" >> ~.bashrc
-    echo "alias lt='ls -lt'" >> ~.bashrc
-    echo "alias ld='ls -ad'" >> ~.bashrc
-    echo "alias la='ls -A'" >> ~.bashrc
-    echo "alias l='ls -CF'" >> ~.bashrc
+    echo "alias ls='ls --color=auto'" >> ~/.bashrc
+    echo "alias ll='ls -alF'" >> ~/.bashrc
+    echo "alias lt='ls -lt'" >> ~/.bashrc
+    echo "alias ld='ls -ad'" >> ~/.bashrc
+    echo "alias la='ls -A'" >> ~/.bashrc
+    echo "alias l='ls -CF'" >> ~/.bashrc
 fi
 
 if grep -q "export PS1" ~/.bashrc; then
@@ -121,41 +137,29 @@ else
     fi
 fi
 
-if grep -q bash_completion ~.bashrc; then
-    echo "bash_completion config found in ~.bashrc"
+if grep -q bash_completion ~/.bashrc; then
+    echo "bash_completion config found in ~/.bashrc"
 elif type complete 2>/dev/null; then
     echo "bash command complete exists and not create ~/.bash_completion"
 elif [ ! -f ~/.bash_completion ]; then
     ln -sfn ${dir}/bash-completion/bash_completion ~/.bash_completion
-    echo "[ -f ~/.bash_completion ] && source ~/.bash_completion" >> ~.bashrc
-fi
-
-if [ ! -e ~/.autojump ]; then
-    cd ${dir}/autojump
-    ./install.py
-    cd -
-fi
-
-if grep -q autojump.sh ~.bashrc; then
-    echo "autojump.sh config found in ~.bashrc"
-else
-    echo "[ -f ~/.autojump/share/autojump/autojump.bash ] && source ~/.autojump/share/autojump/autojump.bash" >> ~.bashrc
+    echo "[ -f ~/.bash_completion ] && source ~/.bash_completion" >> ~/.bashrc
 fi
 
 if [ ! -e ~/.bash-git-prompt ]; then
     ln -sfn ${dir}/bash-git-prompt ~/.bash-git-prompt
 fi
 
-if grep -q gitprompt.sh ~.bashrc; then
-    echo "gitprompt.sh config found in ~.bashrc"
+if grep -q gitprompt.sh ~/.bashrc; then
+    echo "gitprompt.sh config found in ~/.bashrc"
 else
-    echo "if [ -f ~/.bash-git-prompt/gitprompt.sh ]; then" >> ~.bashrc
-    echo "    GIT_PROMPT_ONLY_IN_REPO=1" >> ~.bashrc
-    echo "    GIT_PROMPT_FETCH_REMOTE_STATUS=0" >> ~.bashrc
-    echo "    GIT_PROMPT_IGNORE_SUBMODULES=1" >> ~.bashrc
-    echo "    GIT_PROMPT_THEME=TruncatedPwd_WindowTitle_NoExitState" >> ~.bashrc
-    echo "    source ~/.bash-git-prompt/gitprompt.sh" >> ~.bashrc
-    echo "fi" >> ~.bashrc
+    echo "if [ -f ~/.bash-git-prompt/gitprompt.sh ]; then" >> ~/.bashrc
+    echo "    GIT_PROMPT_ONLY_IN_REPO=1" >> ~/.bashrc
+    echo "    GIT_PROMPT_FETCH_REMOTE_STATUS=0" >> ~/.bashrc
+    echo "    GIT_PROMPT_IGNORE_SUBMODULES=1" >> ~/.bashrc
+    echo "    GIT_PROMPT_THEME=TruncatedPwd_WindowTitle_NoExitState" >> ~/.bashrc
+    echo "    source ~/.bash-git-prompt/gitprompt.sh" >> ~/.bashrc
+    echo "fi" >> ~/.bashrc
 fi
 
 source ~/.bashrc
