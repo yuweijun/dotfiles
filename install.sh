@@ -6,14 +6,14 @@ set -x
 cd "$(dirname $0)"
 dir="$(pwd)"
 
-if [ $# -gt 0 ] && [ "$1" = "init" ]; then
-    if git submodule update --init --remote --recursive 2>/dev/null; then
-        echo "git version is too old"
-    else
-        git submodule update --init --recursive
-    fi
+if [ ! -e .git/modules ]; then
+    git submodule update --init --recursive
+elif [ $# -gt 0 ] && [ "$1" = "init" ]; then
+    git submodule update --init --recursive
+elif [ $# -gt 0 ] && [ "$1" = "remote" ]; then
+    git submodule update --init --recursive --remote
 else
-    echo "# git submodule update --init --remote --recursive"
+    echo "usage: ./install.sh [--init|--remote]"
 fi
 
 rcfile="$HOME/.bashrc"
