@@ -27,6 +27,17 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
     fi
 fi
 
+if type gls >/dev/null 2>&1; then
+    if grep -q "alias gls" ${rcfile}; then
+        echo "alias gls exists"
+    else
+        echo "alias ls='gls --color=auto'" >> ${rcfile}
+    fi
+else
+    echo "# brew install wget coreutils" >> ${rcfile}
+    echo "# wget --no-check-certificate https://github.com/seebi/dircolors-solarized/raw/master/dircolors.256dark -O $HOME/.dir_colors" >> ${rcfile}
+fi
+
 if [ ! -e $HOME/.fzf ]; then
     ln -sfn ${dir}/fzf $HOME/.fzf
 fi
@@ -119,17 +130,6 @@ if [ -e $HOME/.jrebel ]; then
 fi
 
 if [[ "$SHELL" = "/bin/zsh" ]]; then
-    if type gls >/dev/null 2>&1; then
-        if grep -q "alias gls" ${rcfile}; then
-            echo "alias gls exists"
-        else
-            echo "alias ls='gls --color=auto'" >> ${rcfile}
-        fi
-    else
-        echo "# brew install coreutils wget" >> ${rcfile}
-        echo "# wget --no-check-certificate https://github.com/seebi/dircolors-solarized/raw/master/dircolors.256dark -O $HOME/.dir_colors" >> ${rcfile}
-        echo "# gdircolors $HOME/.dir_colors" >> ${rcfile}
-    fi
     if grep -q "zsh-autosuggestions.zsh" ${rcfile}; then
         echo "zsh-autosuggestions.zsh config exists"
     else
@@ -147,15 +147,49 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
     exit 0
 fi
 
+if [ -f $HOME/.bash_profile ]; then
+    if grep -q GREP_OPTIONS $HOME/.bash_profile 2>/dev/null; then
+        echo "GREP_OPTIONS config exists"
+    else
+        echo "export GREP_OPTIONS='--color=auto'" >> $HOME/.bash_profile
+    fi
+    if grep -q GREP_COLOR $HOME/.bash_profile 2>/dev/null; then
+        echo "GREP_COLOR config exists"
+    else
+        echo "export GREP_COLOR='1;35;40'" >> $HOME/.bash_profile
+    fi
+    if grep -q CLICOLOR $HOME/.bash_profile 2>/dev/null; then
+        echo "CLICOLOR config exists"
+    else
+        echo "export CLICOLOR=1" >> $HOME/.bash_profile
+    fi
+    if grep -q CLICOLOR $HOME/.bash_profile 2>/dev/null; then
+        echo "CLICOLOR config exists"
+    else
+        echo "export CLICOLOR=1" >> $HOME/.bash_profile
+    fi
+    if grep -q LSCOLORS $HOME/.bash_profile 2>/dev/null; then
+        echo "LSCOLORS config exists"
+    else
+        echo "export LSCOLORS=GxFxCxDxBxegedabagaced" >> $HOME/.bash_profile
+    fi
+
+    if grep -q .bashrc $HOME/.bash_profile 2>/dev/null; then
+        echo ".bashrc config exists"
+    else
+        echo "[ -f ~/.bashrc ] && source ~/.bashrc" >> $HOME/.bash_profile
+    fi
+fi
+
 if grep -q "alias ll" $HOME/.bashrc; then
     echo "alias ll exists"
 else
-    echo "alias ls='ls --color=auto'" >> $HOME/.bashrc
     echo "alias ll='ls -alF'" >> $HOME/.bashrc
     echo "alias lt='ls -lt'" >> $HOME/.bashrc
     echo "alias ld='ls -ad'" >> $HOME/.bashrc
     echo "alias la='ls -A'" >> $HOME/.bashrc
     echo "alias l='ls -CF'" >> $HOME/.bashrc
+    echo "alias lg='/bin/ls -laG'" >> $HOME/.bashrc
 fi
 
 if grep -q "export PS1" $HOME/.bashrc; then
@@ -170,23 +204,26 @@ else
     echo "alias grep='grep --color=auto'" >> $HOME/.bashrc
 fi
 
+if [ -f $HOME/.dircolors ]; then
+    echo "$HOME/.dircolors file exists"
+else
+    ln -sfn ${dir}/dircolors-solarized/dircolors.256dark $HOME/.dircolors
+fi
+
 if type dircolors 2>/dev/null; then
-    if [ -f $HOME/.dircolors ]; then
-        echo "$HOME/.dircolors file exists"
-    else
-        ln -sfn ${dir}/dircolors-solarized/dircolors.256dark $HOME/.dircolors
-    fi
     if grep dircolors $HOME/.bashrc 2>/dev/null; then
-        echo "dircolors config exist in $HOME/.bashrc"
+        echo "dircolors config exist"
     else
         echo 'eval "$(dircolors $HOME/.dircolors)"' >> $HOME/.bashrc
     fi
-else
-    if grep -q "export LS_COLORS" $HOME/.bashrc; then
-        echo "export LS_COLORS config exists"
+elif type gdircolors >/dev/null 2>&1; then
+    if grep gdircolors $HOME/.bashrc 2>/dev/null; then
+        echo "gdircolors config exist"
     else
-        echo "export LS_COLORS='rs=0:di=01;33:ln=01;36:mh=00:pi=40;33'" >> $HOME/.bashrc
+        echo 'eval "$(gdircolors $HOME/.dircolors)"' >> $HOME/.bashrc
     fi
+else
+    echo "export LS_COLORS='rs=0:di=01;33:ln=01;36:mh=00:pi=40;33'" >> $HOME/.bashrc
 fi
 
 if grep -q bash_completion $HOME/.bashrc; then
