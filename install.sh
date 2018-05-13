@@ -55,16 +55,6 @@ else
     echo "# wget --no-check-certificate https://github.com/seebi/dircolors-solarized/raw/master/dircolors.256dark -O $HOME/.dir_colors" >> ${rcfile}
 fi
 
-if [ ! -e $HOME/.fzf ]; then
-    ln -sfn ${dir}/fzf $HOME/.fzf
-fi
-
-if grep -q fzf ${rcfile}; then
-    echo "fzf config exists"
-else
-    $HOME/.fzf/install
-fi
-
 if [ ! -f $HOME/.tmux.conf ]; then
     ln -sfn ${dir}/tmux/tmux.linux.conf $HOME/.tmux.conf
 fi
@@ -113,6 +103,20 @@ else
     echo "export NVM_DIR=\"${dir}/nvm\"" >> ${rcfile}
     echo "[ -s \"\$NVM_DIR/nvm.sh\" ] && source \"\$NVM_DIR/nvm.sh\"" >> ${rcfile}
     echo "[ -s \"\$NVM_DIR/bash_completion\" ] && source \"\$NVM_DIR/bash_completion\"" >> ${rcfile}
+fi
+
+if [ ! -e $HOME/.fzf ]; then
+    ln -sfn ${dir}/fzf $HOME/.fzf
+fi
+
+if grep -q fzf ${rcfile}; then
+    echo "fzf config exists"
+else
+    if [[ "$SHELL" = "/bin/zsh" ]]; then
+        $HOME/.fzf/install --no-bash
+    else
+        $HOME/.fzf/install --no-zsh
+    fi
 fi
 
 if [ ! -e $HOME/.autojump ]; then
