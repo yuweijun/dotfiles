@@ -31,7 +31,7 @@ else
     cd -
 fi
 
-echo "\n\n# customize settings\n" >> ${rcfile}
+echo -e "\n\n####### customize settings ####### \n" >> ${rcfile}
 
 if type gls >/dev/null 2>&1; then
     if grep -q "alias lg" ${rcfile}; then
