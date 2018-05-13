@@ -11,7 +11,8 @@ fi
 brew install macvim nginx tmux neovim tldr shellcheck fzf cloc axel rougify mycli
 brew install wget zsh-syntax-highlighting autojump coreutils the_silver_searcher
 brew install git git-flow keepassx gnu-sed proxychains-ng
-brew install mosh bash-completion
+brew install mosh bash-completion zsh-autosuggestions
+
 brew install caskroom/cask/iterm2
 brew install caskroom/cask/visual-studio-code
 

@@ -69,6 +69,14 @@ if type nvim 2>/dev/null; then
     mkdir -p $HOME/.local/share/nvim/tmp/backup $HOME/.local/share/nvim/tmp/swap $HOME/.local/share/nvim/tmp/undo
 fi
 
+if grep -q NVM_DIR ${rcfile} 2>/dev/null; then
+    echo "NVM_DIR config exist"
+else
+    echo "export NVM_DIR=\"${dir}/nvm\"" >> ${rcfile}
+    echo "[ -s \"\$NVM_DIR/nvm.sh\" ] && source \"\$NVM_DIR/nvm.sh\"" >> ${rcfile}
+    echo "[ -s \"\$NVM_DIR/bash_completion\" ] && source \"\$NVM_DIR/bash_completion\"" >> ${rcfile}
+fi
+
 if [ ! -e $HOME/.autojump ]; then
     cd ${dir}/autojump
     ./install.py
@@ -76,7 +84,7 @@ if [ ! -e $HOME/.autojump ]; then
 fi
 
 if type -a j 2>/dev/null; then
-    echo "j - autojump command is found"
+    echo "j - autojump command exists"
 else
     if [[ "$SHELL" = "/bin/zsh" ]]; then
         echo "[ -f $HOME/.autojump/share/autojump/autojump.zsh ] && source $HOME/.autojump/share/autojump/autojump.zsh" >> ${rcfile}
@@ -111,9 +119,6 @@ if [ -e $HOME/.jrebel ]; then
 fi
 
 if [[ "$SHELL" = "/bin/zsh" ]]; then
-    if grep -q "zsh-syntax-highlighting.zsh" ${rcfile}; then
-        echo "[ -f ${dir}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source ${dir}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${rcfile}
-    fi
     if type gls >/dev/null 2>&1; then
         if grep -q "alias gls" ${rcfile}; then
             echo "alias gls exists"
@@ -124,6 +129,19 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
         echo "# brew install coreutils wget" >> ${rcfile}
         echo "# wget --no-check-certificate https://github.com/seebi/dircolors-solarized/raw/master/dircolors.256dark -O $HOME/.dir_colors" >> ${rcfile}
         echo "# gdircolors $HOME/.dir_colors" >> ${rcfile}
+    fi
+    if grep -q "zsh-autosuggestions.zsh" ${rcfile}; then
+        echo "zsh-autosuggestions.zsh config exists"
+    else
+        echo "if [ -f ${dir}/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then" >> ${rcfile}
+        echo "    source ${dir}/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ${rcfile}
+        echo "    bindkey '^ ' autosuggest-accept" >> ${rcfile}
+        echo "fi" >> ${rcfile}
+    fi
+    if grep -q "zsh-syntax-highlighting.zsh" ${rcfile}; then
+        echo "zsh-syntax-highlighting.zsh config exists"
+    else
+        echo "[ -f ${dir}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source ${dir}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${rcfile}
     fi
 
     exit 0
@@ -141,7 +159,7 @@ else
 fi
 
 if grep -q "export PS1" $HOME/.bashrc; then
-    echo "PS1 has been set"
+    echo "PS1 config exists"
 else
     echo 'export PS1="\[\033[1;36m\]\$(date \"+%H:%M:%S\")\[\033[00m\] [\u@\h: \[\033[1;32m\]\w\[\033[00m\]]\n$ "' >> $HOME/.bashrc
 fi
@@ -154,7 +172,7 @@ fi
 
 if type dircolors 2>/dev/null; then
     if [ -f $HOME/.dircolors ]; then
-        echo "$HOME/.dircolors has exists"
+        echo "$HOME/.dircolors file exists"
     else
         ln -sfn ${dir}/dircolors-solarized/dircolors.256dark $HOME/.dircolors
     fi
@@ -172,7 +190,7 @@ else
 fi
 
 if grep -q bash_completion $HOME/.bashrc; then
-    echo "bash_completion config found in $HOME/.bashrc"
+    echo "bash_completion config exists"
 elif type complete 2>/dev/null; then
     echo "bash command complete exists and not create $HOME/.bash_completion"
 elif [ ! -f $HOME/.bash_completion ]; then
@@ -185,7 +203,7 @@ if [ ! -e $HOME/.bash-git-prompt ]; then
 fi
 
 if grep -q gitprompt.sh $HOME/.bashrc; then
-    echo "gitprompt.sh config found in $HOME/.bashrc"
+    echo "gitprompt.sh config exists"
 else
     echo "if [ -f $HOME/.bash-git-prompt/gitprompt.sh ]; then" >> $HOME/.bashrc
     echo "    GIT_PROMPT_ONLY_IN_REPO=1" >> $HOME/.bashrc
