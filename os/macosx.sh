@@ -15,7 +15,9 @@ brew install mosh bash-completion
 brew install caskroom/cask/iterm2
 brew install caskroom/cask/visual-studio-code
 
+brew cask install java8
 brew cask install font-fira-code
 
+brew install gradle maven
 brew install nmap tcpflow
 brew install wireshark --with-qt
