@@ -210,9 +210,9 @@ else
 fi
 
 if grep -q "export PS1" $HOME/.bashrc; then
-    echo "PS1 config exists"
+    echo "export PS1 config exists"
 else
-    echo 'export PS1="\[\033[1;36m\]┌\$(date \"+%H:%M:%S\")\[\033[00m\] [\u@\h: \[\033[1;32m\]\w\[\033[00m\]]\n\[\033[1;36m\]└$\[\033[00m\] "' >> $HOME/.bashrc
+    echo '# export PS1="\[\033[1;36m\]┌\$(date \"+%H:%M:%S\")\[\033[00m\] [\u@\h: \[\033[1;32m\]\w\[\033[00m\]]\n\[\033[1;36m\]└$\[\033[00m\] "' >> $HOME/.bashrc
 fi
 
 if [ -f $HOME/.dircolors ]; then
