@@ -31,6 +31,8 @@ else
     cd -
 fi
 
+echo "\n\n# customize settings\n" >> ${rcfile}
+
 if type gls >/dev/null 2>&1; then
     if grep -q "alias lg" ${rcfile}; then
         echo "alias lg exists"
@@ -50,9 +52,6 @@ if type gls >/dev/null 2>&1; then
     else
         echo "export LSCOLORS=GxFxCxDxBxegedabagaced" >> ${rcfile}
     fi
-else
-    echo "# brew install wget coreutils" >> ${rcfile}
-    echo "# wget --no-check-certificate https://github.com/seebi/dircolors-solarized/raw/master/dircolors.256dark -O $HOME/.dir_colors" >> ${rcfile}
 fi
 
 if [ ! -f $HOME/.tmux.conf ]; then
