@@ -39,18 +39,6 @@ if type gls >/dev/null 2>&1; then
         echo "alias lg='/bin/ls -laG'" >> ${rcfile}
     fi
 
-    if [ -n "$GREP_OPTIONS" ]; then
-        echo "GREP_OPTIONS config exists"
-    else
-        echo "export GREP_OPTIONS='--color=auto'" >> ${rcfile}
-    fi
-
-    if [ -n "$GREP_COLOR" ]; then
-        echo "GREP_COLOR config exists"
-    else
-        echo "export GREP_COLOR='1;35;40'" >> ${rcfile}
-    fi
-
     if [ -n "$CLICOLOR" ]; then
         echo "CLICOLOR config exists"
     else
