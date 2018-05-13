@@ -214,5 +214,3 @@ else
     echo "fi" >> $HOME/.bashrc
 fi
 
-source $HOME/.bashrc
-
