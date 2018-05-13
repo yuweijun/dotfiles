@@ -25,13 +25,42 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
     if [ ! -f ${rcfile} ]; then
         cp ${dir}/oh-my-zsh/zshrc ${rcfile}
     fi
+else
+    cd ${dir}/bash-it
+    ./install.sh --silent
+    cd -
 fi
 
 if type gls >/dev/null 2>&1; then
-    if grep -q "alias gls" ${rcfile}; then
-        echo "alias gls exists"
+    if grep -q "alias lg" ${rcfile}; then
+        echo "alias lg exists"
     else
         echo "alias ls='gls --color=auto'" >> ${rcfile}
+        echo "alias lg='/bin/ls -laG'" >> ${rcfile}
+    fi
+
+    if [ -n "$GREP_OPTIONS" ]; then
+        echo "GREP_OPTIONS config exists"
+    else
+        echo "export GREP_OPTIONS='--color=auto'" >> ${rcfile}
+    fi
+
+    if [ -n "$GREP_COLOR" ]; then
+        echo "GREP_COLOR config exists"
+    else
+        echo "export GREP_COLOR='1;35;40'" >> ${rcfile}
+    fi
+
+    if [ -n "$CLICOLOR" ]; then
+        echo "CLICOLOR config exists"
+    else
+        echo "export CLICOLOR=1" >> ${rcfile}
+    fi
+
+    if [ -n "$LSCOLORS" ]; then
+        echo "LSCOLORS config exists"
+    else
+        echo "export LSCOLORS=GxFxCxDxBxegedabagaced" >> ${rcfile}
     fi
 else
     echo "# brew install wget coreutils" >> ${rcfile}
@@ -75,12 +104,22 @@ else
 fi
 
 if type nvim 2>/dev/null; then
-    echo "alias vi='nvim'" >> ${rcfile}
-    echo "alias vim='nvim'" >> ${rcfile}
+    if ! grep nvim ${rcfile}; then
+        echo "alias vi='nvim'" >> ${rcfile}
+        echo "alias vim='nvim'" >> ${rcfile}
+    fi
+fi
+
+if [ ! -e $HOME/.config/nvim ]; then
+    mkdir -p $HOME/.config/nvim
     mkdir -p $HOME/.local/share/nvim/tmp/backup $HOME/.local/share/nvim/tmp/swap $HOME/.local/share/nvim/tmp/undo
 fi
 
-if grep -q NVM_DIR ${rcfile} 2>/dev/null; then
+if [ ! -e $HOME/.config/nvim/init.vim ]; then
+    ln -sfn ${dir}/vim/nvim.init.vim $HOME/.config/nvim/init.vim
+fi
+
+if [ -n "$NVM_DIR" ]; then
     echo "NVM_DIR config exist"
 else
     echo "export NVM_DIR=\"${dir}/nvm\"" >> ${rcfile}
@@ -98,9 +137,13 @@ if type -a j 2>/dev/null; then
     echo "j - autojump command exists"
 else
     if [[ "$SHELL" = "/bin/zsh" ]]; then
-        echo "[ -f $HOME/.autojump/share/autojump/autojump.zsh ] && source $HOME/.autojump/share/autojump/autojump.zsh" >> ${rcfile}
+        if ! grep -q autojump.zsh ${rcfile}; then
+            echo "[ -f $HOME/.autojump/share/autojump/autojump.zsh ] && source $HOME/.autojump/share/autojump/autojump.zsh" >> ${rcfile}
+        fi
     else
-        echo "[ -f $HOME/.autojump/share/autojump/autojump.bash ] && source $HOME/.autojump/share/autojump/autojump.bash" >> ${rcfile}
+        if ! grep -q autojump.bash ${rcfile}; then
+            echo "[ -f $HOME/.autojump/share/autojump/autojump.bash ] && source $HOME/.autojump/share/autojump/autojump.bash" >> ${rcfile}
+        fi
     fi
 fi
 
@@ -148,32 +191,6 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
 fi
 
 if [ -f $HOME/.bash_profile ]; then
-    if grep -q GREP_OPTIONS $HOME/.bash_profile 2>/dev/null; then
-        echo "GREP_OPTIONS config exists"
-    else
-        echo "export GREP_OPTIONS='--color=auto'" >> $HOME/.bash_profile
-    fi
-    if grep -q GREP_COLOR $HOME/.bash_profile 2>/dev/null; then
-        echo "GREP_COLOR config exists"
-    else
-        echo "export GREP_COLOR='1;35;40'" >> $HOME/.bash_profile
-    fi
-    if grep -q CLICOLOR $HOME/.bash_profile 2>/dev/null; then
-        echo "CLICOLOR config exists"
-    else
-        echo "export CLICOLOR=1" >> $HOME/.bash_profile
-    fi
-    if grep -q CLICOLOR $HOME/.bash_profile 2>/dev/null; then
-        echo "CLICOLOR config exists"
-    else
-        echo "export CLICOLOR=1" >> $HOME/.bash_profile
-    fi
-    if grep -q LSCOLORS $HOME/.bash_profile 2>/dev/null; then
-        echo "LSCOLORS config exists"
-    else
-        echo "export LSCOLORS=GxFxCxDxBxegedabagaced" >> $HOME/.bash_profile
-    fi
-
     if grep -q .bashrc $HOME/.bash_profile 2>/dev/null; then
         echo ".bashrc config exists"
     else
@@ -198,12 +215,6 @@ else
     echo 'export PS1="\[\033[1;36m\]┌\$(date \"+%H:%M:%S\")\[\033[00m\] [\u@\h: \[\033[1;32m\]\w\[\033[00m\]]\n\[\033[1;36m\]└$\[\033[00m\] "' >> $HOME/.bashrc
 fi
 
-if grep -q "alias grep" $HOME/.bashrc; then
-    echo "alias grep exists"
-else
-    echo "alias grep='grep --color=auto'" >> $HOME/.bashrc
-fi
-
 if [ -f $HOME/.dircolors ]; then
     echo "$HOME/.dircolors file exists"
 else
@@ -224,30 +235,5 @@ elif type gdircolors >/dev/null 2>&1; then
     fi
 else
     echo "export LS_COLORS='rs=0:di=01;33:ln=01;36:mh=00:pi=40;33'" >> $HOME/.bashrc
-fi
-
-if grep -q bash_completion $HOME/.bashrc; then
-    echo "bash_completion config exists"
-elif type complete 2>/dev/null; then
-    echo "bash command complete exists and not create $HOME/.bash_completion"
-elif [ ! -f $HOME/.bash_completion ]; then
-    ln -sfn ${dir}/bash-completion/bash_completion $HOME/.bash_completion
-    echo "[ -f $HOME/.bash_completion ] && source $HOME/.bash_completion" >> $HOME/.bashrc
-fi
-
-if [ ! -e $HOME/.bash-git-prompt ]; then
-    ln -sfn ${dir}/bash-git-prompt $HOME/.bash-git-prompt
-fi
-
-if grep -q gitprompt.sh $HOME/.bashrc; then
-    echo "gitprompt.sh config exists"
-else
-    echo "if [ -f $HOME/.bash-git-prompt/gitprompt.sh ]; then" >> $HOME/.bashrc
-    echo "    GIT_PROMPT_ONLY_IN_REPO=1" >> $HOME/.bashrc
-    echo "    GIT_PROMPT_FETCH_REMOTE_STATUS=0" >> $HOME/.bashrc
-    echo "    GIT_PROMPT_IGNORE_SUBMODULES=1" >> $HOME/.bashrc
-    echo "    GIT_PROMPT_THEME=TruncatedPwd_WindowTitle_NoExitState" >> $HOME/.bashrc
-    echo "    source $HOME/.bash-git-prompt/gitprompt.sh" >> $HOME/.bashrc
-    echo "fi" >> $HOME/.bashrc
 fi
 

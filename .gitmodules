@@ -40,3 +40,6 @@
 [submodule "zsh-autosuggestions"]
 	path = zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
+[submodule "bash-it"]
+	path = bash-it
+	url = https://github.com/yuweijun/bash-it.git
