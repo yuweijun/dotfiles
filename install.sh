@@ -1,19 +1,41 @@
 #!/bin/bash
 
-set -e
-set -x
+ARGV=$(getopt -o isr -l init,simple,remote -- "$@")
+if [ $? != 0 ] ; then
+    echo "getopt error"
+fi
+
+eval set -- "$ARGV"
+
+INIT=false
+REMOTE=false
+SIMPLE=false
+
+while true; do
+  case "$1" in
+    -i | --init ) INIT=true; shift ;;
+    -r | --remote ) REMOTE=true; shift ;;
+    -s | --simple ) SIMPLE=true; shift ;;
+    -- ) shift; break ;;
+    * ) break ;;
+  esac
+done
+
+# set -e
+# set -x
 
 cd "$(dirname $0)"
 dir="$(pwd)"
 
-if [ ! -e .git/modules ]; then
+if $INIT; then
     git submodule update --init --recursive
-elif [ $# -gt 0 ] && [ "$1" = "init" ]; then
-    git submodule update --init --recursive
-elif [ $# -gt 0 ] && [ "$1" = "remote" ]; then
+elif $REMOTE; then
     git submodule update --init --recursive --remote
 else
-    echo "usage: ./install.sh [--init|--remote]"
+    echo "usage: ./install.sh [--init|--remote|--simple]"
+    if [ ! -e .git/modules ]; then
+        git submodule update --init --recursive
+    fi
 fi
 
 rcfile="$HOME/.bashrc"
@@ -24,14 +46,23 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
     fi
     if [ ! -f ${rcfile} ]; then
         cp ${dir}/oh-my-zsh/zshrc ${rcfile}
+        echo -e "\n\n####### customize settings ####### \n" >> ${rcfile}
     fi
 else
-    cd ${dir}/bash-it
-    ./install.sh --silent
-    cd -
+    if $SIMPLE; then
+        echo "create simple .bashrc file"
+        if grep -q "export PS1" $HOME/.bashrc; then
+            echo "export PS1 config exists"
+        else
+            echo 'export PS1="\[\033[1;36m\]┌\$(date \"+%H:%M:%S\")\[\033[00m\] [\u@\h: \[\033[1;32m\]\w\[\033[00m\]]\n\[\033[1;36m\]└$\[\033[00m\] "' >> $HOME/.bashrc
+        fi
+    else
+        cd ${dir}/bash-it
+        ./install.sh --silent
+        cd -
+        echo -e "\n\n####### customize settings ####### \n" >> ${rcfile}
+    fi
 fi
-
-echo -e "\n\n####### customize settings ####### \n" >> ${rcfile}
 
 if type gls >/dev/null 2>&1; then
     if grep -q "alias lg" ${rcfile}; then
@@ -206,12 +237,6 @@ else
     echo "alias la='ls -A'" >> $HOME/.bashrc
     echo "alias l='ls -CF'" >> $HOME/.bashrc
     echo "alias lg='/bin/ls -laG'" >> $HOME/.bashrc
-fi
-
-if grep -q "export PS1" $HOME/.bashrc; then
-    echo "export PS1 config exists"
-else
-    echo '# export PS1="\[\033[1;36m\]┌\$(date \"+%H:%M:%S\")\[\033[00m\] [\u@\h: \[\033[1;32m\]\w\[\033[00m\]]\n\[\033[1;36m\]└$\[\033[00m\] "' >> $HOME/.bashrc
 fi
 
 if [ -f $HOME/.dircolors ]; then
