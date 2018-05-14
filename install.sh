@@ -99,6 +99,7 @@ fi
 if [ -n "$NVM_DIR" ]; then
     echo "NVM_DIR config exist"
 else
+    echo "" >> ${rcfile}
     echo "export NVM_DIR=\"${dir}/nvm\"" >> ${rcfile}
     echo "[ -s \"\$NVM_DIR/nvm.sh\" ] && source \"\$NVM_DIR/nvm.sh\"" >> ${rcfile}
     echo "[ -s \"\$NVM_DIR/bash_completion\" ] && source \"\$NVM_DIR/bash_completion\"" >> ${rcfile}
@@ -129,10 +130,12 @@ if type -a j 2>/dev/null; then
 else
     if [[ "$SHELL" = "/bin/zsh" ]]; then
         if ! grep -q autojump.zsh ${rcfile}; then
+            echo "" >> ${rcfile}
             echo "[ -f $HOME/.autojump/share/autojump/autojump.zsh ] && source $HOME/.autojump/share/autojump/autojump.zsh" >> ${rcfile}
         fi
     else
         if ! grep -q autojump.bash ${rcfile}; then
+            echo "" >> ${rcfile}
             echo "[ -f $HOME/.autojump/share/autojump/autojump.bash ] && source $HOME/.autojump/share/autojump/autojump.bash" >> ${rcfile}
         fi
     fi
@@ -158,6 +161,7 @@ if [ -e $HOME/.jrebel ]; then
     if grep -q "jdebug" ${rcfile}; then
         echo "alias jdebug config exists"
     else
+        echo "" >> ${rcfile}
         echo "alias jrebel=\"MAVEN_OPTS='-agentpath:$HOME/.jrebel/lib/libjrebel64.so' mvn\"" >> ${rcfile}
         echo "alias jdebug=\"MAVEN_OPTS='-agentpath:$HOME/.jrebel/lib/libjrebel64.so -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000' mvn\"" >> ${rcfile}
     fi
@@ -167,6 +171,7 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
     if grep -q "zsh-autosuggestions.zsh" ${rcfile}; then
         echo "zsh-autosuggestions.zsh config exists"
     else
+        echo "" >> ${rcfile}
         echo "if [ -f ${dir}/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then" >> ${rcfile}
         echo "    source ${dir}/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ${rcfile}
         echo "    bindkey '^ ' autosuggest-accept" >> ${rcfile}
@@ -175,6 +180,7 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
     if grep -q "zsh-syntax-highlighting.zsh" ${rcfile}; then
         echo "zsh-syntax-highlighting.zsh config exists"
     else
+        echo "" >> ${rcfile}
         echo "[ -f ${dir}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source ${dir}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${rcfile}
     fi
 
@@ -185,6 +191,7 @@ if [ -f $HOME/.bash_profile ]; then
     if grep -q .bashrc $HOME/.bash_profile 2>/dev/null; then
         echo ".bashrc config exists"
     else
+        echo "" >> ${rcfile}
         echo "[ -f ~/.bashrc ] && source ~/.bashrc" >> $HOME/.bash_profile
     fi
 fi
@@ -192,6 +199,7 @@ fi
 if grep -q "alias ll" $HOME/.bashrc; then
     echo "alias ll exists"
 else
+    echo "" >> ${rcfile}
     echo "alias ll='ls -alF'" >> $HOME/.bashrc
     echo "alias lt='ls -lt'" >> $HOME/.bashrc
     echo "alias ld='ls -ad'" >> $HOME/.bashrc
@@ -216,15 +224,18 @@ if type dircolors 2>/dev/null; then
     if grep dircolors $HOME/.bashrc 2>/dev/null; then
         echo "dircolors config exist"
     else
+        echo "" >> ${rcfile}
         echo 'eval "$(dircolors $HOME/.dircolors)"' >> $HOME/.bashrc
     fi
 elif type gdircolors >/dev/null 2>&1; then
     if grep gdircolors $HOME/.bashrc 2>/dev/null; then
         echo "gdircolors config exist"
     else
+        echo "" >> ${rcfile}
         echo 'eval "$(gdircolors $HOME/.dircolors)"' >> $HOME/.bashrc
     fi
 else
+    echo "" >> ${rcfile}
     echo "export LS_COLORS='rs=0:di=01;33:ln=01;36:mh=00:pi=40;33'" >> $HOME/.bashrc
 fi
 
