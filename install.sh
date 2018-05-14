@@ -60,7 +60,6 @@ else
         cd ${DIR}/bash-it
         ./install.sh --silent
         cd -
-        echo -e "\n\n####### customize settings ####### \n" >> ${RCFILE}
     fi
 fi
 
