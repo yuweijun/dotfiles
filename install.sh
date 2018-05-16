@@ -89,7 +89,7 @@ if grep -q "export PATH" ${RCFILE}; then
     echo "export PATH config exists"
 else
     echo "" >> ${RCFILE}
-    echo 'export PATH=$PATH:/usr/local/sbin:$HOME/bin' >> ${RCFILE}
+    echo "export PATH=\$PATH:/usr/local/sbin:\$HOME/bin:${DIR}/jenv/bin" >> ${RCFILE}
 fi
 
 if [ ! -f $HOME/.tmux.conf ]; then
@@ -203,6 +203,21 @@ if [ -e $HOME/.jrebel ]; then
         echo "" >> ${RCFILE}
         echo "alias jrebel=\"MAVEN_OPTS='-agentpath:$HOME/.jrebel/lib/libjrebel64.so' mvn\"" >> ${RCFILE}
         echo "alias jdebug=\"MAVEN_OPTS='-agentpath:$HOME/.jrebel/lib/libjrebel64.so -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000' mvn\"" >> ${RCFILE}
+    fi
+fi
+
+if grep -q "jenv init" ${RCFILE}; then
+    echo "jenv init config exists"
+else
+    echo "" >> ${RCFILE}
+    echo 'eval "$(jenv init -)"' >> ${RCFILE}
+fi
+
+if [ -e /usr/libexec/java_home ]; then
+    if grep -q "export JAVA_HOME" ${RCFILE}; then
+        echo "export JAVA_HOME config exists"
+    else
+        echo 'export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)' >> ${RCFILE}
     fi
 fi
 
