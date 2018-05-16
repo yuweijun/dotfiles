@@ -60,6 +60,7 @@ else
         cd ${DIR}/bash-it
         ./install.sh --silent
         cd -
+        echo -e "\n\n####### customize settings ####### \n" >> ${RCFILE}
     fi
 fi
 
@@ -117,8 +118,9 @@ else
     echo ".vimrc file exists"
 fi
 
-if type nvim 2>/dev/null; then
+if type nvim >/dev/null 2>&1; then
     if ! grep nvim ${RCFILE}; then
+        echo "" >> ${RCFILE}
         echo "alias vi='nvim'" >> ${RCFILE}
         echo "alias vim='nvim'" >> ${RCFILE}
     fi
@@ -162,7 +164,7 @@ if [ ! -e $HOME/.autojump ]; then
     cd -
 fi
 
-if type -a j 2>/dev/null; then
+if type -a j >/dev/null 2>&1; then
     echo "j - autojump command exists"
 else
     if [[ "$SHELL" = "/bin/zsh" ]]; then
@@ -233,7 +235,7 @@ if [ -f $HOME/.bash_profile ]; then
     fi
 fi
 
-if grep -q "alias ll" $HOME/.bashrc; then
+if type ll >/dev/null 2>&1; then
     echo "alias ll exists"
 else
     echo "" >> ${RCFILE}
@@ -242,7 +244,16 @@ else
     echo "alias ld='ls -ad'" >> $HOME/.bashrc
     echo "alias la='ls -A'" >> $HOME/.bashrc
     echo "alias l='ls -CF'" >> $HOME/.bashrc
-    echo "alias lg='/bin/ls -laG'" >> $HOME/.bashrc
+fi
+
+if ls --color -d . >/dev/null 2>&1; then
+    echo "ls is GNU's ls"
+else
+    if grep -q "alias lg" $HOME/.bashrc; then
+        echo "alias lg config for ls of Mac OS X which is different with ls of GUN"
+    else
+        echo "alias lg='/bin/ls -laG'" >> $HOME/.bashrc
+    fi
 fi
 
 if [ -f $HOME/.dircolors ]; then
@@ -251,12 +262,12 @@ else
     ln -sfn ${DIR}/dircolors-solarized/dircolors.256dark $HOME/.dircolors
 fi
 
-if type dircolors 2>/dev/null; then
+if type dircolors >/dev/null 2>&1; then
     if grep dircolors $HOME/.bashrc 2>/dev/null; then
         echo "dircolors config exist"
     else
         echo "" >> ${RCFILE}
-        echo 'eval "$(dircolors $HOME/.dircolors)"' >> $HOME/.bashrc
+        echo 'eval "$(SHELL=$SHELL dircolors $HOME/.dircolors)"' >> $HOME/.bashrc
     fi
 elif type gdircolors >/dev/null 2>&1; then
     if grep gdircolors $HOME/.bashrc 2>/dev/null; then
