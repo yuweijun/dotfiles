@@ -248,6 +248,14 @@ if [ -f $HOME/.bash_profile ]; then
         echo -e "\n####### add customize settings in ~/.bashrc #######" >> $HOME/.bash_profile
         echo "[ -f ~/.bashrc ] && source ~/.bashrc" >> $HOME/.bash_profile
     fi
+
+    if grep -q git-completion.bash ${RCFILE} 2>/dev/null; then
+        echo "git completion config exists"
+    else
+        echo "" >> ${RCFILE}
+        echo "HOMEBREW_NO_AUTO_UPDATE=1 brew install bash-completion"
+        echo '[ -f $(brew --prefix)/etc/bash_completion.d/git-completion.bash ] && source $(brew --prefix)/etc/bash_completion.d/git-completion.bash' >> ${RCFILE}
+    fi
 fi
 
 if type ll >/dev/null 2>&1; then
