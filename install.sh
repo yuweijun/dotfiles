@@ -1,24 +1,17 @@
 #!/bin/bash
 
-ARGV=$(getopt -o isr -l init,simple,remote -- "$@")
-if [ $? != 0 ] ; then
-    echo "getopt error"
-fi
-
-eval set -- "$ARGV"
-
 INIT=false
 REMOTE=false
 SIMPLE=false
 
-while true; do
-  case "$1" in
-    -i | --init ) INIT=true; shift ;;
-    -r | --remote ) REMOTE=true; shift ;;
-    -s | --simple ) SIMPLE=true; shift ;;
-    -- ) shift; break ;;
-    * ) break ;;
-  esac
+while getopts irs arg; do
+    case "$arg" in
+        i) INIT=true ;;
+        r) REMOTE=true ;;
+        s) SIMPLE=true ;;
+        ?) printf "Usage: %s: [-i] [-r] [-s]\n" $0
+            exit 2;;
+    esac
 done
 
 # set -e
@@ -32,8 +25,7 @@ if $INIT; then
 elif $REMOTE; then
     git submodule update --init --recursive --remote
 else
-    echo "usage: ./install.sh [--init|--remote|--simple]"
-    if [ ! -e .git/modules ]; then
+    if [ ! -e .git/modules ] && ! $SIMPLE; then
         git submodule update --init --recursive
     fi
 fi
@@ -46,21 +38,22 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
     fi
     if [ ! -f ${RCFILE} ]; then
         cp ${DIR}/oh-my-zsh/zshrc ${RCFILE}
-        echo -e "\n\n####### customize settings ####### \n" >> ${RCFILE}
     fi
+
+    echo -e "\n####### customize settings ####### \n" >> ${RCFILE}
 else
     if $SIMPLE; then
         echo "create simple .bashrc file"
         if grep -q "export PS1" $HOME/.bashrc; then
             echo "export PS1 config exists"
         else
+            echo -e "\n####### customize settings ####### \n" >> ${RCFILE}
             echo 'export PS1="\[\033[1;36m\]┌\$(date \"+%H:%M:%S\")\[\033[00m\] [\u@\h: \[\033[1;32m\]\w\[\033[00m\]]\n\[\033[1;36m\]└$\[\033[00m\] "' >> $HOME/.bashrc
         fi
     else
         cd ${DIR}/bash-it
         ./install.sh --silent
         cd -
-        echo -e "\n\n####### customize settings ####### \n" >> ${RCFILE}
     fi
 fi
 
@@ -137,7 +130,7 @@ fi
 
 if [ -n "$NVM_DIR" ]; then
     echo "NVM_DIR config exist"
-else
+elif ! $SIMPLE; then
     echo "" >> ${RCFILE}
     echo "export NVM_DIR=\"${DIR}/nvm\"" >> ${RCFILE}
     echo "[ -s \"\$NVM_DIR/nvm.sh\" ] && source \"\$NVM_DIR/nvm.sh\"" >> ${RCFILE}
@@ -150,7 +143,7 @@ fi
 
 if grep -q fzf ${RCFILE}; then
     echo "fzf config exists"
-else
+elif ! $SIMPLE; then
     if [[ "$SHELL" = "/bin/zsh" ]]; then
         $HOME/.fzf/install --no-bash
     else
@@ -258,7 +251,7 @@ if [ -f $HOME/.bash_profile ]; then
     fi
 fi
 
-if type ll >/dev/null 2>&1; then
+if grep -q "alias ll" ${RCFILE} >/dev/null 2>&1; then
     echo "alias ll exists"
 else
     echo "" >> ${RCFILE}
