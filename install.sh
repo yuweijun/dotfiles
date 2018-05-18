@@ -44,6 +44,7 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
 else
     if $SIMPLE; then
         echo "create simple .bashrc file"
+        touch $HOME/.bashrc
         if grep -q "export PS1" $HOME/.bashrc; then
             echo "export PS1 config exists"
         else
