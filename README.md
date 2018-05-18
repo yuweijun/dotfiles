@@ -39,10 +39,12 @@
 
     $ git clone https://github.com/yuweijun/dotfiles.git
     $ cd dotfiles
-    $ ./install.sh init
-
-### reinstall
-
     $ ./install.sh
+
+### install.sh options
+
+    1. -s: simple install
+    2. -r: will execute git submodule update --remote --recursive --init
+    3. -i: will execute git submodule update --recursive --init
 
 
