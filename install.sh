@@ -81,6 +81,9 @@ fi
 
 if grep -q "export PATH" ${RCFILE}; then
     echo "export PATH config exists"
+elif $SIMPLE; then
+    echo "" >> ${RCFILE}
+    echo "export PATH=\$PATH:/usr/local/sbin:\$HOME/bin" >> ${RCFILE}
 else
     echo "" >> ${RCFILE}
     echo "export PATH=\$PATH:/usr/local/sbin:\$HOME/bin:${DIR}/jenv/bin" >> ${RCFILE}
@@ -202,7 +205,7 @@ fi
 
 if grep -q "jenv init" ${RCFILE}; then
     echo "jenv init config exists"
-else
+elif ! $SIMPLE; then
     echo "" >> ${RCFILE}
     echo 'eval "$(jenv init -)"' >> ${RCFILE}
 fi
