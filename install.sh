@@ -207,7 +207,7 @@ if grep -q "jenv init" ${RCFILE}; then
     echo "jenv init config exists"
 elif ! $SIMPLE; then
     echo "" >> ${RCFILE}
-    echo 'eval "$(jenv init -)"' >> ${RCFILE}
+    echo 'type jenv > /dev/null 2>&1 && eval "$(jenv init -)"' >> ${RCFILE}
 fi
 
 if [ -e /usr/libexec/java_home ]; then
