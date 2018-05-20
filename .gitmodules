@@ -27,7 +27,7 @@
 	url = https://github.com/seebi/dircolors-solarized.git
 [submodule "autojump"]
 	path = autojump
-	url = https://github.com/joelthelion/autojump
+	url = https://github.com/yuweijun/autojump
 [submodule "zsh-syntax-highlighting"]
 	path = zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git

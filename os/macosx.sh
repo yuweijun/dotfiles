@@ -28,3 +28,5 @@ brew install gradle maven
 brew install nmap tcpflow
 brew install wireshark --with-qt
 
+pip install virtualenv
+

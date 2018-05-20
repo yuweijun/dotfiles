@@ -45,7 +45,7 @@ else
     if $SIMPLE; then
         echo "create simple .bashrc file"
         touch $HOME/.bashrc
-        if grep -q "export PS1" $HOME/.bashrc; then
+        if grep -q "export PS1" $HOME/.bashrc 2> /dev/null; then
             echo "export PS1 config exists"
         else
             echo -e "\n####### customize settings ####### \n" >> ${RCFILE}
@@ -58,8 +58,8 @@ else
     fi
 fi
 
-if type gls >/dev/null 2>&1; then
-    if grep -q "alias lg" ${RCFILE}; then
+if type gls > /dev/null 2>&1; then
+    if grep -q "alias lg" ${RCFILE} 2> /dev/null; then
         echo "alias lg exists"
     else
         echo "alias ls='gls --color=auto'" >> ${RCFILE}
@@ -79,7 +79,7 @@ if type gls >/dev/null 2>&1; then
     fi
 fi
 
-if grep -q "export PATH" ${RCFILE}; then
+if grep -q "export PATH" ${RCFILE} 2> /dev/null; then
     echo "export PATH config exists"
 elif $SIMPLE; then
     echo "" >> ${RCFILE}
@@ -115,8 +115,8 @@ else
     echo ".vimrc file exists"
 fi
 
-if type nvim >/dev/null 2>&1; then
-    if ! grep nvim ${RCFILE}; then
+if type nvim > /dev/null 2>&1; then
+    if ! grep nvim ${RCFILE} 2> /dev/null; then
         echo "" >> ${RCFILE}
         echo "alias vi='nvim'" >> ${RCFILE}
         echo "alias vim='nvim'" >> ${RCFILE}
@@ -145,7 +145,7 @@ if [ ! -e $HOME/.fzf ]; then
     ln -sfn ${DIR}/fzf $HOME/.fzf
 fi
 
-if grep -q fzf ${RCFILE}; then
+if grep -q fzf ${RCFILE} 2> /dev/null; then
     echo "fzf config exists"
 elif ! $SIMPLE; then
     if [[ "$SHELL" = "/bin/zsh" ]]; then
@@ -161,16 +161,16 @@ if [ ! -e $HOME/.autojump ]; then
     cd -
 fi
 
-if type -a j >/dev/null 2>&1; then
+if type -a j > /dev/null 2>&1; then
     echo "j - autojump command exists"
 else
     if [[ "$SHELL" = "/bin/zsh" ]]; then
-        if ! grep -q autojump.zsh ${RCFILE}; then
+        if ! grep -q autojump.zsh ${RCFILE} 2> /dev/null; then
             echo "" >> ${RCFILE}
             echo "[ -f $HOME/.autojump/share/autojump/autojump.zsh ] && source $HOME/.autojump/share/autojump/autojump.zsh" >> ${RCFILE}
         fi
     else
-        if ! grep -q autojump.bash ${RCFILE}; then
+        if ! grep -q autojump.bash ${RCFILE} 2> /dev/null; then
             echo "" >> ${RCFILE}
             echo "[ -f $HOME/.autojump/share/autojump/autojump.bash ] && source $HOME/.autojump/share/autojump/autojump.bash" >> ${RCFILE}
         fi
@@ -193,8 +193,36 @@ else
     fi
 fi
 
+if type virtualenv > /dev/null 2>&1; then
+    if ! grep -q "bin/activate" ${RCFILE} 2> /dev/null; then
+        echo "" >> ${RCFILE}
+        if type python3 2> /dev/null; then
+            mkdir -p $HOME/.virtualenv/python3
+            virtualenv -p $(which python3) $HOME/.virtualenv/python3
+            echo 'source $HOME/.virtualenv/python3/bin/activate' >> ${RCFILE}
+        elif type python2 2> /dev/null; then
+            mkdir -p $HOME/.virtualenv/python2
+            virtualenv -p $(which python2) $HOME/.virtualenv/python2
+            echo 'source $HOME/.virtualenv/python2/bin/activate' >> ${RCFILE}
+        fi
+    fi
+fi
+
+if type jenv > /dev/null 2>&1; then
+    if ! grep -q "jenv init" ${RCFILE} 2> /dev/null; then
+        echo "" >> ${RCFILE}
+        echo 'eval "$(jenv init -)"' >> ${RCFILE}
+    fi
+fi
+
+if [ -e /usr/libexec/java_home ]; then
+    if ! grep -q "export JAVA_HOME" ${RCFILE} 2> /dev/null; then
+        echo 'export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)' >> ${RCFILE}
+    fi
+fi
+
 if [ -e $HOME/.jrebel ]; then
-    if grep -q "jdebug" ${RCFILE}; then
+    if grep -q "jdebug" ${RCFILE} 2> /dev/null; then
         echo "alias jdebug config exists"
     else
         echo "" >> ${RCFILE}
@@ -203,34 +231,15 @@ if [ -e $HOME/.jrebel ]; then
     fi
 fi
 
-if grep -q "jenv init" ${RCFILE}; then
-    echo "jenv init config exists"
-elif ! $SIMPLE; then
-    echo "" >> ${RCFILE}
-    echo 'type jenv > /dev/null 2>&1 && eval "$(jenv init -)"' >> ${RCFILE}
-fi
-
-if [ -e /usr/libexec/java_home ]; then
-    if grep -q "export JAVA_HOME" ${RCFILE}; then
-        echo "export JAVA_HOME config exists"
-    else
-        echo 'export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)' >> ${RCFILE}
-    fi
-fi
-
 if [[ "$SHELL" = "/bin/zsh" ]]; then
-    if grep -q "zsh-autosuggestions.zsh" ${RCFILE}; then
-        echo "zsh-autosuggestions.zsh config exists"
-    else
+    if ! grep -q "zsh-autosuggestions.zsh" ${RCFILE} 2> /dev/null; then
         echo "" >> ${RCFILE}
         echo "if [ -f ${DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then" >> ${RCFILE}
         echo "    source ${DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ${RCFILE}
         echo "    bindkey '^ ' autosuggest-accept" >> ${RCFILE}
         echo "fi" >> ${RCFILE}
     fi
-    if grep -q "zsh-syntax-highlighting.zsh" ${RCFILE}; then
-        echo "zsh-syntax-highlighting.zsh config exists"
-    else
+    if ! grep -q "zsh-syntax-highlighting.zsh" ${RCFILE} 2> /dev/null; then
         echo "" >> ${RCFILE}
         echo "[ -f ${DIR}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source ${DIR}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${RCFILE}
     fi
@@ -239,25 +248,23 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
 fi
 
 if [ -f $HOME/.bash_profile ]; then
-    if grep -q .bashrc $HOME/.bash_profile 2>/dev/null; then
+    if grep -q .bashrc $HOME/.bash_profile 2> /dev/null; then
         echo ".bashrc config exists"
     else
         echo -e "\n####### add customize settings in ~/.bashrc #######" >> $HOME/.bash_profile
         echo "[ -f ~/.bashrc ] && source ~/.bashrc" >> $HOME/.bash_profile
     fi
+fi
 
-    if grep -q git-completion.bash ${RCFILE} 2>/dev/null; then
-        echo "git completion config exists"
-    else
+if type brew 2> /dev/null; then
+    if ! grep -q git-completion.bash ${RCFILE} 2> /dev/null; then
         echo "" >> ${RCFILE}
         echo "HOMEBREW_NO_AUTO_UPDATE=1 brew install bash-completion"
         echo '[ -f $(brew --prefix)/etc/bash_completion.d/git-completion.bash ] && source $(brew --prefix)/etc/bash_completion.d/git-completion.bash' >> ${RCFILE}
     fi
 fi
 
-if grep -q "alias ll" ${RCFILE} >/dev/null 2>&1; then
-    echo "alias ll exists"
-else
+if ! grep -q "alias ll" ${RCFILE} > /dev/null 2>&1; then
     echo "" >> ${RCFILE}
     echo "alias ll='ls -alF'" >> $HOME/.bashrc
     echo "alias lt='ls -lt'" >> $HOME/.bashrc
@@ -266,10 +273,10 @@ else
     echo "alias l='ls -CF'" >> $HOME/.bashrc
 fi
 
-if ls --color -d . >/dev/null 2>&1; then
+if ls --color -d . > /dev/null 2>&1; then
     echo "ls is GNU's ls"
 else
-    if grep -q "alias lg" $HOME/.bashrc; then
+    if grep -q "alias lg" $HOME/.bashrc 2> /dev/null; then
         echo "alias lg config for ls of Mac OS X which is different with ls of GUN"
     else
         echo "alias lg='/bin/ls -laG'" >> $HOME/.bashrc
@@ -282,17 +289,13 @@ else
     ln -sfn ${DIR}/dircolors-solarized/dircolors.256dark $HOME/.dircolors
 fi
 
-if type dircolors >/dev/null 2>&1; then
-    if grep dircolors $HOME/.bashrc 2>/dev/null; then
-        echo "dircolors config exist"
-    else
+if type dircolors > /dev/null 2>&1; then
+    if ! grep dircolors $HOME/.bashrc 2> /dev/null; then
         echo "" >> ${RCFILE}
         echo 'eval "$(SHELL=$SHELL dircolors $HOME/.dircolors)"' >> $HOME/.bashrc
     fi
-elif type gdircolors >/dev/null 2>&1; then
-    if grep gdircolors $HOME/.bashrc 2>/dev/null; then
-        echo "gdircolors config exist"
-    else
+elif type gdircolors > /dev/null 2>&1; then
+    if ! grep gdircolors $HOME/.bashrc 2> /dev/null; then
         echo "" >> ${RCFILE}
         echo 'eval "$(gdircolors $HOME/.dircolors)"' >> $HOME/.bashrc
     fi
