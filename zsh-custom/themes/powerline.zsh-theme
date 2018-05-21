@@ -99,10 +99,8 @@ prompt_git() {
 }
 
 prompt_virtualenv() {
-  local virtualenv_path="$VIRTUAL_ENV"
-  if [[ -n $virtualenv_path ]]; then
-    prompt_segment magenta white "$(basename $virtualenv_path)"
-  fi
+  [[ -n ${VIRTUAL_ENV} ]] || return
+  prompt_segment magenta white "${VIRTUAL_ENV:t}"
 }
 
 prompt_dir() {
