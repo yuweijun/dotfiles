@@ -45,7 +45,6 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
     ln -sfn ${DIR}/zsh-custom/themes/powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerline.zsh-theme
     ln -sfn ${DIR}/zsh-custom/themes/agnoster-powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/agnoster-powerline.zsh-theme
     echo -e "\n###########################################\n" >> ${RCFILE}
-    echo "export DOTFILES=${DIR}" >> ${RCFILE}
 else
     if $SIMPLE; then
         echo "create simple .bashrc file"
@@ -60,6 +59,7 @@ else
         cd ${DIR}/bash-it
         ./install.sh --silent
         cd -
+        echo -e "\n###########################################\n" >> ${RCFILE}
     fi
 fi
 
@@ -219,7 +219,6 @@ if type jenv > /dev/null 2>&1; then
     if ! grep -q "jenv init" ${RCFILE} 2> /dev/null; then
         echo "" >> ${RCFILE}
         echo 'eval "$(jenv init -)"' >> ${RCFILE}
-        echo "" >> ${RCFILE}
         echo "export PATH=\$PATH:${DIR}/jenv/bin" >> ${RCFILE}
     fi
 fi
@@ -231,12 +230,15 @@ if [ -e /usr/libexec/java_home ]; then
 fi
 
 if [[ "$SHELL" = "/bin/zsh" ]]; then
-    for plugin in zsh-autosuggestions zsh-autosuggestions fzf jrebel
+    for plugin in zsh-autosuggestions zsh-syntax-highlighting fzf jrebel
     do
         echo $plugin
         mkdir -p ${DIR}/oh-my-zsh/custom/plugins/${plugin}
         ln -snf ${DIR}/zsh-custom/plugins/${plugin}/${plugin}.plugin.zsh ${DIR}/oh-my-zsh/custom/plugins/${plugin}/${plugin}.plugin.zsh
     done
+
+    echo "" >> ${RCFILE}
+    echo "bindkey '^ ' autosuggest-accept" >> ${RCFILE}
 
     exit 0
 fi

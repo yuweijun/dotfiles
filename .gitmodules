@@ -7,15 +7,9 @@
 [submodule "oh-my-zsh"]
 	path = oh-my-zsh
 	url = https://github.com/robbyrussell/oh-my-zsh.git
-[submodule "bash-git-prompt"]
-	path = bash-git-prompt
-	url = https://github.com/yuweijun/bash-git-prompt.git
 [submodule "mycli"]
 	path = mycli
 	url = https://github.com/yuweijun/mycli.git
-[submodule "bash-completion"]
-	path = bash-completion
-	url = https://github.com/yuweijun/bash-completion.git
 [submodule "fzf"]
 	path = fzf
 	url = https://github.com/junegunn/fzf.git
@@ -29,7 +23,7 @@
 	path = autojump
 	url = https://github.com/yuweijun/autojump
 [submodule "zsh-syntax-highlighting"]
-	path = zsh-syntax-highlighting
+	path = zsh-custom/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
 [submodule "Menlo-for-Powerline"]
 	path = Menlo-for-Powerline
@@ -38,7 +32,7 @@
 	path = nvm
 	url = https://github.com/creationix/nvm.git
 [submodule "zsh-autosuggestions"]
-	path = zsh-autosuggestions
+	path = zsh-custom/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
 [submodule "bash-it"]
 	path = bash-it
