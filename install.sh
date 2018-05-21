@@ -21,12 +21,12 @@ cd "$(dirname $0)"
 DIR="$(pwd)"
 
 if $INIT; then
-    git submodule update --init --recursive
+    git submodule update --init --recursive 2> /dev/null
 elif $REMOTE; then
-    git submodule update --init --recursive --remote
+    git submodule update --init --recursive --remote 2> /dev/null
 else
     if [ ! -e .git/modules ] && ! $SIMPLE; then
-        git submodule update --init --recursive
+        git submodule update --init --recursive 2> /dev/null
     fi
 fi
 
@@ -36,9 +36,16 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
     if [ ! -e $HOME/.oh-my-zsh ]; then
         ln -sfn ${DIR}/oh-my-zsh $HOME/.oh-my-zsh
     fi
-    if [ ! -f ${RCFILE} ]; then
-        cp ${DIR}/oh-my-zsh/zshrc ${RCFILE}
+
+    if [ -f ${RCFILE} ]; then
+        mv ${RCFILE} ${RCFILE}.bak
     fi
+
+    cp ${DIR}/zsh-custom/templates/zshrc.zsh-template ${RCFILE}
+    ln -sfn ${DIR}/zsh-custom/themes/powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerline.zsh-theme
+    ln -sfn ${DIR}/zsh-custom/themes/agnoster-powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/agnoster-powerline.zsh-theme
+    echo "" >> ${RCFILE}
+    echo "export DOTFILES=${DIR}" >> ${RCFILE}
 
     echo -e "\n####### customize settings ####### \n" >> ${RCFILE}
 else
@@ -81,12 +88,9 @@ fi
 
 if grep -q "export PATH" ${RCFILE} 2> /dev/null; then
     echo "export PATH config exists"
-elif $SIMPLE; then
-    echo "" >> ${RCFILE}
-    echo "export PATH=\$PATH:/usr/local/sbin:\$HOME/bin" >> ${RCFILE}
 else
     echo "" >> ${RCFILE}
-    echo "export PATH=\$PATH:/usr/local/sbin:\$HOME/bin:${DIR}/jenv/bin" >> ${RCFILE}
+    echo "export PATH=\$PATH:/usr/local/sbin:\$HOME/bin" >> ${RCFILE}
 fi
 
 if [ ! -f $HOME/.tmux.conf ]; then
@@ -165,10 +169,7 @@ if type -a j > /dev/null 2>&1; then
     echo "j - autojump command exists"
 else
     if [[ "$SHELL" = "/bin/zsh" ]]; then
-        if ! grep -q autojump.zsh ${RCFILE} 2> /dev/null; then
-            echo "" >> ${RCFILE}
-            echo "[ -f $HOME/.autojump/share/autojump/autojump.zsh ] && source $HOME/.autojump/share/autojump/autojump.zsh" >> ${RCFILE}
-        fi
+        echo "autojump enabled by zsh plugins"
     else
         if ! grep -q autojump.bash ${RCFILE} 2> /dev/null; then
             echo "" >> ${RCFILE}
@@ -212,6 +213,8 @@ if type jenv > /dev/null 2>&1; then
     if ! grep -q "jenv init" ${RCFILE} 2> /dev/null; then
         echo "" >> ${RCFILE}
         echo 'eval "$(jenv init -)"' >> ${RCFILE}
+        echo "" >> ${RCFILE}
+        echo "export PATH=\$PATH:/usr/local/sbin:\$HOME/bin:${DIR}/jenv/bin" >> ${RCFILE}
     fi
 fi
 
@@ -232,17 +235,11 @@ if [ -e $HOME/.jrebel ]; then
 fi
 
 if [[ "$SHELL" = "/bin/zsh" ]]; then
-    if ! grep -q "zsh-autosuggestions.zsh" ${RCFILE} 2> /dev/null; then
-        echo "" >> ${RCFILE}
-        echo "if [ -f ${DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then" >> ${RCFILE}
-        echo "    source ${DIR}/zsh-autosuggestions/zsh-autosuggestions.zsh" >> ${RCFILE}
-        echo "    bindkey '^ ' autosuggest-accept" >> ${RCFILE}
-        echo "fi" >> ${RCFILE}
-    fi
-    if ! grep -q "zsh-syntax-highlighting.zsh" ${RCFILE} 2> /dev/null; then
-        echo "" >> ${RCFILE}
-        echo "[ -f ${DIR}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source ${DIR}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${RCFILE}
-    fi
+    mkdir -p ${DIR}/oh-my-zsh/custom/plugins/zsh-autosuggestions
+    ln -snf ${DIR}/zsh-custom/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh ${DIR}/oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+
+    mkdir -p ${DIR}/oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+    ln -snf ${DIR}/zsh-custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh ${DIR}/oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
 
     exit 0
 fi
