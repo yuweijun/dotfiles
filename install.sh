@@ -56,9 +56,14 @@ else
             echo 'export PS1="\[\033[1;36m\]┌\$(date \"+%H:%M:%S\")\[\033[00m\] [\u@\h: \[\033[1;32m\]\w\[\033[00m\]]\n\[\033[1;36m\]└$\[\033[00m\] "' >> $HOME/.bashrc
         fi
     else
-        cd ${DIR}/bash-it
-        ./install.sh --silent
+        ln -sfn ${DIR}/bash-it ${HOME}/.bash-it
+        cd ${HOME}/.bash-it
+        ./install.sh --silent --no-modify-config
+        cp ${DIR}/bash-custom/template/bash_profile.template.bash ${RCFILE}
         cd -
+
+        ln -sfn ${DIR}/bash-custom/themes ${DIR}/bash-it/custom/themes
+        ln -sfn ${DIR}/bash-custom/plugins ${DIR}/bash-it/custom/plugins
         echo -e "\n###########################################\n" >> ${RCFILE}
     fi
 fi
