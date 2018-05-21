@@ -215,7 +215,7 @@ if type jenv > /dev/null 2>&1; then
         echo "" >> ${RCFILE}
         echo 'eval "$(jenv init -)"' >> ${RCFILE}
         echo "" >> ${RCFILE}
-        echo "export PATH=\$PATH:/usr/local/sbin:\$HOME/bin:${DIR}/jenv/bin" >> ${RCFILE}
+        echo "export PATH=\$PATH:${DIR}/jenv/bin" >> ${RCFILE}
     fi
 fi
 
