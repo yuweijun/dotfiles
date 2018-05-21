@@ -147,11 +147,11 @@ if [ ! -e $HOME/.fzf ]; then
     ln -sfn ${DIR}/fzf $HOME/.fzf
 fi
 
-if grep -q fzf ${RCFILE} 2> /dev/null; then
+if grep -q "/.fzf." ${RCFILE} 2> /dev/null; then
     echo "fzf config exists"
 elif ! $SIMPLE; then
     if [[ "$SHELL" = "/bin/zsh" ]]; then
-        $HOME/.fzf/install --no-bash
+        $HOME/.fzf/install --no-bash --no-zsh
     else
         $HOME/.fzf/install --no-zsh
     fi
@@ -231,11 +231,12 @@ if [ -e /usr/libexec/java_home ]; then
 fi
 
 if [[ "$SHELL" = "/bin/zsh" ]]; then
-    mkdir -p ${DIR}/oh-my-zsh/custom/plugins/zsh-autosuggestions
-    ln -snf ${DIR}/zsh-custom/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh ${DIR}/oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
-
-    mkdir -p ${DIR}/oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-    ln -snf ${DIR}/zsh-custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh ${DIR}/oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh
+    for plugin in zsh-autosuggestions zsh-autosuggestions fzf jrebel
+    do
+        echo $plugin
+        mkdir -p ${DIR}/oh-my-zsh/custom/plugins/${plugin}
+        ln -snf ${DIR}/zsh-custom/plugins/${plugin}/${plugin}.plugin.zsh ${DIR}/oh-my-zsh/custom/plugins/${plugin}/${plugin}.plugin.zsh
+    done
 
     exit 0
 fi
