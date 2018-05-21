@@ -44,10 +44,8 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
     cp ${DIR}/zsh-custom/templates/zshrc.zsh-template ${RCFILE}
     ln -sfn ${DIR}/zsh-custom/themes/powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerline.zsh-theme
     ln -sfn ${DIR}/zsh-custom/themes/agnoster-powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/agnoster-powerline.zsh-theme
-    echo "" >> ${RCFILE}
+    echo -e "\n###########################################\n" >> ${RCFILE}
     echo "export DOTFILES=${DIR}" >> ${RCFILE}
-
-    echo -e "\n####### customize settings ####### \n" >> ${RCFILE}
 else
     if $SIMPLE; then
         echo "create simple .bashrc file"
@@ -55,7 +53,7 @@ else
         if grep -q "export PS1" $HOME/.bashrc 2> /dev/null; then
             echo "export PS1 config exists"
         else
-            echo -e "\n####### customize settings ####### \n" >> ${RCFILE}
+            echo -e "\n###########################################\n" >> ${RCFILE}
             echo 'export PS1="\[\033[1;36m\]┌\$(date \"+%H:%M:%S\")\[\033[00m\] [\u@\h: \[\033[1;32m\]\w\[\033[00m\]]\n\[\033[1;36m\]└$\[\033[00m\] "' >> $HOME/.bashrc
         fi
     else
@@ -195,16 +193,23 @@ else
 fi
 
 if type virtualenv > /dev/null 2>&1; then
-    if ! grep -q "bin/activate" ${RCFILE} 2> /dev/null; then
-        echo "" >> ${RCFILE}
-        deactivate 2> /dev/null
-        if type python3 2> /dev/null; then
+    if type python3 2> /dev/null; then
+        if [ ! -e $HOME/.virtualenv/python3 ]; then
             mkdir -p $HOME/.virtualenv/python3
             virtualenv -p $(which python3) $HOME/.virtualenv/python3
-            echo 'source $HOME/.virtualenv/python3/bin/activate' >> ${RCFILE}
-        elif type python2 2> /dev/null; then
+        fi
+    elif type python2 2> /dev/null; then
+        if [ ! -e $HOME/.virtualenv/python2 ]; then
             mkdir -p $HOME/.virtualenv/python2
             virtualenv -p $(which python2) $HOME/.virtualenv/python2
+        fi
+    fi
+
+    if ! grep -q "bin/activate" ${RCFILE} 2> /dev/null; then
+        echo "" >> ${RCFILE}
+        if type python3 2> /dev/null; then
+            echo 'source $HOME/.virtualenv/python3/bin/activate' >> ${RCFILE}
+        else
             echo 'source $HOME/.virtualenv/python2/bin/activate' >> ${RCFILE}
         fi
     fi
@@ -222,16 +227,6 @@ fi
 if [ -e /usr/libexec/java_home ]; then
     if ! grep -q "export JAVA_HOME" ${RCFILE} 2> /dev/null; then
         echo 'export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)' >> ${RCFILE}
-    fi
-fi
-
-if [ -e $HOME/.jrebel ]; then
-    if grep -q "jdebug" ${RCFILE} 2> /dev/null; then
-        echo "alias jdebug config exists"
-    else
-        echo "" >> ${RCFILE}
-        echo "alias jrebel=\"MAVEN_OPTS='-agentpath:$HOME/.jrebel/lib/libjrebel64.so' mvn\"" >> ${RCFILE}
-        echo "alias jdebug=\"MAVEN_OPTS='-agentpath:$HOME/.jrebel/lib/libjrebel64.so -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=8000' mvn\"" >> ${RCFILE}
     fi
 fi
 
