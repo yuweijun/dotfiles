@@ -14,7 +14,7 @@ else
     else
         if ! grep -q autojump.bash ${RCFILE} 2> /dev/null; then
             echo "" >> ${RCFILE}
-            echo "[ -f $HOME/.autojump/share/autojump/autojump.bash ] && source $HOME/.autojump/share/autojump/autojump.bash" >> ${RCFILE}
+            echo "[ -f \$HOME/.autojump/share/autojump/autojump.bash ] && source \$HOME/.autojump/share/autojump/autojump.bash" >> ${RCFILE}
         fi
     fi
 fi
