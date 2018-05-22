@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if ! type j > /dev/null 2>&1; then
+if [ ! -e $HOME/.autojump ]; then
     cd ${DIR}/autojump
     ./install.py
     cd -
