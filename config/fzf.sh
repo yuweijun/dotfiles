@@ -10,6 +10,6 @@ elif ! $SIMPLE; then
     if [[ "$SHELL" = "/bin/zsh" ]]; then
         $HOME/.fzf/install --no-bash --no-zsh
     else
-        $HOME/.fzf/install --no-zsh
+        $HOME/.fzf/install --no-bash --no-zsh
     fi
 fi

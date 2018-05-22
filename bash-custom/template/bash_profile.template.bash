@@ -4,7 +4,8 @@ export BASH_IT="$HOME/.bash-it"
 export SCM_CHECK=true
 export BASH_IT_THEME='powerline'
 
-POWERLINE_PROMPT="clock user_info hostname python_venv ruby cwd scm"
+POWERLINE_PYTHON_VENV_CHAR="♥ "
+POWERLINE_PROMPT="clock user_info hostname python_venv cwd scm"
 
 # FIX sed on Mac OSX: RE error: illegal byte sequence
 alias sed="LC_CTYPE=C sed"

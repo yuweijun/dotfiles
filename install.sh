@@ -45,7 +45,7 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
     cp ${DIR}/zsh-custom/templates/zshrc.zsh-template ${RCFILE}
     ln -sfn ${DIR}/zsh-custom/themes/powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerline.zsh-theme
     ln -sfn ${DIR}/zsh-custom/themes/agnoster-powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/agnoster-powerline.zsh-theme
-    echo -e "\n###########################################\n" >> ${RCFILE}
+    echo -e "\n###########################################" >> ${RCFILE}
 else
     if $SIMPLE; then
         echo "create simple .bashrc file"
@@ -53,7 +53,7 @@ else
         if grep -q "export PS1" ${RCFILE} 2> /dev/null; then
             echo "export PS1 config exists"
         else
-            echo -e "\n###########################################\n" >> ${RCFILE}
+            echo -e "\n###########################################" >> ${RCFILE}
             echo 'export PS1="\[\033[1;36m\]┌\$(date \"+%H:%M:%S\")\[\033[00m\] [\u@\h: \[\033[1;32m\]\w\[\033[00m\]]\n\[\033[1;36m\]└$\[\033[00m\] "' >> ${HOME}/.bashrc
         fi
     else
@@ -65,7 +65,7 @@ else
 
         ln -sfn ${DIR}/bash-custom/themes ${DIR}/bash-it/custom/themes
         ln -sfn ${DIR}/bash-custom/plugins ${DIR}/bash-it/custom/plugins
-        echo -e "\n###########################################\n" >> ${RCFILE}
+        echo -e "\n###########################################" >> ${RCFILE}
     fi
 fi
 

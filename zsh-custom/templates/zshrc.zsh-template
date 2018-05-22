@@ -2,7 +2,7 @@ export ZSH=~/.oh-my-zsh
 
 ZSH_THEME="powerline"
 
-plugins=(git bundler osx ubuntu rake ruby autojump tmux mvn virtualenv fzf zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git bundler osx ubuntu rake ruby autojump tmux nvm mvn virtualenv fzf zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
