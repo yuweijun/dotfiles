@@ -19,6 +19,7 @@ done
 
 cd "$(dirname $0)"
 export DIR="$(pwd)"
+export SIMPLE
 
 if $INIT; then
     git submodule update --init --recursive 2> /dev/null
@@ -48,8 +49,8 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
 else
     if $SIMPLE; then
         echo "create simple .bashrc file"
-        touch ${HOME}/.bashrc
-        if grep -q "export PS1" ${HOME}/.bashrc 2> /dev/null; then
+        touch ${RCFILE}
+        if grep -q "export PS1" ${RCFILE} 2> /dev/null; then
             echo "export PS1 config exists"
         else
             echo -e "\n###########################################\n" >> ${RCFILE}
