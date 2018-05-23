@@ -21,18 +21,18 @@ cd "$(dirname $0)"
 export DIR="$(pwd)"
 export SIMPLE
 
-if $INIT; then
+if ${INIT}; then
     git submodule update --init --recursive 2> /dev/null
-elif $REMOTE; then
+elif ${REMOTE}; then
     git submodule update --init --recursive --remote 2> /dev/null
 else
-    if [ ! -e .git/modules ] && ! $SIMPLE; then
+    if [ ! -e .git/modules ] && ! ${SIMPLE}; then
         git submodule update --init --recursive 2> /dev/null
     fi
 fi
 
 export RCFILE="${HOME}/.bashrc"
-if [[ "$SHELL" = "/bin/zsh" ]]; then
+if [[ "${SHELL}" = "/bin/zsh" ]]; then
     RCFILE="${HOME}/.zshrc"
     if [ ! -e ${HOME}/.oh-my-zsh ]; then
         ln -sfn ${DIR}/oh-my-zsh ${HOME}/.oh-my-zsh
@@ -47,7 +47,7 @@ if [[ "$SHELL" = "/bin/zsh" ]]; then
     ln -sfn ${DIR}/zsh-custom/themes/agnoster-powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/agnoster-powerline.zsh-theme
     echo -e "\n###########################################" >> ${RCFILE}
 else
-    if $SIMPLE; then
+    if ${SIMPLE}; then
         echo "create simple .bashrc file"
         touch ${RCFILE}
         if grep -q "export PS1" ${RCFILE} 2> /dev/null; then
