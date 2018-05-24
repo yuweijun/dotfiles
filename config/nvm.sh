@@ -1,6 +1,7 @@
 #!/bin/bash
 
 if ! $SIMPLE; then
-    echo "" >> ${RCFILE}
-    echo "export NVM_DIR=\"${DIR}/nvm\"" >> ${RCFILE}
+    if [ ! -d $HOME/.nvm ]; then
+        ${DIR}/nvm/install.sh
+    fi
 fi
