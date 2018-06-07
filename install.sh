@@ -80,7 +80,6 @@ fi
 ./config/mycli.sh
 ./config/vim.sh
 ./config/nvim.sh
-./config/nvm.sh
 ./config/fzf.sh
 ./config/autojump.sh
 ./config/ssh.sh
