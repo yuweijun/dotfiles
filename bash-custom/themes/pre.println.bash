@@ -1,5 +1,1 @@
-function __powerline_print_new_line {
-  echo ""
-}
-
-safe_append_prompt_command __powerline_print_new_line
+PROMPT_COMMAND="${PROMPT_COMMAND:+$(echo "${PROMPT_COMMAND}" | awk '{gsub(/; *$/,"")}1') ;} echo"
