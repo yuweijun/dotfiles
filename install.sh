@@ -83,7 +83,6 @@ fi
 ./config/fzf.sh
 ./config/autojump.sh
 ./config/ssh.sh
-./config/java-home.sh
 ./config/virtualenv.sh
 ./config/jenv.sh
 ./config/bash-profile.sh
