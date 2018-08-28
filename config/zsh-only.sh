@@ -4,7 +4,7 @@ if [[ "$SHELL" != "/bin/zsh" ]]; then
     exit 0
 fi
 
-for plugin in autojump zsh-autosuggestions zsh-syntax-highlighting fzf jrebel
+for plugin in autojump zsh-autosuggestions zsh-syntax-highlighting fzf
 do
     echo $plugin
     mkdir -p ${DIR}/oh-my-zsh/custom/plugins/${plugin}
