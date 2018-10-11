@@ -14,5 +14,5 @@ alias ll='ls -alF'
 alias lt='ls -lt'
 alias ld='ls -ad'
 alias la='ls -A'
-alias l='ls -CF'
+alias l='ls -aCF'
 
