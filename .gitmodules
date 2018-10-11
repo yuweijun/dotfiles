@@ -25,8 +25,8 @@
 [submodule "zsh-syntax-highlighting"]
 	path = zsh-custom/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
-[submodule "Menlo-for-Powerline"]
-	path = Menlo-for-Powerline
+[submodule "menlo-for-powerline"]
+	path = menlo-for-powerline
 	url = https://github.com/yuweijun/Menlo-for-Powerline.git
 [submodule "nvm"]
 	path = nvm
