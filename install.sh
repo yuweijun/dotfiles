@@ -1,35 +1,12 @@
 #!/bin/bash
 
-INIT=false
-REMOTE=false
-SIMPLE=false
-
-while getopts irs arg; do
-    case "$arg" in
-        i) INIT=true ;;
-        r) REMOTE=true ;;
-        s) SIMPLE=true ;;
-        ?) printf "Usage: %s: [-i] [-r] [-s]\n" $0
-            exit 2;;
-    esac
-done
-
 # set -e
 # set -x
 
 cd "$(dirname $0)"
 export DIR="$(pwd)"
-export SIMPLE
 
-if ${INIT}; then
-    git submodule update --init --recursive 2> /dev/null
-elif ${REMOTE}; then
-    git submodule update --init --recursive --remote 2> /dev/null
-else
-    if [ ! -e .git/modules ] && ! ${SIMPLE}; then
-        git submodule update --init --recursive 2> /dev/null
-    fi
-fi
+git submodule update --init --recursive
 
 export RCFILE="${HOME}/.bashrc"
 if [[ "${SHELL}" = "/bin/zsh" ]]; then
@@ -47,26 +24,15 @@ if [[ "${SHELL}" = "/bin/zsh" ]]; then
     ln -sfn ${DIR}/zsh-custom/themes/agnoster-powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/agnoster-powerline.zsh-theme
     echo -e "\n###########################################" >> ${RCFILE}
 else
-    if ${SIMPLE}; then
-        echo "create simple .bashrc file"
-        touch ${RCFILE}
-        if grep -q "export PS1" ${RCFILE} 2> /dev/null; then
-            echo "export PS1 config exists"
-        else
-            echo -e "\n###########################################" >> ${RCFILE}
-            echo 'export PS1="\[\033[1;36m\]┌\$(date \"+%H:%M:%S\")\[\033[00m\] [\u@\h: \[\033[1;32m\]\w\[\033[00m\]]\n\[\033[1;36m\]└$\[\033[00m\] "' >> ${HOME}/.bashrc
-        fi
-    else
-        ln -sfn ${DIR}/bash-it ${HOME}/.bash-it
-        cd ${HOME}/.bash-it
-        ./install.sh --silent --no-modify-config
-        cp ${DIR}/bash-custom/template/bash_profile.template.bash ${RCFILE}
-        cd -
+    ln -sfn ${DIR}/bash-it ${HOME}/.bash-it
+    cd ${HOME}/.bash-it
+    ./install.sh --silent --no-modify-config
+    cp ${DIR}/bash-custom/template/bash_profile.template.bash ${RCFILE}
+    cd -
 
-        ln -sfn ${DIR}/bash-custom/themes ${DIR}/bash-it/custom/themes
-        ln -sfn ${DIR}/bash-custom/plugins ${DIR}/bash-it/custom/plugins
-        echo -e "\n###########################################" >> ${RCFILE}
-    fi
+    ln -sfn ${DIR}/bash-custom/themes ${DIR}/bash-it/custom/themes
+    ln -sfn ${DIR}/bash-custom/plugins ${DIR}/bash-it/custom/plugins
+    echo -e "\n###########################################" >> ${RCFILE}
 fi
 
 if grep -q "export PATH" ${RCFILE} 2> /dev/null; then
