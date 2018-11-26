@@ -16,6 +16,7 @@ brew install mosh bash-completion zsh-autosuggestions
 
 brew tap caskroom/versions
 
+brew cask install google-chrome
 brew cask install macvim
 brew cask install iterm2
 brew cask install visual-studio-code
