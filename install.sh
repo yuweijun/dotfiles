@@ -50,7 +50,6 @@ fi
 ./config/autojump.sh
 ./config/ssh.sh
 ./config/virtualenv.sh
-./config/jenv.sh
 ./config/bash-profile.sh
 ./config/homebrew.sh
 ./config/gnu-ls.sh
