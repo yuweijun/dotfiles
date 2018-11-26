@@ -8,7 +8,7 @@ source $ZSH/oh-my-zsh.sh
 
 export LANG=en_US.UTF-8
 export PATH=$PATH:/usr/local/sbin:$HOME/bin
-export VIRTUAL_ENV_DISABLE_PROMPT=0
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 alias ll="ls -la"
 alias ll='ls -alF'
