@@ -37,6 +37,3 @@
 [submodule "bash-it"]
 	path = bash-it
 	url = https://github.com/yuweijun/bash-it.git
-[submodule "jenv"]
-	path = jenv
-	url = https://github.com/gcuisinier/jenv.git

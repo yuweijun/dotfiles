@@ -46,6 +46,7 @@ fi
 ./config/mycli.sh
 ./config/vim.sh
 ./config/nvim.sh
+./config/mvn.sh
 ./config/fzf.sh
 ./config/autojump.sh
 ./config/ssh.sh
