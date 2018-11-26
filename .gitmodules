@@ -25,12 +25,12 @@
 [submodule "zsh-syntax-highlighting"]
 	path = zsh-custom/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
-[submodule "menlo-for-powerline"]
-	path = menlo-for-powerline
-	url = https://github.com/yuweijun/Menlo-for-Powerline.git
 [submodule "zsh-autosuggestions"]
 	path = zsh-custom/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
 [submodule "bash-it"]
 	path = bash-it
 	url = https://github.com/yuweijun/bash-it.git
+[submodule "powerline-fonts"]
+	path = powerline-fonts
+	url = https://github.com/yuweijun/Menlo-for-Powerline.git
