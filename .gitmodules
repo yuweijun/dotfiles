@@ -28,9 +28,6 @@
 [submodule "menlo-for-powerline"]
 	path = menlo-for-powerline
 	url = https://github.com/yuweijun/Menlo-for-Powerline.git
-[submodule "nvm"]
-	path = nvm
-	url = https://github.com/creationix/nvm.git
 [submodule "zsh-autosuggestions"]
 	path = zsh-custom/plugins/zsh-autosuggestions
 	url = https://github.com/zsh-users/zsh-autosuggestions.git
