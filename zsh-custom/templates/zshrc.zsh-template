@@ -2,12 +2,13 @@ export ZSH=~/.oh-my-zsh
 
 ZSH_THEME="powerline"
 
-plugins=(git bundler osx rake ruby autojump tmux mvn virtualenv dircolors mycli fzf zsh-autosuggestions zsh-syntax-highlighting nvm)
+plugins=(git autojump tmux virtualenv dircolors mycli fzf zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
 export LANG=en_US.UTF-8
 export PATH=$PATH:/usr/local/sbin:$HOME/bin
+export VIRTUAL_ENV_DISABLE_PROMPT=0
 
 alias ll="ls -la"
 alias ll='ls -alF'
