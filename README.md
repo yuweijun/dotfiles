@@ -30,9 +30,9 @@
 
 ## install fonts on linux
 
-    please reference `oh-my-zsh/Menlo-for-Powerline/README.md`
+    please reference `powerline-fonts/README.md`
 
-    $ cp oh-my-zsh/Menlo-for-Powerline/*.ttf ~/.fonts
+    $ cp powerline-fonts/*.ttf ~/.fonts
     $ fc-cache -vf ~/.fonts
 
 ## install with init
