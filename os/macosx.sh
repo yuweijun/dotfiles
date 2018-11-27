@@ -29,6 +29,15 @@ brew install wireshark --with-qt
 
 pip install virtualenv
 
+cd $HOME/Library/Fonts
+FONT="Droid Sans Mono for Powerline Nerd Font Complete.otf"
+if [ -f $FONT ]; then
+    echo "$FONT exists"
+else
+    curl -fLo $FONT https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf
+    open $FONT
+fi
+
 if ! type java &>/dev/null; then
     brew cask install java6
     brew cask install java7
