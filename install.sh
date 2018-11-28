@@ -10,7 +10,7 @@ git submodule update --init --recursive
 
 export RCFILE="${HOME}/.bashrc"
 if [ "${SHELL}" = "/bin/zsh" ]; then
-    RCFILE="${HOME}/.zshrc"
+    export RCFILE="${HOME}/.zshrc"
     if [ ! -e ${HOME}/.oh-my-zsh ]; then
         ln -sfn ${DIR}/oh-my-zsh ${HOME}/.oh-my-zsh
     fi
