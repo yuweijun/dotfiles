@@ -9,7 +9,7 @@ export DIR="$(pwd)"
 git submodule update --init --recursive
 
 export RCFILE="${HOME}/.bashrc"
-if [[ "${SHELL}" = "/bin/zsh" ]]; then
+if [ "${SHELL}" = "/bin/zsh" ]; then
     RCFILE="${HOME}/.zshrc"
     if [ ! -e ${HOME}/.oh-my-zsh ]; then
         ln -sfn ${DIR}/oh-my-zsh ${HOME}/.oh-my-zsh
@@ -53,6 +53,7 @@ fi
 ./config/virtualenv.sh
 ./config/bash-profile.sh
 ./config/homebrew.sh
+./config/sed.sh
 ./config/gnu-ls.sh
 ./config/dircolors.sh
 ./config/zsh-only.sh
