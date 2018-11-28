@@ -22,7 +22,7 @@ if [ "${SHELL}" = "/bin/zsh" ]; then
     cp ${DIR}/zsh-custom/templates/zshrc.zsh-template ${RCFILE}
     ln -sfn ${DIR}/zsh-custom/themes/powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerline.zsh-theme
     ln -sfn ${DIR}/zsh-custom/themes/agnoster-powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/agnoster-powerline.zsh-theme
-    echo -e "\n###########################################" >> ${RCFILE}
+    echo "###########################################" >> ${RCFILE}
 else
     ln -sfn ${DIR}/bash-it ${HOME}/.bash-it
     cd ${HOME}/.bash-it
@@ -32,7 +32,7 @@ else
 
     ln -sfn ${DIR}/bash-custom/themes ${DIR}/bash-it/custom/themes
     ln -sfn ${DIR}/bash-custom/plugins ${DIR}/bash-it/custom/plugins
-    echo -e "\n###########################################" >> ${RCFILE}
+    echo "###########################################" >> ${RCFILE}
 fi
 
 if grep -q "export PATH" ${RCFILE} 2> /dev/null; then
