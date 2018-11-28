@@ -7,8 +7,11 @@ else
     echo ".vim folder exists"
 fi
 
-if [ ! -e $HOME/.vim/bundle ]; then
-    ln -sfn ${DIR}/bundle $HOME/.vim/bundle
+if [ ! -d ${DIR}/vim/bundle ]; then
+    echo "git clone vundle"
+    git clone https://github.com/yuweijun/vundle.git ${DIR}/vim/bundle
+    cd ${DIR}/vim/bundle
+    git submodule update --init --recursive
 fi
 
 if [ ! -e $HOME/.vimrc ]; then
@@ -17,3 +20,4 @@ if [ ! -e $HOME/.vimrc ]; then
 else
     echo ".vimrc file exists"
 fi
+
