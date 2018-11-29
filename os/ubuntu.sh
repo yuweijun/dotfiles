@@ -2,6 +2,10 @@
 
 apt install -y tmux mycli silversearcher-ag mosh multitail
 
+# Meslo fonts not being listed on gnome-terminal #846
+# Workaround = Goto Releases, Click Tags, Select 1.2, Download.
+# [https://github.com/ryanoasis/nerd-fonts/releases/tag/v1.2.0](https://github.com/ryanoasis/nerd-fonts/releases/tag/v1.2.0)
+
 SHARE_FONTS=~/.local/share/fonts
 mkdir -p $SHARE_FONTS
 cd $SHARE_FONTS
