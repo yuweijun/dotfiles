@@ -30,14 +30,6 @@ brew install wireshark --with-qt
 pip install virtualenv
 
 cd $HOME/Library/Fonts
-DROID_FONT="Droid Sans Mono for Powerline Nerd Font Complete.otf"
-if [ -f $DROID_FONT ]; then
-    echo "$DROID_FONT exists"
-else
-    curl -fLo $DROID_FONT https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf
-    open $DROID_FONT
-fi
-
 MESLO_FONT="Meslo LG M Regular Nerd Font Complete Mono.otf"
 if [ -f $MESLO_FONT ]; then
     echo "$MESLO_FONT exists"
@@ -47,8 +39,5 @@ else
 fi
 
 if ! type java &>/dev/null; then
-    brew cask install java6
-    brew cask install java7
     brew cask install java8
-    brew cask install java9
 fi
