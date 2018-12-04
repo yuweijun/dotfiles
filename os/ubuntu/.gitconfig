@@ -1,0 +1,29 @@
+[push]
+    default = simple
+[core]
+    editor = vim
+    quotepath = false
+[color]
+    diff = auto
+    status = auto
+    branch = auto
+    ui = auto
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+[color "status"]
+    added = yellow
+    changed = green
+    untracked = cyan
+[log]
+    date = iso
+[alias]
+    ls = log --graph --pretty=format:'%C(cyan)%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%an>%Creset'
+    ll = log --pretty=format:'%C(yellow)%h %C(green)| %C(white)%ad %C(green)| %C(blue)%>(15,trunc)%an %C(green)| %C(green)%d %C(reset)%s'
+	last = log -5 HEAD
