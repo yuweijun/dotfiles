@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for comm in tmux mycli silversearcher-ag mosh multitail
+for comm in tmux mycli silversearcher-ag mosh multitail httpie
 do
     if ! type "$comm" &>/dev/null; then
         sudo apt install -y "$comm"

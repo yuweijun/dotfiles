@@ -13,6 +13,7 @@ brew install nginx tmux neovim tldr shellcheck fzf cloc axel rougify mycli
 brew install wget zsh-syntax-highlighting autojump coreutils the_silver_searcher
 brew install git git-flow keepassx proxychains-ng pstree
 brew install mosh bash-completion zsh-autosuggestions multitail
+brew install httpie
 
 brew tap caskroom/versions
 
