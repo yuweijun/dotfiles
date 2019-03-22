@@ -12,6 +12,7 @@ if [ ! -d ${DIR}/vim/bundle ]; then
     git clone https://github.com/yuweijun/vundle.git ${DIR}/vim/bundle
     cd ${DIR}/vim/bundle
     git submodule update --init --recursive
+    git submodule foreach git checkout master
 fi
 
 if [ ! -e $HOME/.vimrc ]; then
