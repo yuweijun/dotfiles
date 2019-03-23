@@ -1,5 +1,7 @@
 #!/bin/bash
 
+DIR=${DIR:-.}
+
 if [ ! -e $HOME/.vim ]; then
     ln -sfn ${DIR}/vim $HOME/.vim
     mkdir -p $HOME/.vim/tmp/backup $HOME/.vim/tmp/swap $HOME/.vim/tmp/undo
@@ -13,6 +15,10 @@ if [ ! -d ${DIR}/vim/bundle ]; then
     cd ${DIR}/vim/bundle
     git submodule update --init --recursive
     git submodule foreach git checkout master
+elif type mvim > /dev/null 2>&1; then
+    mvim +PluginInstall +qall
+else
+    vim +PluginInstall +qall
 fi
 
 if [ ! -e $HOME/.vimrc ]; then

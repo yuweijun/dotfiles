@@ -4,6 +4,8 @@ if [[ "$SHELL" != "/bin/zsh" ]]; then
     exit 0
 fi
 
+DIR=${DIR:-.}
+
 for plugin in $(ls ${DIR}/zsh-custom/plugins)
 do
     echo $plugin

@@ -7,6 +7,8 @@ fi
 if [ -f $HOME/.dircolors ]; then
     echo "$HOME/.dircolors file exists"
 else
+    DIR=${DIR:-.}
+
     ln -sfn ${DIR}/dircolors-solarized/dircolors.256dark $HOME/.dircolors
 fi
 
