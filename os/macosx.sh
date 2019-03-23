@@ -9,7 +9,7 @@ else
 fi
 
 brew install coreutils findutils gnu-tar gnu-sed gawk gnutls gnu-indent gnu-getopt
-brew install nginx tmux neovim tldr shellcheck fzf cloc axel rougify mycli
+brew install nginx tmux neovim tldr shellcheck fzf cloc axel mycli
 brew install wget zsh-syntax-highlighting autojump coreutils the_silver_searcher
 brew install git git-flow keepassx proxychains-ng pstree
 brew install mosh bash-completion zsh-autosuggestions multitail
