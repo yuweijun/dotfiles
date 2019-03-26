@@ -87,7 +87,7 @@ prompt_git() {
 
     local SNOW_FLAKE=$'\u2744'
     if [[ -n $dirty ]]; then
-      if [ $(git status | grep 'deleted:\|modified:\|renamed:' | wc -l) 2> /dev/null -gt 0 ]; then
+      if [ $(git status | grep 'fatal:\|deleted:\|modified:\|renamed:' | wc -l) 2> /dev/null -gt 0 ]; then
         prompt_segment $DEEP_PINK3 $GREY93
       elif [ $(git status | grep 'Untracked files:\|new file:' | wc -l) 2> /dev/null -gt 0 ]; then
         prompt_segment $GREEN4 $GREY93
