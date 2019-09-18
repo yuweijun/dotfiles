@@ -17,3 +17,5 @@ alias ld='ls -ad'
 alias la='ls -A'
 alias l='ls -aCF'
 
+[ -f $HOME/.customrc ] && source $HOME/.customrc
+

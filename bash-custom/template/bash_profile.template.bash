@@ -8,3 +8,5 @@ POWERLINE_PROMPT="clock user_info hostname cwd scm"
 
 source "$BASH_IT"/bash_it.sh
 
+[ -f $HOME/.customrc ] && source $HOME/.customrc
+
