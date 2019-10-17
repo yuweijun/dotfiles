@@ -6,9 +6,13 @@ plugins=(git autojump tmux virtualenv dircolors mycli fzf zsh-autosuggestions zs
 
 source $ZSH/oh-my-zsh.sh
 
+if [ -f $HOME/.customrc ]; then
+    source $HOME/.customrc
+fi
+
 export LANG=en_US.UTF-8
-export PATH=$PATH:/usr/local/sbin:$HOME/bin
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+export PATH=$PATH:/usr/local/sbin:$HOME/bin
 
 alias ll="ls -la"
 alias ll='ls -alF'
@@ -16,6 +20,4 @@ alias lt='ls -lt'
 alias ld='ls -ad'
 alias la='ls -A'
 alias l='ls -aCF'
-
-[ -f $HOME/.customrc ] && source $HOME/.customrc
 

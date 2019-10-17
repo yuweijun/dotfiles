@@ -17,6 +17,7 @@ if type gls > /dev/null 2>&1; then
     if [ -n "$LSCOLORS" ]; then
         echo "LSCOLORS config exists"
     else
+        echo "" >> ${RCFILE}
         echo "export LSCOLORS=GxFxCxDxBxegedabagaced" >> ${RCFILE}
     fi
 fi
