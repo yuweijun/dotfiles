@@ -11,11 +11,11 @@ fi
 brew install coreutils findutils gnu-tar gnu-sed gawk gnutls gnu-indent gnu-getopt
 brew install nginx tmux neovim tldr shellcheck fzf cloc axel mycli
 brew install wget zsh-syntax-highlighting autojump coreutils the_silver_searcher
-brew install git git-flow keepassx proxychains-ng pstree
+brew install git git-flow proxychains-ng pstree
 brew install mosh bash-completion zsh-autosuggestions multitail
 brew install httpie macvim
 
-brew tap caskroom/versions
+brew tap homebrew/cask-versions
 
 brew cask install google-chrome
 brew cask install macvim
