@@ -22,7 +22,7 @@ brew cask install macvim
 brew cask install iterm2
 
 brew install groovy gradle maven
-brew install nethogs nmap tcpflow
+brew install bmon nethogs nmap tcpflow
 
 pip install virtualenv
 
