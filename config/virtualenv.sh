@@ -13,6 +13,11 @@ if type virtualenv > /dev/null 2>&1; then
         fi
     fi
 
+    RCFILE="${HOME}/.bashrc"
+    if [ "${SHELL}" = "/bin/zsh" ]; then
+        RCFILE="${HOME}/.zshrc"
+    fi
+
     if ! grep -q "bin/activate" ${RCFILE} 2> /dev/null; then
         echo "" >> ${RCFILE}
         if type python3 2> /dev/null; then
