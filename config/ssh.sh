@@ -2,6 +2,7 @@
 
 if [ ! -e $HOME/.ssh ]; then
     mkdir $HOME/.ssh
+    chmod 700 $HOME/.ssh
     echo "Host *\n    ForwardAgent yes" > $HOME/.ssh/config
     chmod -R 600 $HOME/.ssh
 fi
