@@ -7,7 +7,6 @@ if type nvim > /dev/null 2>&1; then
         echo "" >> ${RCFILE}
         echo "alias vi='nvim'" >> ${RCFILE}
         echo "alias vim='nvim'" >> ${RCFILE}
-        echo "alias vzrc='vi ~/.zshrc'" >> ${RCFILE}
     fi
 fi
 

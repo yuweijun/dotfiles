@@ -2,21 +2,7 @@ export ZSH=~/.oh-my-zsh
 
 ZSH_THEME="powerline"
 
-plugins=(env git autojump tmux virtualenv dircolors mycli fzf kubectl zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git autojump tmux virtualenv dircolors mycli fzf kubectl zsh-autosuggestions zsh-syntax-highlighting alias-more env)
 
 source $ZSH/oh-my-zsh.sh
-
-export LANG=en_US.UTF-8
-export VIRTUAL_ENV_DISABLE_PROMPT=1
-export PATH=$PATH:/usr/local/sbin:$HOME/bin
-
-alias lt='ls -lat | more'
-alias ll='ls -alF'
-alias ld='ls -ad'
-alias la='ls -A'
-alias l='ls -aCF'
-alias vi='vim'
-alias vzrc='vi ~/.zshrc'
-
-unsetopt BEEP
 
