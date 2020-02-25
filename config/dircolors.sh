@@ -1,15 +1,22 @@
 #!/bin/bash
 
-if [[ "$SHELL" != */bin/bash* ]]; then
-    exit 0
-fi
+DIR=${DIR:-.}
 
 if [ -f $HOME/.dircolors ]; then
     echo "$HOME/.dircolors file exists"
 else
-    DIR=${DIR:-.}
-
     ln -sfn ${DIR}/dircolors-solarized/dircolors.256dark $HOME/.dircolors
+fi
+
+if [[ "$SHELL" != */bin/bash* ]]; then
+    if [[ "$TERM" == "linux" ]]; then
+        # for zsh on linux server
+        ln -sfn ${DIR}/dircolors-solarized/dircolors.ansi-dark $HOME/.dircolors.linux
+        echo "" >> ${RCFILE}
+        echo 'eval "$(dircolors $HOME/.dircolors.linux)"' >> $HOME/.bashrc
+    fi
+
+    exit 0
 fi
 
 if type dircolors > /dev/null 2>&1; then
