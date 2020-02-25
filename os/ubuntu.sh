@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for cmd in zsh tmux mycli silversearcher-ag mosh multitail httpie bmon nethogs nmap tcpflow fontconfig python2.7
+for cmd in zsh tmux mycli silversearcher-ag mosh multitail httpie bmon nethogs nmap tcpflow fontconfig python
 do
     if ! type "$cmd" &>/dev/null; then
         sudo apt install -y "$cmd"
