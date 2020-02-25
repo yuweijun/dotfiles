@@ -1,9 +1,9 @@
 #!/bin/bash
 
-for comm in tmux mycli silversearcher-ag mosh multitail httpie bmon nethogs nmap tcpflow
+for cmd in tmux mycli silversearcher-ag mosh multitail httpie bmon nethogs nmap tcpflow fontconfig
 do
-    if ! type "$comm" &>/dev/null; then
-        sudo apt install -y "$comm"
+    if ! type "$cmd" &>/dev/null; then
+        sudo apt install -y "$cmd"
     fi
 done
 
