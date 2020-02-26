@@ -35,13 +35,6 @@ else
     echo "###########################################" >> ${RCFILE}
 fi
 
-if grep -q "export PATH" ${RCFILE} 2> /dev/null; then
-    echo "export PATH config exists"
-else
-    echo "" >> ${RCFILE}
-    echo "export PATH=\$PATH:/usr/local/sbin:\$HOME/bin" >> ${RCFILE}
-fi
-
 ./config/tmux.sh
 ./config/mycli.sh
 ./config/vim.sh
