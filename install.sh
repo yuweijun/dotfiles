@@ -46,7 +46,6 @@ fi
 ./config/virtualenv.sh
 ./config/bash-profile.sh
 ./config/homebrew.sh
-./config/sed.sh
 ./config/gnu-ls.sh
 ./config/dircolors.sh
 ./config/zsh-only.sh

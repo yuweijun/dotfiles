@@ -20,12 +20,12 @@ if [[ "$SHELL" != */bin/bash* ]]; then
 fi
 
 if type dircolors > /dev/null 2>&1; then
-    if ! grep dircolors $HOME/.bashrc 2> /dev/null; then
+    if ! grep dircolors ${RCFILE} 2> /dev/null; then
         echo "" >> ${RCFILE}
         echo 'eval "$(SHELL=$SHELL dircolors $HOME/.dircolors)"' >> ${RCFILE}
     fi
 elif type gdircolors > /dev/null 2>&1; then
-    if ! grep gdircolors $HOME/.bashrc 2> /dev/null; then
+    if ! grep gdircolors ${RCFILE} 2> /dev/null; then
         echo "" >> ${RCFILE}
         echo 'eval "$(gdircolors $HOME/.dircolors)"' >> ${RCFILE}
     fi
