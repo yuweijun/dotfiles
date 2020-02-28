@@ -5,4 +5,4 @@ sudo pacman -S --noconfirm binutils make gcc fakeroot expac yajl
 sudo pacman -S --noconfirm docker
 sudo pacman -S --noconfirm ethtool wget unzip
 sudo pacman -S --noconfirm pamac-common
-sudo pacman -S --noconfirm go
+sudo pacman -S --noconfirm go gnu-netcat
