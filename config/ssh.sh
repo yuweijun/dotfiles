@@ -3,8 +3,9 @@
 if [ ! -e $HOME/.ssh ]; then
     mkdir $HOME/.ssh
     chmod 700 $HOME/.ssh
-    echo "Host *\n    ForwardAgent yes" > $HOME/.ssh/config
-    chmod -R 600 $HOME/.ssh
+    echo "Host *" >> $HOME/.ssh/config
+    echo "    ForwardAgent yes" >> $HOME/.ssh/config
+    chmod -R 600 $HOME/.ssh/config
 fi
 
 if [ ${#SSH_AUTH_SOCK} -gt 1 ]; then
