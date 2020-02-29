@@ -18,7 +18,9 @@ if type gls > /dev/null 2>&1; then
     alias ls="gls --color=auto"
     # Mac OS ls original command
     alias lo="/bin/ls"
-elif type exa > /dev/null 2>&1; then
+fi
+
+if type exa > /dev/null 2>&1; then
     alias ext="exa -lTL 2"
 fi
 
