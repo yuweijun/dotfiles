@@ -1,3 +1,5 @@
+#!/bin/bash
+
 alias lt='ls -lat'
 alias ll='ls -alF'
 alias ld='ls -ad'
@@ -9,7 +11,7 @@ if type nvim > /dev/null 2>&1; then
 fi
 
 alias vi="vim"
-alias vzrc='vi ~/.zshrc'
+alias vbrc='vi ~/.bashrc'
 
 if type gls > /dev/null 2>&1; then
     # gnu-ls command for Mac OS

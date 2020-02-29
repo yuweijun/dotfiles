@@ -11,7 +11,7 @@ fi
 
 if [ ! -d ${DIR}/vim/bundle ]; then
     echo "git clone vundle"
-    git clone https://github.com/yuweijun/vundle.git ${DIR}/vim/bundle
+    git clone --depth=1 https://github.com/yuweijun/vundle.git ${DIR}/vim/bundle
     cd ${DIR}/vim/bundle
     git submodule update --init --recursive
     git submodule foreach git checkout master
