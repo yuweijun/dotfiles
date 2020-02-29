@@ -20,5 +20,10 @@ if type gls > /dev/null 2>&1; then
     alias lo="/bin/ls"
 elif type exa > /dev/null 2>&1; then
     alias ls="exa"
-    alias lT="exa -lTL 2"
+    alias llt="exa -lTL 2"
 fi
+
+if type bat > /dev/null 2>&1; then
+    alias cat="bat"
+fi
+
