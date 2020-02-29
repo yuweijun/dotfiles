@@ -17,8 +17,7 @@ if type gls > /dev/null 2>&1; then
     # Mac OS ls original command
     alias lo="/bin/ls"
 elif type exa > /dev/null 2>&1; then
-    alias ls="exa"
-    alias llt="exa -lTL 2"
+    alias ext="exa -lTL 2"
 fi
 
 if type bat > /dev/null 2>&1; then
