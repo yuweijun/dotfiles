@@ -48,7 +48,7 @@ prompt_end() {
 }
 
 prompt_datetime() {
-  prompt_segment $GREY35 $GREY93 "%D{%F} %*"
+  prompt_segment $ORANGE_RED1 $GREY93 "%D{%F} %*"
 }
 
 prompt_user() {
