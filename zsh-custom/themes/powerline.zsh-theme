@@ -5,9 +5,11 @@ autoload -Uz add-zsh-hook
 () {
   local LC_ALL="" LC_CTYPE="en_US.UTF-8"
   SEGMENT_SEPARATOR=$'\ue0b0' # Powerline characters 
+
+  # curl -s https://gist.githubusercontent.com/HaleTom/89ffe32783f89f403bba96bd7bcd1263/raw/ | bash
   BLACK=0
   DEEP_SKY_BLUE3=32
-  ORANGE_RED1=202
+  BLUE27=27
   GREEN4=28
   DEEP_PINK3=162
   DARK_RED=52
@@ -48,7 +50,7 @@ prompt_end() {
 }
 
 prompt_datetime() {
-  prompt_segment $ORANGE_RED1 $GREY93 "%D{%F} %*"
+  prompt_segment $BLUE27 $GREY93 "%D{%F} %*"
 }
 
 prompt_user() {
