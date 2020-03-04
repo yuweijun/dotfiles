@@ -23,6 +23,13 @@ if type exa > /dev/null 2>&1; then
 fi
 
 if type bat > /dev/null 2>&1; then
-    alias cat="bat"
+    alias cat="bat -n"
 fi
+
+if type systemctl > /dev/null 2>&1; then
+    alias sc='systemctl'
+    alias jc='journalctl'
+    alias services='systemctl list-units --type=service --state=running'
+fi
+
 
