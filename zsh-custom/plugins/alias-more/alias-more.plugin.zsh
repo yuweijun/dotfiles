@@ -23,7 +23,7 @@ if type exa > /dev/null 2>&1; then
 fi
 
 if type bat > /dev/null 2>&1; then
-    alias cat="bat -n"
+    alias cat="bat -p"
 fi
 
 if type systemctl > /dev/null 2>&1; then
