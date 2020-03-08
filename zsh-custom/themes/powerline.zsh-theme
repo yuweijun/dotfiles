@@ -8,13 +8,13 @@ autoload -Uz add-zsh-hook
 
   # curl -s https://gist.githubusercontent.com/HaleTom/89ffe32783f89f403bba96bd7bcd1263/raw/ | bash
   BLACK=0
-  DEEP_SKY_BLUE3=32
-  BLUE27=27
-  GREEN4=28
-  DEEP_PINK3=162
-  DARK_RED=52
-  GREY93=255
-  GREY35=240
+  BLUE32=32
+  GREEN28=28
+  PINK162=162
+  RED52=52
+  GREY240=240
+  GREY242=242
+  GREY255=255
 }
 
 CWD_DISABLE_PROMPT=${CWD_DISABLE_PROMPT:=0}
@@ -50,19 +50,19 @@ prompt_end() {
 }
 
 prompt_datetime() {
-  prompt_segment $BLUE27 $GREY93 "%D{%F} %*"
+  prompt_segment $GREY242 $GREY255 "%D{%F} %*"
 }
 
 prompt_user() {
-  prompt_segment $DEEP_SKY_BLUE3 $GREY93 "$USER"
+  prompt_segment $BLUE32 $GREY255 "$USER"
 }
 
 prompt_hostname() {
   if [[ "$(uname -s)" = "Darwin" ]]; then
     local APPLE=$'\uf8ff' # 
-    prompt_segment $BLACK $GREY93 "${APPLE} $(hostname -s)"
+    prompt_segment $BLACK $GREY255 "${APPLE} $(hostname -s)"
   else
-    prompt_segment $BLACK $GREY93 "@$(hostname -s)"
+    prompt_segment $BLACK $GREY255 "@$(hostname -s)"
   fi
 }
 
@@ -90,14 +90,14 @@ prompt_git() {
     local SNOW_FLAKE=$'\u2744'
     if [[ -n $dirty ]]; then
       if [ $(git status | grep 'fatal:\|deleted:\|modified:\|renamed:' | wc -l) 2> /dev/null -gt 0 ]; then
-        prompt_segment $DEEP_PINK3 $GREY93
+        prompt_segment $PINK162 $GREY255
       elif [ $(git status | grep 'Untracked files:\|new file:' | wc -l) 2> /dev/null -gt 0 ]; then
-        prompt_segment $GREEN4 $GREY93
+        prompt_segment $GREEN28 $GREY255
       fi
 
       mode=" ${SNOW_FLAKE}${mode}"
     else
-      prompt_segment $GREEN4 $GREY93
+      prompt_segment $GREEN28 $GREY255
     fi
 
     setopt promptsubst
@@ -111,11 +111,11 @@ prompt_virtualenv() {
 }
 
 prompt_dir() {
-  prompt_segment $GREY35 $GREY93 '%~'
+  prompt_segment $GREY240 $GREY255 '%~'
 }
 
 prompt_status() {
-  [[ $RETVAL -ne 0 ]] && prompt_segment $DARK_RED $GREY93 "$RETVAL"
+  [[ $RETVAL -ne 0 ]] && prompt_segment $RED52 $GREY255 "$RETVAL"
 }
 
 build_prompt() {
