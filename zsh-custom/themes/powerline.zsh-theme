@@ -12,6 +12,7 @@ autoload -Uz add-zsh-hook
   GREEN28=28
   PINK162=162
   RED52=52
+  GREY235=235
   GREY240=240
   GREY242=242
   GREY255=255
@@ -50,7 +51,7 @@ prompt_end() {
 }
 
 prompt_datetime() {
-  prompt_segment $GREY242 $GREY255 "%D{%F} %*"
+  prompt_segment $GREY242 $GREY235 "%D{%F} %*"
 }
 
 prompt_user() {
