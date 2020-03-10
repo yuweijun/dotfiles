@@ -140,6 +140,9 @@ font:
 #     - { ... , command: { program: "alacritty", args: ["-e", "vttest"] } }
 alt_send_esc: true
 key_bindings:
-  - { key: C, mods: Alt, action: Copy  }
-  - { key: V, mods: Alt, action: Paste }
+  - { key: C,    mods: Alt,     action: Copy    }
+  - { key: V,    mods: Alt,     action: Paste   }
+  - { key: Q,    mods: Control, chars:  "\x11"  }
+  - { key: Y,    mods: Control, chars:  "\x1Bb" }
+  - { key: Key6, mods: Control, chars:  "\x1e"  }
 
