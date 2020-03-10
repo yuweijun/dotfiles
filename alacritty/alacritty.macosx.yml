@@ -98,8 +98,6 @@ background_opacity: .90
 font:
   size: 16
   normal:
-    # family: DejaVu Sans Mono for Powerline
-    # style: Book
     family: Menlo for Powerline
     style: Regular
 
