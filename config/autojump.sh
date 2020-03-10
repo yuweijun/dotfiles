@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! -e $HOME/.autojump ]; then
-    DIR=${DIR:-.}
+    DIR=${DIR:-$(pwd)}
 
     cd ${DIR}/autojump
     export SHELL=/bin/bash

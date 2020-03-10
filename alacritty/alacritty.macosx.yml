@@ -1,0 +1,280 @@
+# This config file position
+# ~/.config/alacritty/alacritty.yml
+#
+# Any items in the `env` entry below will be added as
+# environment variables. Some entries may override variables
+# set by alacritty it self.
+env:
+  # TERM env customization.
+  #
+  # If this property is not set, alacritty will set it to xterm-256color.
+  #
+  # Note that some xterm terminfo databases don't declare support for italics.
+  # You can verify this by checking for the presence of `smso` and `sitm` in
+  # `infocmp xterm-256color`.
+  TERM: xterm-256color
+
+window:
+  # Window dimensions in character columns and lines
+  # Falls back to size specified by window manager if set to 0x0.
+  dimensions:
+    columns: 160
+    lines: 48
+
+  # Adds this many blank pixels of padding around the window
+  # Units are physical pixels; this is not DPI aware.
+  # (change requires restart)
+  padding:
+    x: 2
+    y: 2
+
+tabspaces: 4
+
+# Colors (Tomorrow Night Bright)
+colors:
+  # Default colors
+  primary:
+    background: '0x191919'
+    foreground: '0xeaeaea'
+
+  # Colors the cursor will use if `custom_cursor_colors` is true
+  cursor:
+    text: '0x000000'
+    cursor: '0xffffff'
+
+  # Normal colors
+  normal:
+    black:   '0x000000'
+    red:     '0xd54e53'
+    green:   '0x2fb005'
+    yellow:  '0xe6c547'
+    blue:    '0x7aa6da'
+    magenta: '0xc397d8'
+    cyan:    '0x70c0ba'
+    white:   '0xffffff'
+
+  # Bright colors
+  bright:
+    black:   '0x888888'
+    red:     '0xff3334'
+    green:   '0x9ec400'
+    yellow:  '0xe7c547'
+    blue:    '0x7aa6da'
+    magenta: '0xb77ee0'
+    cyan:    '0x54ced6'
+    white:   '0xffffff'
+
+  # Dim colors (Optional)
+  dim:
+    black:   '0x333333'
+    red:     '0xf2777a'
+    green:   '0x99cc99'
+    yellow:  '0xffcc66'
+    blue:    '0x6699cc'
+    magenta: '0xcc99cc'
+    cyan:    '0x66cccc'
+    white:   '0xdddddd'
+
+  # Optional: Colors the cursor will use (test)
+  cursor:
+    text: '0x2a2e38'
+    # cursor: '0x71798a'
+    cursor: '0xF0FDFF'
+    # cursor: '0xe6d3c6'
+    # cursor: '0xffd17f'
+
+  selection:
+    text: '0x2a2e38'
+    cursor: '0xF0FDFF'
+
+visual_bell:
+  animation: EaseOutExpo
+  duration: 0
+
+# Background opacity
+background_opacity: .90
+
+# Font configuration (changes require restart)
+font:
+  size: 16
+  normal:
+    # family: DejaVu Sans Mono for Powerline
+    # style: Book
+    family: Menlo for Powerline
+    style: Regular
+
+mouse:
+  url:
+      # URL launcher
+      #
+      # This program is executed when clicking on a text which is recognized as a URL.
+      # The URL is always added to the command as the last parameter.
+      launcher: open
+
+      # URL modifiers
+      #
+      # These are the modifiers that need to be held down for opening URLs when clicking
+      # on them. The available modifiers are documented in the key binding section.
+      modifiers: Command
+
+# Key bindings
+#
+# Each binding is defined as an object with some properties. Most of the
+# properties are optional. All of the alphabetical keys should have a letter for
+# the `key` value such as `V`. Function keys are probably what you would expect
+# as well (F1, F2, ..). The number keys above the main keyboard are encoded as
+# `Key1`, `Key2`, etc. Keys on the number pad are encoded `Number1`, `Number2`,
+# etc.  These all match the glutin::VirtualKeyCode variants.
+#
+# A list with all available `key` names can be found here:
+# https://docs.rs/glutin/*/glutin/enum.VirtualKeyCode.html#variants
+#
+# Possible values for `mods`
+# `Command`, `Super` refer to the super/command/windows key
+# `Control` for the control key
+# `Shift` for the Shift key
+# `Alt` and `Option` refer to alt/option
+#
+# mods may be combined with a `|`. For example, requiring control and shift
+# looks like:
+#
+# mods: Control|Shift
+#
+# The parser is currently quite sensitive to whitespace and capitalization -
+# capitalization must match exactly, and piped items must not have whitespace
+# around them.
+#
+# Either an `action`, `chars`, or `command` field must be present.
+#   `action` must be one of `Paste`, `PasteSelection`, `Copy`, or `Quit`.
+#   `chars` writes the specified string every time that binding is activated.
+#     These should generally be escape sequences, but they can be configured to
+#     send arbitrary strings of bytes.
+#   `command` must be a map containing a `program` string, and `args` array of
+#     strings. For example:
+#     - { ... , command: { program: "alacritty", args: ["-e", "vttest"] } }
+alt_send_esc: false
+key_bindings:
+  - { key: N,           mods: Command,         action: SpawnNewInstance }
+  - { key: PageUp,                             action: ScrollPageUp     }
+  - { key: PageUp,      mode: Alt,             chars: "\x1B[5~"         }
+  - { key: PageUp,      mods: Shift,           chars: "\x1B[5~"         }
+  - { key: PageDown,                           action: ScrollPageDown   }
+  - { key: PageDown,    mode: Alt,             chars: "\x1B[6~"         }
+  - { key: PageDown,    mods: Shift,           chars: "\x1B[6~"         }
+  - { key: Home,                               action: ScrollToTop      }
+  - { key: Home,        mode: Alt,             chars: "\x1BOH"          }
+  - { key: Home,        mods: Shift,           chars: "\x1B[H"          }
+  - { key: End,                                action: ScrollToBottom   }
+  - { key: End,         mode: Alt,             chars: "\x1BOF"          }
+  - { key: End,         mods: Shift,           chars: "\x1B[F"          }
+  - { key: Tab,         mods: Alt,             chars: "\x1B\t"          }
+  - { key: Tab,         mods: Alt|Shift,       chars: "\x1B\x1B[Z"      }
+  - { key: Back,                               chars: "\x7F"            }
+  - { key: Back,        mods: Alt,             chars: "\x1B\x7F"        }
+  - { key: Back,        mods: Alt|Shift,       chars: "\x1B\x08"        }
+  - { key: Space,       mods: Control,         chars: "\x00"            }
+  - { key: Space,       mods: Alt,             chars: "\x20"            }
+  - { key: Left,        mods: Alt,             chars: "\x1Bb"           }
+  - { key: Left,        mods: Alt|Shift,       chars: "\x1B\x1B[D"      }
+  - { key: Right,       mods: Alt,             chars: "\x1Bf"           }
+  - { key: Right,       mods: Alt|Shift,       chars: "\x1B\x1B[C"      }
+  - { key: Down,        mods: Alt,             chars: "\x1B\x1B[B"      }
+  - { key: Down,        mods: Alt|Shift,       chars: "\x1B\x1B[B"      }
+  - { key: Up,          mods: Alt,             chars: "\x1B\x1B[A"      }
+  - { key: Up,          mods: Alt|Shift,       chars: "\x1B\x1B[A"      }
+  - { key: A,           mods: Alt,             chars: "\x1Ba"           }
+  - { key: A,           mods: Alt|Shift,       chars: "\x1BA"           }
+  - { key: B,           mods: Alt,             chars: "\x1Bb"           }
+  - { key: B,           mods: Alt|Shift,       chars: "\x1BB"           }
+  - { key: C,           mods: Alt,             chars: "\x1Bc"           }
+  - { key: C,           mods: Alt|Shift,       chars: "\x1BC"           }
+  - { key: D,           mods: Alt,             chars: "\x1Bd"           }
+  - { key: D,           mods: Alt|Shift,       chars: "\x1BD"           }
+  - { key: E,           mods: Alt,             chars: "\x1Be"           }
+  - { key: E,           mods: Alt|Shift,       chars: "\x1BE"           }
+  - { key: F,           mods: Alt,             chars: "\x1Bf"           }
+  - { key: F,           mods: Alt|Shift,       chars: "\x1BF"           }
+  - { key: G,           mods: Alt,             chars: "\x1Bg"           }
+  - { key: G,           mods: Alt|Shift,       chars: "\x1BG"           }
+  - { key: H,           mods: Alt,             chars: "\x1Bh"           }
+  - { key: H,           mods: Alt|Shift,       chars: "\x1BH"           }
+  - { key: I,           mods: Alt,             chars: "\x1Bi"           }
+  - { key: I,           mods: Alt|Shift,       chars: "\x1BI"           }
+  - { key: J,           mods: Alt,             chars: "\x1Bj"           }
+  - { key: J,           mods: Alt|Shift,       chars: "\x1BJ"           }
+  - { key: K,           mods: Alt,             chars: "\x1Bk"           }
+  - { key: K,           mods: Alt|Shift,       chars: "\x1BK"           }
+  - { key: L,           mods: Alt,             chars: "\x1Bl"           }
+  - { key: L,           mods: Alt|Shift,       chars: "\x1BL"           }
+  - { key: M,           mods: Alt,             chars: "\x1Bm"           }
+  - { key: M,           mods: Alt|Shift,       chars: "\x1BM"           }
+  - { key: N,           mods: Alt,             chars: "\x1Bn"           }
+  - { key: N,           mods: Alt|Shift,       chars: "\x1BN"           }
+  - { key: O,           mods: Alt,             chars: "\x1Bo"           }
+  - { key: O,           mods: Alt|Shift,       chars: "\x1BO"           }
+  - { key: P,           mods: Alt,             chars: "\x1Bp"           }
+  - { key: P,           mods: Alt|Shift,       chars: "\x1BP"           }
+  - { key: Q,           mods: Alt,             chars: "\x1Bq"           }
+  - { key: Q,           mods: Alt|Shift,       chars: "\x1BQ"           }
+  - { key: R,           mods: Alt,             chars: "\x1Br"           }
+  - { key: R,           mods: Alt|Shift,       chars: "\x1BR"           }
+  - { key: S,           mods: Alt,             chars: "\x1Bs"           }
+  - { key: S,           mods: Alt|Shift,       chars: "\x1BS"           }
+  - { key: T,           mods: Alt,             chars: "\x1Bt"           }
+  - { key: T,           mods: Alt|Shift,       chars: "\x1BT"           }
+  - { key: U,           mods: Alt,             chars: "\x1Bu"           }
+  - { key: U,           mods: Alt|Shift,       chars: "\x1BU"           }
+  - { key: V,           mods: Alt,             chars: "\x1Bv"           }
+  - { key: V,           mods: Alt|Shift,       chars: "\x1BV"           }
+  - { key: W,           mods: Alt,             chars: "\x1Bw"           }
+  - { key: W,           mods: Alt|Shift,       chars: "\x1BW"           }
+  - { key: X,           mods: Alt,             chars: "\x1Bx"           }
+  - { key: X,           mods: Alt|Shift,       chars: "\x1BX"           }
+  - { key: Y,           mods: Alt,             chars: "\x1By"           }
+  - { key: Y,           mods: Alt|Shift,       chars: "\x1BY"           }
+  - { key: Z,           mods: Alt,             chars: "\x1Bz"           }
+  - { key: Z,           mods: Alt|Shift,       chars: "\x1BZ"           }
+  - { key: Key1,        mods: Alt,             chars: "\x1B1"           }
+  - { key: Key1,        mods: Alt|Shift,       chars: "\x1B!"           }
+  - { key: Key2,        mods: Alt,             chars: "\x1B2"           }
+  - { key: Key2,        mods: Alt|Shift,       chars: "\x1B#"           }
+  - { key: Key3,        mods: Alt,             chars: "\x1B3"           }
+  - { key: Key3,        mods: Alt|Shift,       chars: "\x1B#"           }
+  - { key: Key4,        mods: Alt,             chars: "\x1B4"           }
+  - { key: Key4,        mods: Alt|Shift,       chars: "\x1B$"           }
+  - { key: Key5,        mods: Alt,             chars: "\x1B5"           }
+  - { key: Key5,        mods: Alt|Shift,       chars: "\x1B%"           }
+  - { key: Key6,        mods: Alt,             chars: "\x1B6"           }
+  - { key: Key6,        mods: Alt|Shift,       chars: "\x1B^"           }
+  - { key: Key6,        mods: Control,         chars: "\x1e"            }
+  - { key: Key7,        mods: Alt,             chars: "\x1B7"           }
+  - { key: Key7,        mods: Alt|Shift,       chars: "\x1B&"           }
+  - { key: Key8,        mods: Alt,             chars: "\x1B8"           }
+  - { key: Key8,        mods: Alt|Shift,       chars: "\x1B*"           }
+  - { key: Key9,        mods: Alt,             chars: "\x1B9"           }
+  - { key: Key9,        mods: Alt|Shift,       chars: "\x1B("           }
+  - { key: Key0,        mods: Alt,             chars: "\x1B0"           }
+  - { key: Key0,        mods: Alt|Shift,       chars: "\x1B)"           }
+  - { key: Minus,       mods: Alt,             chars: "\x1B-"           }
+  - { key: Minus,       mods: Alt|Shift,       chars: "\x1B_"           }
+  - { key: Equals,      mods: Alt,             chars: "\x1B="           }
+  - { key: Equals,      mods: Alt|Shift,       chars: "\x1B+"           }
+  - { key: LBracket,    mods: Alt,             chars: "\x1B["           }
+  - { key: LBracket,    mods: Alt|Shift,       chars: "\x1B{"           }
+  - { key: RBracket,    mods: Alt,             chars: "\x1B]"           }
+  - { key: RBracket,    mods: Alt|Shift,       chars: "\x1B}"           }
+  - { key: Backslash,   mods: Alt,             chars: "\x1B\\"          }
+  - { key: Backslash,   mods: Alt|Shift,       chars: "\x1B|"           }
+  - { key: Semicolon,   mods: Alt,             chars: "\x1B;"           }
+  - { key: Semicolon,   mods: Alt|Shift,       chars: "\x1B:"           }
+  - { key: Apostrophe,  mods: Alt,             chars: "\x1B'"           }
+  - { key: Apostrophe,  mods: Alt|Shift,       chars: "\x1B\""          }
+  - { key: Comma,       mods: Alt,             chars: "\x1B,"           }
+  - { key: Comma,       mods: Alt|Shift,       chars: "\x1B<"           }
+  - { key: Period,      mods: Alt,             chars: "\x1B."           }
+  - { key: Period,      mods: Alt|Shift,       chars: "\x1B>"           }
+  - { key: Slash,       mods: Alt,             chars: "\x1B/"           }
+  - { key: Slash,       mods: Alt|Shift,       chars: "\x1B?"           }
+  - { key: Grave,       mods: Alt,             chars: "\x1B`"           }
+  - { key: Grave,       mods: Alt|Shift,       chars: "\x1B~"           }
+

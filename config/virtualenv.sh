@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if type pip > /dev/null 2>&1; then
+    pip install virtualenv
+fi
+
 if type virtualenv > /dev/null 2>&1; then
     if type python3 2> /dev/null; then
         if [ ! -e ${HOME}/.virtualenv/python3 ]; then

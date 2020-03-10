@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR=${DIR:-.}
+DIR=${DIR:-$(pwd)}
 
 if [ -f $HOME/.dircolors ]; then
     echo "$HOME/.dircolors file exists"

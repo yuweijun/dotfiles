@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIR=${DIR:-.}
+DIR=${DIR:-$(pwd)}
 
 if [ ! -e $HOME/.vim ]; then
     ln -sfn ${DIR}/vim $HOME/.vim

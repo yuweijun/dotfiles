@@ -49,4 +49,5 @@ fi
 ./config/homebrew.sh
 ./config/dircolors.sh
 ./config/zsh-only.sh
+./config/alacritty.sh
 
