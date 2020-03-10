@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if type pip > /dev/null 2>&1; then
-    pip install virtualenv
+    pip install virtualenv 2> /dev/null
 fi
 
 if type virtualenv > /dev/null 2>&1; then
