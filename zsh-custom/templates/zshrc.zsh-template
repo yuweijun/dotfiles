@@ -1,6 +1,6 @@
 export ZSH=~/.oh-my-zsh
 
-ZSH_THEME="powerline"
+ZSH_THEME="powerlevel9k"
 
 plugins=(git autojump tmux virtualenv dircolors mycli fzf kubectl zsh-autosuggestions zsh-syntax-highlighting alias-more env)
 

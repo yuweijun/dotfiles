@@ -21,6 +21,7 @@ if [ "${SHELL}" = "/bin/zsh" ]; then
     fi
 
     cp ${DIR}/zsh-custom/templates/zshrc.zsh-template ${RCFILE}
+    ln -sfn ${DIR}/powerlevel9k/powerlevel9k.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerlevel9k.zsh-theme
     ln -sfn ${DIR}/zsh-custom/themes/powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerline.zsh-theme
     ln -sfn ${DIR}/zsh-custom/themes/agnoster-powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/agnoster-powerline.zsh-theme
     echo "###########################################" >> ${RCFILE}

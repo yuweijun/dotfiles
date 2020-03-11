@@ -6,3 +6,6 @@ else
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
+tap "homebrew/cask-fonts"
+brew cask install font-hack-nerd-font
+
