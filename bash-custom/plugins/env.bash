@@ -3,6 +3,7 @@
 export LANG=en_US.UTF-8
 
 export VIRTUAL_ENV_DISABLE_PROMPT=1
+export HOMEBREW_NO_AUTO_UPDATE=1
 export PATH=$PATH:/usr/local/sbin:$HOME/bin
 
 if [[ $OSTYPE =~ ^darwin ]]; then
