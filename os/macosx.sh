@@ -9,13 +9,15 @@ fi
 # install fonts from https://github.com/Homebrew/homebrew-cask-fonts/tree/master/Casks
 brew tap "homebrew/cask-fonts"
 brew cask install font-hack-nerd-font
-brew cask install font-dejavu-sans-mono-for-powerline
-brew cask install font-menlo-for-powerline
-brew cask install font-meslo-for-powerline
-brew cask install font-source-code-pro-for-powerline
-brew cask install font-meslo-nerd-font-mono
-brew cask install font-droid-sans-mono-for-powerline
-brew cask install font-fira-mono-for-powerline
-brew cask install font-fira-code
-brew cask install font-firacode-nerd-font-mono
-brew cask install font-fontawesome font-awesome-terminal-fonts
+
+################### some other fonts ###################
+# brew cask install font-dejavu-sans-mono-for-powerline
+# brew cask install font-menlo-for-powerline
+# brew cask install font-meslo-for-powerline
+# brew cask install font-source-code-pro-for-powerline
+# brew cask install font-meslo-nerd-font-mono
+# brew cask install font-droid-sans-mono-for-powerline
+# brew cask install font-fira-mono-for-powerline
+# brew cask install font-fira-code
+# brew cask install font-firacode-nerd-font-mono
+# brew cask install font-fontawesome font-awesome-terminal-fonts
