@@ -220,8 +220,6 @@
 	<false/>
 	<key>VisualBellOnlyWhenMuted</key>
 	<false/>
-	<key>WindowTitle</key>
-	<string>username@localhost</string>
 	<key>columnCount</key>
 	<integer>150</integer>
 	<key>name</key>
