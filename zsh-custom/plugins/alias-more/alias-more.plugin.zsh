@@ -4,7 +4,7 @@ alias lt='ls -lat'
 alias ll='ls -la'
 alias ld='ls -ad'
 alias la='ls -a'
-alias l='ls -aC'
+alias l='ls -a'
 
 if type nvim > /dev/null 2>&1; then
     alias vim="nvim"
@@ -20,7 +20,8 @@ elif type colorls > /dev/null 2>&1; then
     # sudo gem install colorls
     alias ls="colorls"
 elif type exa > /dev/null 2>&1; then
-    alias ext="exa -lTL 2"
+    alias ls="exa"
+    alias lt="exa -la -t modified"
 fi
 
 if type bat > /dev/null 2>&1; then
