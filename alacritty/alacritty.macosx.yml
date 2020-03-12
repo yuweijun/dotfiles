@@ -98,7 +98,7 @@ background_opacity: .90
 font:
   size: 16
   normal:
-    family: Menlo for Powerline
+    family: Hack Nerd Font
     style: Regular
 
 mouse:

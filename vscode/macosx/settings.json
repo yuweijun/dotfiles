@@ -1,0 +1,52 @@
+{
+    "editor.fontFamily": "Menlo",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 16,
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.minimap.enabled": false,
+    "extensions.ignoreRecommendations": false,
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 3000,
+    "java.autobuild.enabled": true,
+    "java.errors.incompleteClasspath.severity": "ignore",
+    "java.saveActions.organizeImports": true,
+    "terminal.integrated.fontFamily": "Hack Nerd Font",
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.scrollback": 100000,
+    "terminal.integrated.shell.linux": "bash",
+    "window.enableMenuBarMnemonics": false,
+    "window.zoomLevel": 0,
+    "workbench.activityBar.visible": false,
+    "workbench.statusBar.feedback.visible": false,
+    "vim.insertModeKeyBindings": [
+        {
+            "before": [
+                "z",
+                "z"
+            ],
+            "after": [
+                "<Esc>"
+            ]
+        }
+    ],
+    "files.exclude": {
+        "**/node_modules": true,
+        "**/target": true,
+        "**/logs": true,
+        "**/.git": true,
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "search.exclude": {
+        "**/.sts4-cache": true,
+        "**/node_modules": true,
+        "**/bower_components": true
+    },
+    "vim.easymotionMarkerFontFamily": "Menlo",
+    "vim.easymotionMarkerFontSize": "15",
+    "update.mode": "manual",
+    "explorer.confirmDelete": false
+}
