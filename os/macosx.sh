@@ -18,5 +18,4 @@ brew cask install font-droid-sans-mono-for-powerline
 brew cask install font-fira-mono-for-powerline
 brew cask install font-fira-code
 brew cask install font-firacode-nerd-font-mono
-
 brew cask install font-fontawesome font-awesome-terminal-fonts
