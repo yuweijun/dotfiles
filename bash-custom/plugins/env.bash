@@ -1,14 +1,14 @@
 #!/bin/bash
 
-export LANG=en_US.UTF-8
+LANG=en_US.UTF-8
 
-export VIRTUAL_ENV_DISABLE_PROMPT=1
-export HOMEBREW_NO_AUTO_UPDATE=1
-export PATH=$PATH:/usr/local/sbin:$HOME/bin
+VIRTUAL_ENV_DISABLE_PROMPT=1
+HOMEBREW_NO_AUTO_UPDATE=1
+PATH=$PATH:/usr/local/sbin:$HOME/bin
 
 if [[ $OSTYPE =~ ^darwin ]]; then
-    export CLICOLOR=1
-    export LSCOLORS=GxFxCxDxBxegedabagaced
+    CLICOLOR=1
+    LSCOLORS=GxFxCxDxBxegedabagaced
 fi
 
 if [ -f $HOME/.envrc ]; then
