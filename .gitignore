@@ -49,7 +49,7 @@ coverage
 
 # node-waf configuration
 .lock-wscript
-*.lock.json
+Brewfile.lock.json
 
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build
