@@ -6,6 +6,7 @@ tap "homebrew/cask-fonts"
 tap "homebrew/core"
 tap "homebrew/services"
 
+brew "aha"
 brew "aria2"
 brew "autojump"
 brew "awscli"
