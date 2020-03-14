@@ -50,5 +50,6 @@ fi
 ./config/homebrew.sh
 ./config/dircolors.sh
 ./config/zsh-only.sh
+./config/fonts.sh
 ./config/alacritty.sh
 
