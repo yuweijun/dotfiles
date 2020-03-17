@@ -37,8 +37,9 @@
 
 1. Double click on selected `Dark Pastel.terminal` file. It will open a new Terminal window with that color scheme, or execute those below commands in terminal:
 
-    $ open os/macos-terminal-themes
-    $ open 'Dark Pastel.terminal'
+    > $ open os/macos-terminal-themes
+    >
+    > $ open 'Dark Pastel.terminal'
 
 2. Set the scheme as the default one with Shell -> `Use Settings as Default`.
 3. Change `Dark pastel` profile theme, text font using `Hack Nerd Font` and set font size as `16`.
