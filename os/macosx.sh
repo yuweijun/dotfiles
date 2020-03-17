@@ -10,6 +10,9 @@ fi
 brew tap "homebrew/cask-fonts"
 brew cask install font-hack-nerd-font
 
+# brwe tap "homebrew/cask"
+# brew cask install iterm2
+
 ################### some other fonts ###################
 # brew cask install font-dejavu-sans-mono-for-powerline
 # brew cask install font-menlo-for-powerline

@@ -1,3 +1,11 @@
+# install
+
+    $ git clone https://github.com/yuweijun/dotfiles.git
+    $ cd dotfiles
+    $ ./install.sh
+
+# git submodule support problem for old git version
+
 ## update git on centos
 
 ### centos 6.5
@@ -16,35 +24,22 @@
 
     $ yum install -y git
 
-### install tools on centos
-
-    $ yum install -y tmux mycli the_silver_searcher
-
-## install tools on ubuntu
-
-    $ sudo apt install -y tmux mycli silversearcher-ag
-
-## install tools on macosx
+# install homebrew on macosx
 
     $ os/macosx.sh
 
-## install fonts on linux
+## optional for MacOS installing extra applications
 
-    please reference `powerline-fonts/README.md`
+    $ cd os
+    $ brew bundle
 
-    $ cp powerline-fonts/*.ttf ~/.fonts
-    $ fc-cache -vf ~/.fonts
+## optional for MacOS import Terminal.app colorscheme
 
-## install with init
+1. Double click on selected `Dark Pastel.terminal` file. It will open a new Terminal window with that color scheme, or execute those below commands in terminal:
 
-    $ git clone https://github.com/yuweijun/dotfiles.git
-    $ cd dotfiles
-    $ ./install.sh
+    $ open os/macos-terminal-themes
+    $ open 'Dark Pastel.terminal'
 
-### install.sh options
-
-    1. -s: simple install
-    2. -r: will execute git submodule update --remote --recursive --init
-    3. -i: will execute git submodule update --recursive --init
-
+2. Set the scheme as the default one with Shell -> `Use Settings as Default`.
+3. Change `Dark pastel` profile theme, text font using `Hack Nerd Font` and set font size as `16`.
 
