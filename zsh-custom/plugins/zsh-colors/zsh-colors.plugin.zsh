@@ -271,27 +271,27 @@ _COLORS=(
 )
 
 # get the proper color code if it does not exist as a name.
-function getZshColor() {
+function getTerminalColor() {
   # If Color is not numerical, try to get the color code.
   if [[ "$1" != <-> ]]; then
-    1=$(getZshColors $1)
+    1=$(getTerminalColors $1)
   fi
   echo -n "$1"
 }
 
 # empty paramenter resets (stops) background color
 function backgroundColor() {
-  echo -n "%K{$(getZshColor $1)}"
+  echo -n "%K{$(getTerminalColor $1)}"
 }
 
 # empty paramenter resets (stops) foreground color
 function foregroundColor() {
-  echo -n "%F{$(getZshColor $1)}"
+  echo -n "%F{$(getTerminalColor $1)}"
 }
 
 # Get numerical color codes. That way we translate ANSI codes
 # into ZSH-Style color codes.
-function getZshColors() {
+function getTerminalColors() {
   # Early exit: Check if given value is already numerical
   if [[ "$1" == <-> ]]; then
     # Pad color with zeroes
@@ -305,14 +305,14 @@ function getZshColors() {
       echo -n 'none'
   elif [[ "${colorName}" == "foreground"  ]]; then
       # for testing purposes in terminal
-      # call via `getZshColors foreground`
+      # call via `getTerminalColors foreground`
       for i in "${(k@)_COLORS}"; do
-          print -P "$(foregroundColor $i)$(getZshColor $i) - $i%f"
+          print -P "$(foregroundColor $i)$(getTerminalColor $i) - $i%f"
       done
   elif [[ "${colorName}" == "background"  ]]; then
-      # call via `getZshColors background`
+      # call via `getTerminalColors background`
       for i in "${(k@)_COLORS}"; do
-          print -P "$(backgroundColor $i)$(getZshColor $i) - $i%k"
+          print -P "$(backgroundColor $i)$(getTerminalColor $i) - $i%k"
       done
   else
       # Strip eventual "bg-" prefixes
