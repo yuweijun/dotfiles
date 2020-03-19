@@ -3,6 +3,7 @@ export ZSH=~/.oh-my-zsh
 ZSH_THEME="powerline"
 
 plugins=(aliases
+    alias-finder
     autojump
     dircolors
     fzf
