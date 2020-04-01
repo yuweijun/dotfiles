@@ -24,7 +24,7 @@ if [ ! -d ${DIR}/vim/bundle ]; then
 fi
 
 if [ ! -e $HOME/.vimrc ]; then
-    ln -sfn ${DIR}/vim/terminal.vimrc $HOME/.vimrc
+    ln -sfn ${DIR}/vim/default.vimrc $HOME/.vimrc
     ln -sfn ${DIR}/vim/linux.gvimrc $HOME/.gvimrc
     ln -sfn ${DIR}/vim/idea.vimrc $HOME/.ideavimrc
 else
