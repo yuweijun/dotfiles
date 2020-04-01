@@ -21,7 +21,9 @@ else
         echo "$NAME not exists"
         cp "$FONT" .
         # install fontconfig for linux
-        fc-config -fv
+        if type fc-config &> /dev/null; then
+            fc-config -fv
+        fi
     fi
 fi
 
