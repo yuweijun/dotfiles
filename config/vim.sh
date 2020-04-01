@@ -17,15 +17,9 @@ if [ ! -d ${DIR}/vim/bundle ]; then
     cd ${DIR}/vim/bundle
     git submodule update --init --recursive
     git submodule foreach git checkout master
-else
-    if type nvim > /dev/null 2>&1; then
-        nvim +PlugInstall +qall
-    else
-        vim +PluginInstall +qall
-    fi
 
-    if type mvim > /dev/null 2>&1; then
-        mvim +PluginInstall +qall
+    if type vim &> /dev/null; then
+        vim +PluginInstall +qall
     fi
 fi
 
