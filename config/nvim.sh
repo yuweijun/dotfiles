@@ -7,9 +7,12 @@ fi
 
 if [ ! -e ${HOME}/.config/nvim/init.vim ]; then
     DIR=${DIR:-$(pwd)}
+    if [ ! -e $HOME/.vim ]; then
+        ln -sfn ${DIR}/vim $HOME/.vim
+    fi
 
-    curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     ln -sfn ${DIR}/vim/nvim.init.vim ${HOME}/.config/nvim/init.vim
+    curl -fLo ${HOME}/.vim/tmp/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
 if type nvim &> /dev/null; then
