@@ -6,11 +6,13 @@ if [ ! -e $HOME/.vim ]; then
     ln -sfn ${DIR}/vim $HOME/.vim
     mkdir -p $HOME/.vim/tmp/backup $HOME/.vim/tmp/swap $HOME/.vim/tmp/undo
 else
-    echo ".vim folder exists"
+    echo "$HOME/.vim folder exists"
+    mkdir -p $HOME/.vim/tmp
 fi
 
 if [ ! -d ${DIR}/vim/bundle ]; then
     echo "git clone vundle"
+    git clone --depth=1 https://github.com/VundleVim/Vundle.vim.git ${DIR}/vim/tmp/Vundle.vim
     git clone --depth=1 https://github.com/yuweijun/vundle.git ${DIR}/vim/bundle
     cd ${DIR}/vim/bundle
     git submodule update --init --recursive
