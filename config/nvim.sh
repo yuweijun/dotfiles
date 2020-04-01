@@ -5,7 +5,7 @@ if [ ! -e ${HOME}/.config/nvim ]; then
     mkdir -p ${HOME}/.local/share/nvim/tmp/backup ${HOME}/.local/share/nvim/tmp/swap ${HOME}/.local/share/nvim/tmp/undo
 fi
 
-if [ ! -e ${HOME}/.config/nvim/init.vim ]; then
+if [ ! -e ${HOME}/.vim/tmp/plug.vim ]; then
     DIR=${DIR:-$(pwd)}
     if [ ! -e $HOME/.vim ]; then
         ln -sfn ${DIR}/vim $HOME/.vim
