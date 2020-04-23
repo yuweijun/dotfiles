@@ -2,7 +2,7 @@
     "title": "ultimate macOS",
     "maintainers": ["suliveevil"],
     "homepage": "https://github.com/Vonng/Capslock",
-    "import_url": "karabiner://karabiner/assets/complex_modifications/import?url=https://raw.githubusercontent.com/yuweijun/dotfiles/karabiner/assets/complex_modifications/hyper.json",
+    "import_url": "karabiner://karabiner/assets/complex_modifications/import?url=https://raw.githubusercontent.com/yuweijun/dotfiles/master/karabiner/assets/complex_modifications/hyper.json",
     "rules": [{
             "description": "ultimate macOS (version: 202004231400)"
         },
