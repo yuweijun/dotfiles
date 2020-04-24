@@ -11,6 +11,7 @@ if type nvim &>/dev/null; then
 fi
 
 alias vi="vim"
+alias vin="vim -u NONE"
 alias vzrc='vi ~/.zshrc'
 
 if type gls &>/dev/null; then
@@ -22,6 +23,14 @@ elif type colorls &>/dev/null; then
 elif type exa &>/dev/null; then
     alias ls="exa"
     alias lt="exa -la -t modified"
+fi
+
+if type rg &>/dev/null; then
+    alias grep="rg"
+fi
+
+if type mosh &>/dev/null; then
+    alias mosh='LC_ALL="en_US.UTF-8" mosh'
 fi
 
 if type bat &>/dev/null; then
