@@ -12,6 +12,8 @@ brew cask install font-hack-nerd-font
 
 # brwe tap "homebrew/cask"
 # brew cask install iterm2
+# brew cask install fliqlo clocksaver
+# xattr -rc "$HOME/Library/Screen Savers"
 
 ################### some other fonts ###################
 # brew cask install font-dejavu-sans-mono-for-powerline
