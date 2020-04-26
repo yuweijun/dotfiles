@@ -1,8 +1,11 @@
 #!/bin/bash
 
-# apt install python3-pip
+# ubuntu install pip3/pip/virtualenv
+# apt install -y python3-pip
 # or
-# apt install python-pip
+# apt install -y python-pip
+# or
+# apt install -y python3-virtualenv
 
 if type pip > /dev/null 2>&1; then
     if ! type virtualenv > /dev/null 2>&1; then
