@@ -68,7 +68,7 @@ spoon.TextClipboardHistory.paste_on_select = true
 spoon.TextClipboardHistory.honor_ignoredidentifiers = true
 spoon.TextClipboardHistory:start()
 
-hs.hotkey.bind({'cmd', 'shift'}, "V", function()
+hs.hotkey.bind(hyper, "V", function()
     spoon.TextClipboardHistory:toggleClipboard()
     mode:exit()
 end)
