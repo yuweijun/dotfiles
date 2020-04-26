@@ -1,8 +1,16 @@
 #!/bin/bash
 
+# apt install python3-pip
+# or
+# apt install python-pip
+
 if type pip > /dev/null 2>&1; then
     if ! type virtualenv > /dev/null 2>&1; then
         pip install virtualenv 2> /dev/null
+    fi
+elif type pip3 > /dev/null 2>&1; then
+    if ! type virtualenv > /dev/null 2>&1; then
+        pip3 install virtualenv 2> /dev/null
     fi
 fi
 
@@ -16,6 +24,11 @@ if type virtualenv > /dev/null 2>&1; then
         if [ ! -e ${HOME}/.virtualenv/python2 ]; then
             mkdir -p ${HOME}/.virtualenv/python2
             virtualenv -p $(which python2) ${HOME}/.virtualenv/python2
+        fi
+    elif type python 2> /dev/null; then
+        if [ ! -e ${HOME}/.virtualenv/python ]; then
+            mkdir -p ${HOME}/.virtualenv/python
+            virtualenv -p $(which python) ${HOME}/.virtualenv/python
         fi
     fi
 
