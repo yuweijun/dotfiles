@@ -37,10 +37,41 @@
 
 1. Double click on selected `Dark Pastel.terminal` file. It will open a new Terminal window with that color scheme, or execute those below commands in terminal:
 
-    > $ open os/macos-terminal-themes
-    >
-    > $ open 'Dark Pastel.terminal'
+    $ open os/macos-terminal-themes
+    $ open 'Dark Pastel.terminal'
 
 2. Set the scheme as the default one with Shell -> `Use Settings as Default`.
 3. Change `Dark pastel` profile theme, text font using `Hack Nerd Font` and set font size as `16`.
+
+## optional install karabiner config for MacOS
+
+    $ brew cask install karabiner-elements
+    $ config/karabiner.sh
+
+## optional install hammerspoon config for MacOS
+
+    $ brew cask install hammerspoon
+    $ config/hammerspoon.sh
+
+## optional install applications and screensavers for MacOS
+
+    $ brwe tap "homebrew/cask"
+    $ brew cask install iterm2
+    $ brew cask install google-chrome
+    $ brew cask install fliqlo clocksaver
+    $ xattr -rc "$HOME/Library/Screen Savers"
+
+## optional install fonts for MacOS
+
+    $ brew tap "homebrew/cask-fonts"
+    $ brew cask install font-dejavu-sans-mono-for-powerline
+    $ brew cask install font-menlo-for-powerline
+    $ brew cask install font-meslo-for-powerline
+    $ brew cask install font-source-code-pro-for-powerline
+    $ brew cask install font-meslo-nerd-font-mono
+    $ brew cask install font-droid-sans-mono-for-powerline
+    $ brew cask install font-fira-mono-for-powerline
+    $ brew cask install font-fira-code
+    $ brew cask install font-firacode-nerd-font-mono
+    $ brew cask install font-fontawesome font-awesome-terminal-fonts
 
