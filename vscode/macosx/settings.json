@@ -15,15 +15,20 @@
     "terminal.integrated.fontSize": 14,
     "terminal.integrated.scrollback": 100000,
     "terminal.integrated.shell.linux": "bash",
-    "window.enableMenuBarMnemonics": false,
     "window.zoomLevel": 0,
     "workbench.activityBar.visible": false,
-    "workbench.statusBar.feedback.visible": false,
     "vim.insertModeKeyBindings": [
         {
             "before": [
-                "z",
-                "z"
+                "<M-l>"
+            ],
+            "after": [
+                "<Esc>"
+            ]
+        },
+        {
+            "before": [
+                "<A-l>"
             ],
             "after": [
                 "<Esc>"
@@ -48,5 +53,9 @@
     "vim.easymotionMarkerFontFamily": "Menlo",
     "vim.easymotionMarkerFontSize": "15",
     "update.mode": "manual",
-    "explorer.confirmDelete": false
+    "explorer.confirmDelete": false,
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "editor.lineNumbers": "relative",
+    "editor.multiCursorModifier": "ctrlCmd"
 }
