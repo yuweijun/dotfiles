@@ -62,16 +62,17 @@ end)
 --------- https://www.hammerspoon.org/Spoons/TextClipboardHistory.html ---------
 --------------------------------------------------------------------------------
 
-hs.loadSpoon('TextClipboardHistory')
-spoon.TextClipboardHistory.show_in_menubar = false
-spoon.TextClipboardHistory.paste_on_select = true
-spoon.TextClipboardHistory.honor_ignoredidentifiers = true
-spoon.TextClipboardHistory:start()
+---------------------------- conflict with ipaste ------------------------------
+-- hs.loadSpoon('TextClipboardHistory')
+-- spoon.TextClipboardHistory.show_in_menubar = false
+-- spoon.TextClipboardHistory.paste_on_select = true
+-- spoon.TextClipboardHistory.honor_ignoredidentifiers = true
+-- spoon.TextClipboardHistory:start()
 
-hs.hotkey.bind(hyper, "V", function()
-    spoon.TextClipboardHistory:toggleClipboard()
-    mode:exit()
-end)
+-- hs.hotkey.bind(hyper, "V", function()
+    -- spoon.TextClipboardHistory:toggleClipboard()
+    -- mode:exit()
+-- end)
 
 --------------------------------------------------------------------------------
 -------------------- remapping control+hjkl to arrow keys ----------------------
