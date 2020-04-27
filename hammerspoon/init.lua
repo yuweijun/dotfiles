@@ -58,23 +58,6 @@ hs.hotkey.bind(hyper, "C", function()
 end)
 
 --------------------------------------------------------------------------------
----------------------------- TextClipboardHistory ------------------------------
---------- https://www.hammerspoon.org/Spoons/TextClipboardHistory.html ---------
---------------------------------------------------------------------------------
-
----------------------------- conflict with ipaste ------------------------------
--- hs.loadSpoon('TextClipboardHistory')
--- spoon.TextClipboardHistory.show_in_menubar = false
--- spoon.TextClipboardHistory.paste_on_select = true
--- spoon.TextClipboardHistory.honor_ignoredidentifiers = true
--- spoon.TextClipboardHistory:start()
-
--- hs.hotkey.bind(hyper, "V", function()
-    -- spoon.TextClipboardHistory:toggleClipboard()
-    -- mode:exit()
--- end)
-
---------------------------------------------------------------------------------
 -------------------- remapping control+hjkl to arrow keys ----------------------
 --------- https://github.com/kkamdooong/hammerspoon-control-hjkl-to-arrow ------
 --------------------------------------------------------------------------------
@@ -131,3 +114,27 @@ remap({'ctrl', 'cmd', 'alt', 'shift'}, 'h', pressFn({'cmd', 'alt', 'shift'}, 'le
 remap({'ctrl', 'cmd', 'alt', 'shift'}, 'j', pressFn({'cmd', 'alt', 'shift'}, 'down'))
 remap({'ctrl', 'cmd', 'alt', 'shift'}, 'k', pressFn({'cmd', 'alt', 'shift'}, 'up'))
 remap({'ctrl', 'cmd', 'alt', 'shift'}, 'l', pressFn({'cmd', 'alt', 'shift'}, 'right'))
+
+--------------------------------------------------------------------------------
+---------------------------- TextClipboardHistory ------------------------------
+--------- https://www.hammerspoon.org/Spoons/TextClipboardHistory.html ---------
+--------------------------------------------------------------------------------
+
+---------------------------- conflict with ipaste ------------------------------
+-- hs.loadSpoon('TextClipboardHistory')
+-- spoon.TextClipboardHistory.show_in_menubar = false
+-- spoon.TextClipboardHistory.paste_on_select = true
+-- spoon.TextClipboardHistory.honor_ignoredidentifiers = true
+-- spoon.TextClipboardHistory:start()
+
+-- hs.hotkey.bind(hyper, "V", function()
+    -- spoon.TextClipboardHistory:toggleClipboard()
+    -- mode:exit()
+-- end)
+
+--------------------------------------------------------------------------------
+--------------------------------- SpeedMenu ------------------------------------
+--------------------------------------------------------------------------------
+
+-- hs.loadSpoon('SpeedMenu')
+-- spoon.SpeedMenu:start()
