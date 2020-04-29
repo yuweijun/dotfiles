@@ -35,3 +35,6 @@
 	path = powerlevel9k
 	url = https://github.com/bhilburn/powerlevel9k.git
 
+[submodule "powerlevel10k"]
+	path = powerlevel10k
+	url = git@github.com:romkatv/powerlevel10k.git
