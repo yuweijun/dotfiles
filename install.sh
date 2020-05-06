@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# set -e
-# set -x
+set -e
+set -x
 
 cd "$(dirname $0)"
 export DIR="$(pwd)"
@@ -10,7 +10,7 @@ git submodule update --init --recursive
 git submodule foreach git checkout
 
 export RCFILE="${HOME}/.bashrc"
-if [ "${SHELL}" = "/bin/zsh" ]; then
+if [[ "${SHELL}" =~ "zsh" ]]; then
     export RCFILE="${HOME}/.zshrc"
     if [ ! -e ${HOME}/.oh-my-zsh ]; then
         ln -sfn ${DIR}/oh-my-zsh ${HOME}/.oh-my-zsh
