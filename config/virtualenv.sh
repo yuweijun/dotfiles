@@ -15,6 +15,8 @@ elif type pip3 > /dev/null 2>&1; then
     if ! type virtualenv > /dev/null 2>&1; then
         pip3 install virtualenv 2> /dev/null
     fi
+else
+    exit 0
 fi
 
 if type virtualenv > /dev/null 2>&1; then
