@@ -72,7 +72,9 @@ local function remap(mods, key, pressFn)
     hs.hotkey.bind(mods, key, pressFn, nil, pressFn)
 end
 
-remap({'alt'}, 'j', pressFn('escape'))
+remap({'alt'}, 'h', pressFn('escape'))
+remap({'alt'}, 'j', pressFn('down'))
+remap({'alt'}, 'k', pressFn('up'))
 
 --------------------------------------------------------------------------------
 ---------------------------- TextClipboardHistory ------------------------------
