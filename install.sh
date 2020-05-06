@@ -24,6 +24,7 @@ if [ "${SHELL}" = "/bin/zsh" ]; then
     ln -sfn ${DIR}/zsh-custom/themes/powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerline.zsh-theme
     ln -sfn ${DIR}/zsh-custom/themes/powerlevel9k.vm.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerlevel9k.vm.zsh-theme
     ln -sfn ${DIR}/zsh-custom/themes/powerlevel9k.kiss.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerlevel9k.kiss.zsh-theme
+    ln -sfn ${DIR}/zsh-custom/themes/powerlevel9k.clean.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerlevel9k.clean.zsh-theme
     ln -sfn ${DIR}/powerlevel9k/powerlevel9k.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerlevel9k.zsh-theme
     ln -sfn ${DIR}/powerlevel10k/powerlevel10k.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerlevel10k.zsh-theme
     echo "###########################################" >> ${RCFILE}
