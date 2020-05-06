@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ "$SHELL" != "/bin/zsh" ]]; then
+if [[ ! "$SHELL" =~ "zsh" ]]; then
     exit 0
 fi
 

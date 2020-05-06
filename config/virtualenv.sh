@@ -38,7 +38,7 @@ if type virtualenv > /dev/null 2>&1; then
     fi
 
     RCFILE="${HOME}/.bashrc"
-    if [ "${SHELL}" = "/bin/zsh" ]; then
+    if [[ "${SHELL}" =~ "zsh" ]]; then
         RCFILE="${HOME}/.zshrc"
     fi
 
