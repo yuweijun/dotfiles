@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 zsh_custom_ip(){
-  ip=$(ip addr show ens3 | grep 'dynamic' | awk '{print $2}' | cut -f1 -d '/')
+  ip=$(ip addr | grep 'dynamic ens3' | awk '{print $2}' | cut -f1 -d '/')
   echo -n "%F{green}$ip"
 }
 
