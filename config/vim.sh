@@ -4,11 +4,11 @@ DIR=${DIR:-$(pwd)}
 
 if [ ! -e $HOME/.vim ]; then
     ln -sfn ${DIR}/vim $HOME/.vim
-    mkdir -p $HOME/.vim/tmp/backup $HOME/.vim/tmp/swap $HOME/.vim/tmp/undo
 else
     echo "$HOME/.vim folder exists"
-    mkdir -p $HOME/.vim/tmp
 fi
+
+mkdir -p $HOME/.vim/tmp/backup $HOME/.vim/tmp/swap $HOME/.vim/tmp/undo
 
 if [ ! -d ${DIR}/vim/bundle ]; then
     echo "git clone vundle"
