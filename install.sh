@@ -41,15 +41,15 @@ else
 fi
 
 ./config/tmux.sh
-./config/mycli.sh
 ./config/vim.sh
 ./config/nvim.sh
 ./config/nvm.sh
 ./config/mvn.sh
+./config/virtualenv.sh
+./config/mycli.sh
 ./config/fzf.sh
 ./config/autojump.sh
 ./config/ssh.sh
-./config/virtualenv.sh
 ./config/bash-profile.sh
 ./config/homebrew.sh
 ./config/dircolors.sh

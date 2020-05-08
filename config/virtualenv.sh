@@ -6,6 +6,9 @@
 # apt install -y python-pip
 # or
 # apt install -y python3-virtualenv
+#
+# Alpine Linux
+# apk install python3 py3-pip
 
 if type pip > /dev/null 2>&1; then
     if ! type virtualenv > /dev/null 2>&1; then
