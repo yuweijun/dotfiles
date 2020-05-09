@@ -44,8 +44,13 @@ fi
 ./config/zsh-only.sh
 
 if [ ! -e "${HOME}/.after.vimrc" ]; then
-    ./vim/install.sh
     echo "let g:airline_powerline_fonts=0" > "${HOME}/.after.vimrc"
+
+    ln -sfn "${DIR}/vim" ~/.vim
+    mkdir -p ~/.config/nvim ~/.local/share/nvim/site
+    mkdir -p ~/.vim/tmp/backup ~/.vim/tmp/swap ~/.vim/tmp/undo
+
+    ln -sfn "${DIR}/vim/pack" "${HOME}/.local/share/nvim/site/pack"
     ln -sfn "${DIR}/vim/server.vimrc" "${HOME}/.config/nvim/init.vim"
     ln -sfn "${DIR}/vim/server.vimrc" "${HOME}/.vimrc"
 fi
