@@ -20,7 +20,7 @@ if [[ "${SHELL}" =~ "zsh" ]]; then
         mv ${RCFILE} ${RCFILE}.bak
     fi
 
-    cp ${DIR}/zsh-custom/templates/zshrc.zsh-template ${RCFILE}
+    cp ${DIR}/zsh-custom/templates/powerlevel9k.clean.zsh-template ${RCFILE}
     ln -sfn ${DIR}/zsh-custom/themes/powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerline.zsh-theme
     ln -sfn ${DIR}/zsh-custom/themes/powerlevel9k.vm.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerlevel9k.vm.zsh-theme
     ln -sfn ${DIR}/zsh-custom/themes/powerlevel9k.kiss.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerlevel9k.kiss.zsh-theme
@@ -42,5 +42,9 @@ fi
 
 ./config/ssh.sh
 ./config/zsh-only.sh
-./config/vim.sh
+
+if [ ! -e "${HOME}/.after.vimrc" ]; then
+    ./vim/install.sh
+    echo "let g:airline_powerline_fonts=0" > "${HOME}/.after.vimrc"
+fi
 
