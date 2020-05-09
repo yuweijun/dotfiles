@@ -2,23 +2,28 @@
 
 DIR=${DIR:-$(pwd)}
 
+if [ ! -d "${DIR}/dircolors-solarized" ]; then
+    git clone --depth=1 https://github.com/seebi/dircolors-solarized.git "${DIR}/dircolors-solarized"
+fi
+
 if [ -f $HOME/.dircolors ]; then
     echo "$HOME/.dircolors file exists"
 else
     ln -sfn ${DIR}/dircolors-solarized/dircolors.256dark $HOME/.dircolors
 fi
 
-if [[ "$SHELL" != */bin/bash* ]]; then
+if [[ "$SHELL" =~ "zsh" ]]; then
     if [[ "$TERM" == "linux" ]]; then
         # for zsh on linux server
         ln -sfn ${DIR}/dircolors-solarized/dircolors.ansi-dark $HOME/.dircolors.linux
-        echo "" >> ${RCFILE}
-        echo 'eval "$(dircolors $HOME/.dircolors.linux)"' >> ${RCFILE}
+        echo "" >> ~/.zshrc
+        echo 'eval "$(dircolors $HOME/.dircolors.linux)"' >> ~/.zshrc
     fi
 
     exit 0
 fi
 
+RCFILE=${RCFILE:-.bashrc}
 if type dircolors > /dev/null 2>&1; then
     if ! grep dircolors ${RCFILE} 2> /dev/null; then
         echo "" >> ${RCFILE}

@@ -4,37 +4,9 @@
 [submodule "tmux"]
 	path = tmux
 	url = https://github.com/yuweijun/tmux.git
-[submodule "oh-my-zsh"]
-	path = oh-my-zsh
-	url = https://github.com/robbyrussell/oh-my-zsh.git
 [submodule "mycli"]
 	path = mycli
 	url = https://github.com/yuweijun/mycli.git
-[submodule "fzf"]
-	path = fzf
-	url = https://github.com/junegunn/fzf.git
-[submodule "dircolors-solarized"]
-	path = dircolors-solarized
-	url = https://github.com/seebi/dircolors-solarized.git
-[submodule "autojump"]
-	path = autojump
-	url = https://github.com/yuweijun/autojump
-[submodule "zsh-syntax-highlighting"]
-	path = zsh-custom/plugins/zsh-syntax-highlighting
-	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
-[submodule "zsh-autosuggestions"]
-	path = zsh-custom/plugins/zsh-autosuggestions
-	url = https://github.com/zsh-users/zsh-autosuggestions.git
-[submodule "bash-it"]
-	path = bash-it
-	url = https://github.com/yuweijun/bash-it.git
 [submodule "nerd-fonts"]
 	path = nerd-fonts
 	url = https://github.com/yuweijun/nerd-fonts.git
-[submodule "powerlevel9k"]
-	path = powerlevel9k
-	url = https://github.com/bhilburn/powerlevel9k.git
-
-[submodule "powerlevel10k"]
-	path = powerlevel10k
-	url = git@github.com:romkatv/powerlevel10k.git
