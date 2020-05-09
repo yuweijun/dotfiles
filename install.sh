@@ -11,6 +11,7 @@ git submodule foreach git checkout
 
 if [[ "${SHELL}" =~ "zsh" ]]; then
     export RCFILE="${HOME}/.zshrc"
+    cp ${DIR}/zsh-custom/templates/zshrc.zsh-template ${RCFILE}
     ./config/oh-my-zsh.sh
 else
     export RCFILE="${HOME}/.bashrc"

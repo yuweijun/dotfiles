@@ -23,7 +23,6 @@ if [ -f ${RCFILE} ]; then
     mv ${RCFILE} ${RCFILE}.bak
 fi
 
-cp ${DIR}/zsh-custom/templates/zshrc.zsh-template ${RCFILE}
 ln -sfn ${DIR}/zsh-custom/themes/powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerline.zsh-theme
 ln -sfn ${DIR}/zsh-custom/themes/powerlevel9k.vm.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerlevel9k.vm.zsh-theme
 ln -sfn ${DIR}/zsh-custom/themes/powerlevel9k.kiss.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerlevel9k.kiss.zsh-theme
