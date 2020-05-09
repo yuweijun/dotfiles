@@ -20,15 +20,7 @@
     "vim.insertModeKeyBindings": [
         {
             "before": [
-                "<M-l>"
-            ],
-            "after": [
-                "<Esc>"
-            ]
-        },
-        {
-            "before": [
-                "<A-l>"
+                "z", "z"
             ],
             "after": [
                 "<Esc>"
