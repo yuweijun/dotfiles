@@ -46,5 +46,7 @@ fi
 if [ ! -e "${HOME}/.after.vimrc" ]; then
     ./vim/install.sh
     echo "let g:airline_powerline_fonts=0" > "${HOME}/.after.vimrc"
+    ln -sfn "${DIR}/vim/server.vimrc" "${HOME}/.config/nvim/init.vim"
+    ln -sfn "${DIR}/vim/server.vimrc" "${HOME}/.vimrc"
 fi
 
