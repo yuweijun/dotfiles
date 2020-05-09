@@ -9,11 +9,6 @@ USER_DISABLE_PROMPT=0
 HOSTNAME_DISABLE_PROMPT=0
 DISABLE_MAGIC_FUNCTIONS=true
 
-POWERLEVEL9K_MODE="nerdfont-complete"
-POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
-POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(ssh dir vcs newline status)
-POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(root_indicator background_jobs history time)
-
 unsetopt BEEP
 
 if [[ $OSTYPE =~ ^darwin ]]; then
