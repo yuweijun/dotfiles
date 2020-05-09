@@ -6,6 +6,7 @@
 cd "$(dirname $0)"
 export DIR="$(pwd)"
 
+git submodule update --init --recursive
 git submodule foreach git checkout
 
 export RCFILE="${HOME}/.bashrc"
