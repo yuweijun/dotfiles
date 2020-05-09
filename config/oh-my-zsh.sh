@@ -19,10 +19,6 @@ if [ ! -e ${HOME}/.oh-my-zsh ]; then
     ln -sfn ${DIR}/oh-my-zsh ${HOME}/.oh-my-zsh
 fi
 
-if [ -f ${RCFILE} ]; then
-    mv ${RCFILE} ${RCFILE}.bak
-fi
-
 ln -sfn ${DIR}/zsh-custom/themes/powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerline.zsh-theme
 ln -sfn ${DIR}/zsh-custom/themes/powerlevel9k.vm.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerlevel9k.vm.zsh-theme
 ln -sfn ${DIR}/zsh-custom/themes/powerlevel9k.kiss.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerlevel9k.kiss.zsh-theme
