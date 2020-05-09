@@ -31,6 +31,14 @@ ln -sfn ${DIR}/zsh-custom/themes/powerlevel9k.clean.zsh-theme ${DIR}/oh-my-zsh/c
 ln -sfn ${DIR}/powerlevel9k/powerlevel9k.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerlevel9k.zsh-theme
 echo "###########################################" >> ${RCFILE}
 
+if [ ! -d "${DIR}/zsh-custom/plugins/zsh-syntax-highlighting" ]; then
+    git clone --depth=1 https://github.com/zsh-users/zsh-syntax-highlighting.git "${DIR}/zsh-custom/plugins/zsh-syntax-highlighting"
+fi
+
+if [ ! -d "${DIR}/zsh-custom/plugins/zsh-autosuggestions" ]; then
+    git clone --depth=1 https://github.com/zsh-users/zsh-autosuggestions.git "${DIR}/zsh-custom/plugins/zsh-autosuggestions"
+fi
+
 for plugin in $(ls ${DIR}/zsh-custom/plugins)
 do
     echo $plugin
