@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -ex
-
 if type brew 2> /dev/null; then
     ENVRC=${HOME}/.envrc
 
