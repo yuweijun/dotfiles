@@ -20,8 +20,6 @@ else
 fi
 
 ./config/tmux.sh
-./config/vim.sh
-./config/nvim.sh
 ./config/nvm.sh
 ./config/mvn.sh
 ./config/virtualenv.sh
@@ -34,4 +32,4 @@ fi
 ./config/dircolors.sh
 ./config/fonts.sh
 ./config/alacritty.sh
-
+./vim/install.sh
