@@ -32,4 +32,5 @@ fi
 ./config/dircolors.sh
 ./config/fonts.sh
 ./config/alacritty.sh
-./vim/install.sh
+
+./vim/install.sh "$*"
