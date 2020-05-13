@@ -6,6 +6,9 @@ else
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 fi
 
+# install gnu ls sed
+brew install coreutils gnu-sed
+
 # install fonts from https://github.com/Homebrew/homebrew-cask-fonts/tree/master/Casks
 brew tap "homebrew/cask-fonts"
 brew cask install font-hack-nerd-font

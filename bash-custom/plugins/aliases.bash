@@ -25,8 +25,8 @@ elif type exa &>/dev/null; then
     alias lt="exa -la -t modified"
 fi
 
-if type rg &>/dev/null; then
-    alias grep="rg"
+if type gsed &>/dev/null; then
+    alias sed="gsed"
 fi
 
 if type mosh &>/dev/null; then

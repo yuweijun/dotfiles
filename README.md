@@ -24,9 +24,13 @@
 
     $ yum install -y git
 
-# install homebrew on macosx
+# install homebrew on Mac OS X
 
     $ os/macosx.sh
+
+# install GNU ls and sed for Mac OS X
+
+    $ brew install coreutils gnu-sed
 
 ## optional for MacOS installing extra applications
 
