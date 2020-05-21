@@ -41,3 +41,8 @@ if type systemctl &>/dev/null; then
     alias sc-running='systemctl list-units --type=service --state=running'
 fi
 
+function gll {
+    find . -type d -name '.git' -print0 \
+        | xargs -P 10 -n 1 -0 -I '{}' \
+        sh -c "cd \"{}\"/../ && git pull && pwd && echo '--------------------'" \;
+}
