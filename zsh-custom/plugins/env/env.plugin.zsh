@@ -16,7 +16,3 @@ if [[ $OSTYPE =~ ^darwin ]]; then
     LSCOLORS=GxFxCxDxBxegedabagaced
 fi
 
-if [ -f $HOME/.envrc ]; then
-    source $HOME/.envrc
-fi
-
