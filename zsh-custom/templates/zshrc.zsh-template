@@ -25,4 +25,3 @@ plugins=(aliases
 )
 
 source $ZSH/oh-my-zsh.sh
-[ -f $HOME/.envrc ] && source $HOME/.envrc
