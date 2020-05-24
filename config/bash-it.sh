@@ -4,6 +4,7 @@ if [[ "$SHELL" =~ "zsh" ]]; then
     exit 0
 fi
 
+cd "$(dirname $0)"
 DIR=${DIR:-$(pwd)}
 RCFILE="${HOME}/.bashrc"
 
@@ -12,6 +13,7 @@ if [ ! -d "${DIR}/dircolors-solarized" ]; then
 fi
 
 ln -sfn ${DIR}/bash-it ${HOME}/.bash-it
+
 cd ${HOME}/.bash-it
 ./install.sh --silent --no-modify-config
 cp ${DIR}/bash-custom/template/bash_profile.template.bash ${RCFILE}
@@ -19,4 +21,5 @@ cd -
 
 ln -sfn ${DIR}/bash-custom/themes ${DIR}/bash-it/custom/themes
 ln -sfn ${DIR}/bash-custom/plugins ${DIR}/bash-it/custom/plugins
+
 echo "###########################################" >> ${RCFILE}

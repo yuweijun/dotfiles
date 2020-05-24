@@ -6,8 +6,10 @@
 cd "$(dirname $0)"
 export DIR="$(pwd)"
 
-git submodule update --init --recursive
-git submodule foreach git checkout
+if [ -d '.git' ]; then
+    git submodule update --init --recursive
+    git submodule foreach git checkout
+fi
 
 if [[ "${SHELL}" =~ "zsh" ]]; then
     export RCFILE="${HOME}/.zshrc"
