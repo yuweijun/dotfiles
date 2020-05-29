@@ -10,9 +10,9 @@ if type nvim &>/dev/null; then
     alias vim="nvim"
 fi
 
-alias vi="vim"
-alias vin="vim -u NONE"
+alias vi="vim -u NONE"
 alias vzrc='vi ~/.zshrc'
+alias vbrc='vi ~/.bashrc'
 
 if type gls &>/dev/null; then
     # gnu-ls command for Mac OS
