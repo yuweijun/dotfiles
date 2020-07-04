@@ -1,6 +1,7 @@
 # env setting for zsh
 
 export LANG=en_US.UTF-8
+export TERM="xterm-256color"
 export PATH=$PATH:/usr/local/sbin:$HOME/bin
 
 HOMEBREW_NO_AUTO_UPDATE=1

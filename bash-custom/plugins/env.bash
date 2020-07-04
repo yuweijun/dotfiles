@@ -1,10 +1,11 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-LANG=en_US.UTF-8
+export TERM="xterm-256color"
+export LANG=en_US.UTF-8
+export PATH=$PATH:/usr/local/sbin:$HOME/bin
 
 VIRTUAL_ENV_DISABLE_PROMPT=1
 HOMEBREW_NO_AUTO_UPDATE=1
-PATH=$PATH:/usr/local/sbin:$HOME/bin
 
 if [[ $OSTYPE =~ ^darwin ]]; then
     CLICOLOR=1
