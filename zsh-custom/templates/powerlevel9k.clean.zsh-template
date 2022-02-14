@@ -20,7 +20,6 @@ plugins=(aliases
     zsh-autosuggestions
     zsh-colors
     zsh-syntax-highlighting
-    zsh_reload
     env
 )
 
