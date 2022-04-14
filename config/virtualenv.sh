@@ -56,3 +56,9 @@ if type virtualenv > /dev/null 2>&1; then
     fi
 fi
 
+if [ -e /usr/local/opt/python/bin/pip3 ]; then
+    # reinstall virtualenv after upgrade python and pip3
+    /usr/local/opt/python/bin/pip3 install virtualenv
+    # virtualenv -p $(which python3) ${HOME}/.virtualenv/python3
+fi
+
