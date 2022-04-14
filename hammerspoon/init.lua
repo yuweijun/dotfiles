@@ -96,5 +96,5 @@ end)
 --------------------------------- SpeedMenu ------------------------------------
 --------------------------------------------------------------------------------
 
--- hs.loadSpoon('SpeedMenu')
--- spoon.SpeedMenu:start()
+hs.loadSpoon('SpeedMenu')
+spoon.SpeedMenu:start()

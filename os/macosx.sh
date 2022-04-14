@@ -11,4 +11,4 @@ brew install coreutils gnu-sed
 
 # install fonts from https://github.com/Homebrew/homebrew-cask-fonts/tree/master/Casks
 brew tap "homebrew/cask-fonts"
-brew cask install font-hack-nerd-font
+brew install --cask font-hack-nerd-font
