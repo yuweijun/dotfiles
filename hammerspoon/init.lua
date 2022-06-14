@@ -16,16 +16,8 @@ end)
 ---------------------------- Hotkey app management -----------------------------
 --------------------------------------------------------------------------------
 
-hs.hotkey.bind({'alt'}, "[", function() hs.execute('~/.hammerspoon/bin/google', true) end)
-hs.hotkey.bind({'alt'}, "]", function() hs.execute('~/.hammerspoon/bin/translate', true) end)
 hs.hotkey.bind({'alt'}, "a", function() hs.application.launchOrFocus('Launchpad') end)
-hs.hotkey.bind({'alt'}, "s", function() hs.application.launchOrFocus('Visual Studio Code') end)
-hs.hotkey.bind({'alt'}, "d", function() hs.application.launchOrFocus('Intellij IDEA CE') end)
-hs.hotkey.bind({'alt'}, "e", function() hs.application.launchOrFocus('Evernote') end)
-hs.hotkey.bind({'alt'}, "f", function() hs.application.launchOrFocus('finder') end)
 hs.hotkey.bind({'alt'}, "w", function() hs.application.launchOrFocus('Mission Control') end)
-hs.hotkey.bind({'alt'}, "x", function() hs.application.launchOrFocus('iTerm') end)
-hs.hotkey.bind({'alt'}, "z", function() hs.application.launchOrFocus('Google Chrome') end)
 
 --------------------------------------------------------------------------------
 ------------------------------ Window management -------------------------------
