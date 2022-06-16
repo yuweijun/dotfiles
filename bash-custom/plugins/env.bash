@@ -2,7 +2,7 @@
 
 export TERM="xterm-256color"
 export LANG=en_US.UTF-8
-export PATH=$PATH:/usr/local/sbin:$HOME/bin
+export PATH=$HOME/bin:$PATH
 
 VIRTUAL_ENV_DISABLE_PROMPT=1
 HOMEBREW_NO_AUTO_UPDATE=1
