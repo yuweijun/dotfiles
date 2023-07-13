@@ -19,6 +19,7 @@ if [ ! -e ${HOME}/.oh-my-zsh ]; then
     ln -sfn ${DIR}/oh-my-zsh ${HOME}/.oh-my-zsh
 fi
 
+ln -sfn ${DIR}/powerlevel10k/powerlevel10k.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerlevel10k.zsh-theme
 ln -sfn ${DIR}/zsh-custom/themes/powerline.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerline.zsh-theme
 ln -sfn ${DIR}/zsh-custom/themes/powerlevel9k.vm.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerlevel9k.vm.zsh-theme
 ln -sfn ${DIR}/zsh-custom/themes/powerlevel9k.kiss.zsh-theme ${DIR}/oh-my-zsh/custom/themes/powerlevel9k.kiss.zsh-theme
