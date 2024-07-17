@@ -54,11 +54,18 @@ if type virtualenv > /dev/null 2>&1; then
             echo 'source ${HOME}/.virtualenv/python2/bin/activate' >> ${ENVRC}
         fi
     fi
+else
+    if type python3 2> /dev/null; then
+        python3 -m venv ~/.virtualenv
+        source "${HOME}/.virtualenv/bin/activate"
+        pip install --upgrade pip
+        pip install virtualenv
+    fi
 fi
 
-if [ -e /usr/local/opt/python/bin/pip3 ]; then
+if [ -e /opt/homebrew/bin/pip3 ]; then
     # reinstall virtualenv after upgrade python and pip3
-    /usr/local/opt/python/bin/pip3 install virtualenv
+    /opt/homebrew/bin/pip3 install virtualenv
     # virtualenv -p $(which python3) ${HOME}/.virtualenv/python3
 fi
 

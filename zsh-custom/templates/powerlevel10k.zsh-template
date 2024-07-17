@@ -11,16 +11,12 @@ ZSH_THEME="powerlevel10k"
 plugins=(aliases
     alias-finder
     autojump
-    dircolors
     fzf
     git
     kubectl
-    mycli
     nvm
-    systemd
     tmux
     virtualenv
-    z
     zsh-autosuggestions
     zsh-colors
     zsh-syntax-highlighting
@@ -32,3 +28,5 @@ source $ZSH/oh-my-zsh.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+

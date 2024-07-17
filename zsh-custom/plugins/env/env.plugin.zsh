@@ -17,3 +17,4 @@ if [[ $OSTYPE =~ ^darwin ]]; then
     LSCOLORS=GxFxCxDxBxegedabagaced
 fi
 
+[ -f $HOME/.envrc ] && source $HOME/.envrc
