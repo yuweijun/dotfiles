@@ -22,7 +22,6 @@ else
     ./config/bash-it.sh
 fi
 
-./config/envrc.sh
 ./config/tmux.sh
 ./config/nvm.sh
 ./config/mvn.sh
