@@ -1,5 +1,29 @@
-# add shell function to show terminal colors
+# Here's an LS_COLORS configuration inspired by the Monokai color scheme:
 
-> getTerminalColors background
->
-> getTerminalColors foreground
+    export LS_COLORS='no=00;38;5;244:rs=0:di=38;5;81:ln=38;5;197:mh=00:pi=40;38;5;11:so=38;5;13:do=38;5;5:bd=48;5;232;38;5;11:cd=48;5;232;38;5;3:or=48;5;232;38;5;9:mi=00:su=38;5;220;1;3;48;5;160:sg=38;5;220;1;3;48;5;136:ca=30;41:tw=38;5;220;48;5;24:ow=38;5;220;1;48;5;24:st=38;5;220;48;5;24:ex=38;5;118:*.tar=38;5;197:*.tgz=38;5;197:*.arc=38;5;197:*.arj=38;5;197:*.taz=38;5;197:*.lha=38;5;197:*.lz4=38;5;197:*.lzh=38;5;197:*.lzma=38;5;197:*.tlz=38;5;197:*.txz=38;5;197:*.tzo=38;5;197:*.t7z=38;5;197:*.zip=38;5;197:*.z=38;5;197:*.dz=38;5;197:*.gz=38;5;197:*.lrz=38;5;197:*.lz=38;5;197:*.lzo=38;5;197:*.xz=38;5;197:*.zst=38;5;197:*.tzst=38;5;197:*.bz2=38;5;197:*.bz=38;5;197:*.tbz=38;5;197:*.tbz2=38;5;197:*.tz=38;5;197:*.deb=38;5;197:*.rpm=38;5;197:*.jar=38;5;197:*.war=38;5;197:*.ear=38;5;197:*.sar=38;5;197:*.rar=38;5;197:*.alz=38;5;197:*.ace=38;5;197:*.zoo=38;5;197:*.cpio=38;5;197:*.7z=38;5;197:*.rz=38;5;197:*.cab=38;5;197:*.wim=38;5;197:*.swm=38;5;197:*.dwm=38;5;197:*.esd=38;5;197:*.jpg=38;5;141:*.jpeg=38;5;141:*.mjpg=38;5;141:*.mjpeg=38;5;141:*.gif=38;5;141:*.bmp=38;5;141:*.pbm=38;5;141:*.pgm=38;5;141:*.ppm=38;5;141:*.tga=38;5;141:*.xbm=38;5;141:*.xpm=38;5;141:*.tif=38;5;141:*.tiff=38;5;141:*.png=38;5;141:*.svg=38;5;141:*.svgz=38;5;141:*.mng=38;5;141:*.pcx=38;5;141:*.mov=38;5;141:*.mpg=38;5;141:*.mpeg=38;5;141:*.m2v=38;5;141:*.mkv=38;5;141:*.webm=38;5;141:*.ogm=38;5;141:*.mp4=38;5;141:*.m4v=38;5;141:*.mp4v=38;5;141:*.vob=38;5;141:*.qt=38;5;141:*.nuv=38;5;141:*.wmv=38;5;141:*.asf=38;5;141:*.rm=38;5;141:*.rmvb=38;5;141:*.flc=38;5;141:*.avi=38;5;141:*.fli=38;5;141:*.flv=38;5;141:*.gl=38;5;141:*.dl=38;5;141:*.xcf=38;5;141:*.xwd=38;5;141:*.yuv=38;5;141:*.cgm=38;5;141:*.emf=38;5;141:*.ogv=38;5;141:*.ogx=38;5;141:*.aac=38;5;141:*.au=38;5;141:*.flac=38;5;141:*.m4a=38;5;141:*.mid=38;5;141:*.midi=38;5;141:*.mka=38;5;141:*.mp3=38;5;141:*.mpc=38;5;141:*.ogg=38;5;141:*.ra=38;5;141:*.wav=38;5;141:*.oga=38;5;141:*.opus=38;5;141:*.spx=38;5;141:*.xspf=38;5;141:*.py=38;5;186:*.js=38;5;186:*.java=38;5;186:*.c=38;5;186:*.cpp=38;5;186:*.h=38;5;186:*.sh=38;5;186:*.md=38;5;230:*.txt=38;5;230:*.json=38;5;186:*.xml=38;5;186:*.yml=38;5;186:*.yaml=38;5;186'
+
+Monokai Color Mapping:
+
+- Directories (di): Cyan/Aqua 38;5;81 (Monokai cyan)
+- Symlinks (ln): Pink/Magenta 38;5;197 (Monokai pink)
+- Executables (ex): Green 38;5;118 (Monokai green)
+- Archives: Pink 38;5;197 (Monokai pink)
+- Media files: Purple 38;5;141 (Monokai purple)
+- Source code: Yellow 38;5;186 (Monokai yellow)
+- Text files: Light yellow 38;5;230 (Monokai foreground)
+
+To use it, add to your ~/.zshrc or ~/.bashrc:
+
+# Monokai LS_COLORS
+
+    export LS_COLORS='no=00;38;5;244:rs=0:di=38;5;81:ln=38;5;197:mh=00:pi=40;38;5;11:so=38;5;13:do=38;5;5:bd=48;5;232;38;5;11:cd=48;5;232;38;5;3:or=48;5;232;38;5;9:mi=00:su=38;5;220;1;3;48;5;160:sg=38;5;220;1;3;48;5;136:ca=30;41:tw=38;5;220;48;5;24:ow=38;5;220;1;48;5;24:st=38;5;220;48;5;24:ex=38;5;118:*.tar=38;5;197:*.tgz=38;5;197:*.zip=38;5;197:*.gz=38;5;197:*.bz2=38;5;197:*.jpg=38;5;141:*.jpeg=38;5;141:*.png=38;5;141:*.gif=38;5;141:*.mp4=38;5;141:*.mp3=38;5;141:*.py=38;5;186:*.js=38;5;186:*.java=38;5;186:*.sh=38;5;186:*.md=38;5;230:*.txt=38;5;230:*.json=38;5;186'
+
+# Use GNU ls
+(install with: brew install coreutils)
+
+    alias ls='gls --color=auto'
+    alias ll='gls -l --color=auto'
+
+Then reload: source ~/.zshrc
+
+This gives you Monokai-inspired colors matching the classic theme!
