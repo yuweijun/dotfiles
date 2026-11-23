@@ -17,6 +17,7 @@ plugins=(aliases
     nvm
     tmux
     virtualenv
+    z
     zsh-autosuggestions
     zsh-colors
     zsh-syntax-highlighting
