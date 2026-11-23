@@ -6,7 +6,6 @@ ZSH_THEME="powerlevel9k.kiss"
 
 plugins=(aliases
     alias-finder
-    autojump
     dircolors
     fzf
     git

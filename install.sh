@@ -28,7 +28,6 @@ fi
 ./config/virtualenv.sh
 ./config/mycli.sh
 ./config/fzf.sh
-./config/autojump.sh
 ./config/ssh.sh
 ./config/bash-profile.sh
 ./config/homebrew.sh
@@ -37,3 +36,4 @@ fi
 ./config/alacritty.sh
 
 ./vim/install.sh "$*"
+

@@ -10,7 +10,6 @@ ZSH_THEME="powerlevel10k"
 
 plugins=(aliases
     alias-finder
-    autojump
     brew
     fzf
     git
