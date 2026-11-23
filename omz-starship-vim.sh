@@ -47,7 +47,7 @@ install_packages() {
   case "$(uname -s)" in
     Darwin)
       command -v brew >/dev/null || die 'Homebrew is required: https://brew.sh'
-      brew install zsh git curl vim starship autojump fzf tmux
+      brew install zsh git curl vim starship fzf tmux
       ;;
     Linux)
       if [[ $(id -u) != 0 ]]; then
@@ -55,9 +55,9 @@ install_packages() {
       fi
       if command -v apt-get >/dev/null; then
         run_privileged apt-get update
-        run_privileged apt-get install -y zsh git curl vim tar gzip autojump fzf tmux
+        run_privileged apt-get install -y zsh git curl vim tar gzip fzf tmux
       elif command -v dnf >/dev/null; then
-        run_privileged dnf install -y zsh git curl vim-enhanced tar gzip autojump-zsh fzf tmux
+        run_privileged dnf install -y zsh git curl vim-enhanced tar gzip fzf tmux
       elif command -v pacman >/dev/null; then
         run_privileged pacman -Syu --needed --noconfirm zsh git curl vim tar gzip fzf tmux
       else
@@ -117,7 +117,7 @@ install_omz_plugin zsh-autosuggestions https://github.com/zsh-users/zsh-autosugg
 install_omz_plugin zsh-syntax-highlighting https://github.com/zsh-users/zsh-syntax-highlighting.git
 
 # Plugin integrations do not themselves provide these command-line tools.
-for tool in autojump fzf tmux kubectl; do
+for tool in fzf tmux; do
   command -v "$tool" >/dev/null || log "NOTE: $tool is not installed; its OMZ integration needs that tool."
 done
 if [[ ! -f "$setup_home/.nvm/nvm.sh" && ! -f "${NVM_DIR:-$setup_home/.nvm}/nvm.sh" ]]; then
@@ -144,17 +144,16 @@ ZSH_THEME=""
 plugins=(
   aliases
   alias-finder
-  autojump
   brew
+  env
   fzf
   git
-  kubectl
   nvm
   tmux
   virtualenv
+  z
   zsh-autosuggestions
   zsh-colors
-  env
   zsh-syntax-highlighting
 )
 # Load nvm on first use to keep shell startup fast.
@@ -174,17 +173,12 @@ cat > "$work_dir/vimrc" <<'VIMRC'
 set nocompatible
 
 call plug#begin(expand('~/.vim/plugged'))
-Plug 'Chiel92/vim-autoformat'
 Plug 'Yggdroot/indentLine'
 Plug 'chrisbra/unicode.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/vim-easy-align'
 Plug 'tomasr/molokai'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-markdown'
-Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
 Plug 'yuweijun/vim-colorschemes'
 call plug#end()
 
