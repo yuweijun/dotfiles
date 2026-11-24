@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install OMZ + Starship + vim-plug, backing up and replacing .zshrc/.vimrc.
+# Install OMZ + Starship + vim-plug, backing up and replacing their configuration.
 # Installs missing tools only; reuses existing plugins.
 # Usage: bash omz-starship-vim.sh [--skip-packages]
 set -euo pipefail
@@ -14,7 +14,8 @@ for arg in "$@"; do
     -h|--help)
       printf '%s\n' \
         'Usage: bash omz-starship-vim.sh [--skip-packages]' \
-        'Backs up and replaces ~/.zshrc and ~/.vimrc; uses 6 OMZ and 5 Vim plugins.' \
+        'Backs up and replaces Zsh/Vim/Starship configuration; uses 9 OMZ and 5 Vim plugins.' \
+        'Starship: official Pastel Powerline preset with transparent second-line input.' \
         'Installs missing tools only; macOS uses Homebrew, Linux uses apt-get/dnf/pacman.' \
         'Does not change your login shell. Start Zsh with: exec zsh'
       exit 0 ;;
@@ -44,7 +45,7 @@ run_privileged() {
 
 install_packages() {
   local missing=() tool
-  for tool in zsh git curl vim fzf; do
+  for tool in zsh git curl vim fzf tmux; do
     command -v "$tool" >/dev/null || missing+=("$tool")
   done
   case "$(uname -s)" in
@@ -120,8 +121,21 @@ install_omz_plugin() {
 install_omz_plugin zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions.git
 install_omz_plugin zsh-syntax-highlighting https://github.com/zsh-users/zsh-syntax-highlighting.git
 
+# Preserve a user-owned env plugin; provide a lightweight default on fresh installs.
+if [[ ! -f "$custom_plugins/env/env.plugin.zsh" && ! -f "$omz_dir/plugins/env/env.plugin.zsh" ]]; then
+  mkdir -p "$custom_plugins/env"
+  cat > "$custom_plugins/env/env.plugin.zsh" <<'ENV_PLUGIN'
+# Optional user environment settings, loaded before the remaining OMZ plugins.
+typeset -U path
+path=("$HOME/.local/bin" $path)
+[[ ! -r "$HOME/.config/zsh/env.zsh" ]] || source "$HOME/.config/zsh/env.zsh"
+ENV_PLUGIN
+fi
+
 # Plugin integrations do not themselves provide these command-line tools.
-command -v fzf >/dev/null || log 'NOTE: fzf is not installed; its OMZ integration needs that tool.'
+for tool in fzf tmux; do
+  command -v "$tool" >/dev/null || log "NOTE: $tool is not installed; its OMZ integration needs that tool."
+done
 if [[ ! -f "$setup_home/.nvm/nvm.sh" && ! -f "${NVM_DIR:-$setup_home/.nvm}/nvm.sh" ]]; then
   log 'NOTE: nvm requires a separate installation if not already available through Homebrew or NVM_DIR: https://github.com/nvm-sh/nvm'
 fi
@@ -135,7 +149,7 @@ fi
 backup_root="$setup_home/.config/omz-starship-vim-backups"
 mkdir -p "$backup_root"
 backup_dir=$(mktemp -d "$backup_root/$(date +%Y%m%d-%H%M%S).XXXXXXXX")
-for file in .zshrc .vimrc .vim/autoload/plug.vim; do
+for file in .zshrc .vimrc .vim/autoload/plug.vim .config/starship.toml; do
   if [[ -e "$setup_home/$file" || -L "$setup_home/$file" ]]; then
     mkdir -p "$backup_dir/$(dirname "$file")"
     cp -pL "$setup_home/$file" "$backup_dir/$file"
@@ -154,6 +168,7 @@ plugins=(
   nvm
   z
   fzf
+  tmux
   zsh-autosuggestions
   zsh-syntax-highlighting
 )
@@ -169,6 +184,175 @@ export VISUAL=vim
 [[ ! -f ~/.virtualenv/bin/activate ]] || source ~/.virtualenv/bin/activate
 eval "$(starship init zsh)"
 ZSHRC
+
+cat > "$work_dir/starship.toml" <<'STARSHIP'
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[](#9A348E)\
+$os\
+$username\
+[](bg:#DA627D fg:#9A348E)\
+$directory\
+[](fg:#DA627D bg:#FCA17D)\
+$git_branch\
+$git_status\
+[](fg:#FCA17D bg:#86BBD8)\
+$c\
+$elixir\
+$elm\
+$golang\
+$gradle\
+$haskell\
+$java\
+$julia\
+$nodejs\
+$nim\
+$rust\
+$scala\
+[](fg:#86BBD8 bg:#06969A)\
+$docker_context\
+[](fg:#06969A bg:#33658A)\
+$time\
+[ ](fg:#33658A)\
+$line_break\
+$character\
+"""
+
+# Disable the blank line at the start of the prompt
+# add_newline = false
+
+# You can also replace your username with a neat symbol like   or disable this
+# and use the os module below
+[username]
+show_always = true
+style_user = "bg:#9A348E"
+style_root = "bg:#9A348E"
+format = '[$user ]($style)'
+disabled = false
+
+# An alternative to the username module which displays a symbol that
+# represents the current operating system
+[os]
+style = "bg:#9A348E"
+disabled = true # Disabled by default
+
+[directory]
+style = "bg:#DA627D"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+# Here is how you can shorten some long paths by text replacement
+# similar to mapped_locations in Oh My Posh:
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+# Keep in mind that the order matters. For example:
+# "Important Documents" = " 󰈙 "
+# will not be replaced, because "Documents" was already substituted before.
+# So either put "Important Documents" before "Documents" or use the substituted version:
+# "Important 󰈙 " = " 󰈙 "
+
+[c]
+symbol = " "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[cpp]
+symbol = " "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[docker_context]
+symbol = " "
+style = "bg:#06969A"
+format = '[ $symbol $context ]($style)'
+
+[elixir]
+symbol = " "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[elm]
+symbol = " "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[git_branch]
+symbol = ""
+style = "bg:#FCA17D"
+format = '[ $symbol $branch ]($style)'
+
+[git_status]
+style = "bg:#FCA17D"
+format = '[$all_status$ahead_behind ]($style)'
+
+[golang]
+symbol = " "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[gradle]
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[haskell]
+symbol = " "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[java]
+symbol = " "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[julia]
+symbol = " "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[nim]
+symbol = "󰆥 "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[rust]
+symbol = ""
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[scala]
+symbol = " "
+style = "bg:#86BBD8"
+format = '[ $symbol ($version) ]($style)'
+
+[time]
+disabled = false
+time_format = "%R" # Hour:Minute Format
+style = "bg:#33658A"
+format = '[ ♥ $time ]($style)'
+
+# Command input on a second line, with the terminal's default background.
+[line_break]
+disabled = false
+
+[character]
+format = '$symbol '
+success_symbol = '[❯](bold green)'
+error_symbol = '[❯](bold red)'
+vimcmd_symbol = '[❯](bold green)'
+vimcmd_replace_one_symbol = '[❯](bold purple)'
+vimcmd_replace_symbol = '[❯](bold purple)'
+vimcmd_visual_symbol = '[❯](bold yellow)'
+STARSHIP
 
 cat > "$work_dir/vimrc" <<'VIMRC'
 " Generated by omz-starship-vim.sh. Previous configuration is backed up.
@@ -204,11 +388,12 @@ if !empty(globpath(&runtimepath, 'colors/molokai.vim'))
 endif
 VIMRC
 
-mkdir -p "$setup_home/.vim/autoload"
+mkdir -p "$setup_home/.vim/autoload" "$setup_home/.config"
 # Replacing symlinks here leaves their previous targets untouched.
 mv "$work_dir/zshrc" "$setup_home/.zshrc"
 mv "$work_dir/vimrc" "$setup_home/.vimrc"
 mv "$work_dir/plug.vim" "$setup_home/.vim/autoload/plug.vim"
+mv "$work_dir/starship.toml" "$setup_home/.config/starship.toml"
 
 vim_plugins=(auto-pairs vim-easy-align molokai vim-repeat vim-surround)
 vim_plugins_ready=true
@@ -234,4 +419,4 @@ printf '%s\n' \
   'Start the new prompt: exec zsh' \
   'Vim plugins: :PlugStatus | Update: :PlugUpdate | Remove unused: :PlugClean' \
   'Vim: surround + repeat, auto-pairs, easy-align, and Molokai; built-in filetype support.' \
-  'Starship preserves an existing ~/.config/starship.toml; otherwise uses its default theme.'
+  'Starship: official Pastel Powerline preset; type commands after the transparent second-line ❯.'
