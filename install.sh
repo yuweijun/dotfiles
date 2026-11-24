@@ -177,12 +177,8 @@ call plug#begin(expand('~/.vim/plugged'))
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/vim-easy-align'
 Plug 'tomasr/molokai'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-markdown'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
-Plug 'yuweijun/vim-colorschemes'
 call plug#end()
 
 filetype plugin indent on
@@ -216,7 +212,7 @@ if ! vim -Nu "$setup_home/.vimrc" -n -es -i NONE "-V1$vim_log" \
   '+PlugInstall --sync' '+qa!'; then
   die "Vim plugin installation failed. See $vim_log; backups: $backup_dir"
 fi
-for plugin in auto-pairs vim-easy-align molokai vim-endwise vim-markdown vim-repeat vim-surround vim-unimpaired vim-colorschemes; do
+for plugin in auto-pairs vim-easy-align molokai vim-repeat vim-surround; do
   [[ -d "$setup_home/.vim/plugged/$plugin/.git" ]] || \
     die "Plugin missing: $plugin. See $vim_log; backups: $backup_dir"
 done
