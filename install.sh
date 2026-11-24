@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Install OMZ + Starship + vim-plug, backing up and replacing .zshrc/.vimrc.
-# macOS requires Homebrew. Linux supports apt-get, dnf, and pacman.
+# Installs missing tools only; reuses existing plugins.
 # Usage: bash omz-starship-vim.sh [--skip-packages]
 set -euo pipefail
 
@@ -14,9 +14,8 @@ for arg in "$@"; do
     -h|--help)
       printf '%s\n' \
         'Usage: bash omz-starship-vim.sh [--skip-packages]' \
-        'Backs up and replaces ~/.zshrc and ~/.vimrc; installs 12 Vim plugins.' \
-        'macOS: install Homebrew first. Linux: apt-get, dnf, or pacman required.' \
-        'Requires your existing custom OMZ plugins: zsh-colors and env.' \
+        'Backs up and replaces ~/.zshrc and ~/.vimrc; uses 6 OMZ and 5 Vim plugins.' \
+        'Installs missing tools only; macOS uses Homebrew, Linux uses apt-get/dnf/pacman.' \
         'Does not change your login shell. Start Zsh with: exec zsh'
       exit 0 ;;
     *) die "Unknown argument: $arg" ;;
@@ -44,24 +43,37 @@ run_privileged() {
 }
 
 install_packages() {
+  local missing=() tool
+  for tool in zsh git curl vim fzf; do
+    command -v "$tool" >/dev/null || missing+=("$tool")
+  done
   case "$(uname -s)" in
     Darwin)
+      if ! command -v starship >/dev/null && [[ ! -x "$setup_home/.local/bin/starship" ]]; then
+        missing+=(starship)
+      fi
+      [[ ${#missing[@]} -gt 0 ]] || return 0
       command -v brew >/dev/null || die 'Homebrew is required: https://brew.sh'
-      brew install zsh git curl vim starship fzf tmux
+      brew install "${missing[@]}"
       ;;
     Linux)
-      if [[ $(id -u) != 0 ]]; then
-        command -v sudo >/dev/null || die 'sudo is required to install system packages.'
-      fi
-      if command -v apt-get >/dev/null; then
-        run_privileged apt-get update
-        run_privileged apt-get install -y zsh git curl vim tar gzip fzf tmux
-      elif command -v dnf >/dev/null; then
-        run_privileged dnf install -y zsh git curl vim-enhanced tar gzip fzf tmux
-      elif command -v pacman >/dev/null; then
-        run_privileged pacman -Syu --needed --noconfirm zsh git curl vim tar gzip fzf tmux
-      else
-        die 'Unsupported package manager. Install zsh/git/curl/vim/starship, then use --skip-packages.'
+      for tool in tar gzip; do
+        command -v "$tool" >/dev/null || missing+=("$tool")
+      done
+      if [[ ${#missing[@]} -gt 0 ]]; then
+        if [[ $(id -u) != 0 ]]; then
+          command -v sudo >/dev/null || die 'sudo is required to install system packages.'
+        fi
+        if command -v apt-get >/dev/null; then
+          run_privileged apt-get update
+          run_privileged apt-get install -y "${missing[@]}"
+        elif command -v dnf >/dev/null; then
+          run_privileged dnf install -y "${missing[@]/vim/vim-enhanced}"
+        elif command -v pacman >/dev/null; then
+          run_privileged pacman -S --needed --noconfirm "${missing[@]}"
+        else
+          die 'Unsupported package manager. Install the required tools, then use --skip-packages.'
+        fi
       fi
       if ! command -v starship >/dev/null && [[ ! -x "$setup_home/.local/bin/starship" ]]; then
         mkdir -p "$setup_home/.local/bin"
@@ -93,14 +105,6 @@ fi
 [[ -f "$omz_dir/oh-my-zsh.sh" ]] || die "Invalid Oh My Zsh installation: $omz_dir"
 
 custom_plugins="$omz_dir/custom/plugins"
-# These are user-owned plugins, not names from the OMZ plugin catalog.
-# Check before replacing configuration; preserve their existing implementations.
-for plugin in zsh-colors env; do
-  [[ -f "$custom_plugins/$plugin/$plugin.plugin.zsh" || \
-     -f "$omz_dir/plugins/$plugin/$plugin.plugin.zsh" ]] || \
-    die "Custom plugin required: $custom_plugins/$plugin/$plugin.plugin.zsh. Copy your existing plugin here, then rerun."
-done
-
 install_omz_plugin() {
   local name="$1" repository="$2"
   if [[ -f "$custom_plugins/$name/$name.plugin.zsh" || \
@@ -117,13 +121,15 @@ install_omz_plugin zsh-autosuggestions https://github.com/zsh-users/zsh-autosugg
 install_omz_plugin zsh-syntax-highlighting https://github.com/zsh-users/zsh-syntax-highlighting.git
 
 # Plugin integrations do not themselves provide these command-line tools.
-for tool in fzf tmux; do
-  command -v "$tool" >/dev/null || log "NOTE: $tool is not installed; its OMZ integration needs that tool."
-done
+command -v fzf >/dev/null || log 'NOTE: fzf is not installed; its OMZ integration needs that tool.'
 if [[ ! -f "$setup_home/.nvm/nvm.sh" && ! -f "${NVM_DIR:-$setup_home/.nvm}/nvm.sh" ]]; then
   log 'NOTE: nvm requires a separate installation if not already available through Homebrew or NVM_DIR: https://github.com/nvm-sh/nvm'
 fi
-download https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim "$work_dir/plug.vim"
+if [[ -s "$setup_home/.vim/autoload/plug.vim" ]]; then
+  cp "$setup_home/.vim/autoload/plug.vim" "$work_dir/plug.vim"
+else
+  download https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim "$work_dir/plug.vim"
+fi
 [[ -s "$work_dir/plug.vim" ]] || die 'Downloaded plug.vim is empty.'
 
 backup_root="$setup_home/.config/omz-starship-vim-backups"
@@ -143,21 +149,16 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME=""
 plugins=(
   aliases
-  alias-finder
-  brew
   env
-  fzf
   git
   nvm
-  tmux
-  virtualenv
   z
+  fzf
   zsh-autosuggestions
-  zsh-colors
   zsh-syntax-highlighting
 )
-# Load nvm on first use to keep shell startup fast.
-zstyle ':omz:plugins:nvm' lazy yes
+# Load Node immediately, as requested.
+zstyle ':omz:plugins:nvm' lazy no
 source "$ZSH/oh-my-zsh.sh"
 if (( $+widgets[autosuggest-accept] )); then
   bindkey '^ ' autosuggest-accept
@@ -173,7 +174,10 @@ cat > "$work_dir/vimrc" <<'VIMRC'
 " Generated by omz-starship-vim.sh. Previous configuration is backed up.
 set nocompatible
 
-call plug#begin(expand('~/.vim/plugged'))
+" Resolve paths from this vimrc so SETUP_HOME also isolates plugin installation.
+let s:vim_home = expand('<sfile>:p:h') . '/.vim'
+execute 'set runtimepath^=' . fnameescape(s:vim_home)
+call plug#begin(s:vim_home . '/plugged')
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/vim-easy-align'
 Plug 'tomasr/molokai'
@@ -206,22 +210,28 @@ mv "$work_dir/zshrc" "$setup_home/.zshrc"
 mv "$work_dir/vimrc" "$setup_home/.vimrc"
 mv "$work_dir/plug.vim" "$setup_home/.vim/autoload/plug.vim"
 
-log 'Installing Vim plugins (this can take a few minutes)...'
-vim_log="$backup_dir/PlugInstall.log"
-if ! vim -Nu "$setup_home/.vimrc" -n -es -i NONE "-V1$vim_log" \
-  '+PlugInstall --sync' '+qa!'; then
-  die "Vim plugin installation failed. See $vim_log; backups: $backup_dir"
+vim_plugins=(auto-pairs vim-easy-align molokai vim-repeat vim-surround)
+vim_plugins_ready=true
+for plugin in "${vim_plugins[@]}"; do
+  [[ -d "$setup_home/.vim/plugged/$plugin/.git" ]] || vim_plugins_ready=false
+done
+if ! $vim_plugins_ready; then
+  log 'Installing missing Vim plugins...'
+  vim_log="$backup_dir/PlugInstall.log"
+  if ! vim -Nu "$setup_home/.vimrc" -n -es -i NONE "-V1$vim_log" \
+    '+PlugInstall --sync' '+qa!'; then
+    die "Vim plugin installation failed. See $vim_log; backups: $backup_dir"
+  fi
 fi
-for plugin in auto-pairs vim-easy-align molokai vim-repeat vim-surround; do
+for plugin in "${vim_plugins[@]}"; do
   [[ -d "$setup_home/.vim/plugged/$plugin/.git" ]] || \
-    die "Plugin missing: $plugin. See $vim_log; backups: $backup_dir"
+    die "Plugin missing: $plugin; backups: $backup_dir"
 done
 zsh -n "$setup_home/.zshrc"
 
 log "Setup complete. Previous configuration: $backup_dir"
 printf '%s\n' \
   'Start the new prompt: exec zsh' \
-  'Optional login-shell change: chsh -s "$(command -v zsh)"' \
   'Vim plugins: :PlugStatus | Update: :PlugUpdate | Remove unused: :PlugClean' \
-  'Formatting: :Autoformat (install the formatter required by your filetype separately).' \
-  'Starship uses its default theme; an existing ~/.config/starship.toml is preserved.'
+  'Vim: surround + repeat, auto-pairs, easy-align, and Molokai; built-in filetype support.' \
+  'Starship preserves an existing ~/.config/starship.toml; otherwise uses its default theme.'
