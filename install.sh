@@ -262,7 +262,6 @@ cat > "$work_dir/starship.toml" <<'STARSHIP'
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
-[](#9A348E)\
 $os\
 $username\
 [](bg:#DA627D fg:#9A348E)\
