@@ -14,9 +14,9 @@ for arg in "$@"; do
     -h|--help)
       printf '%s\n' \
         'Usage: bash omz-starship-vim.sh [--skip-packages]' \
-        'Backs up and replaces Zsh/Vim/Neovim/Starship configuration; uses 9 OMZ and 5 shared editor plugins.' \
+        'Backs up and replaces Zsh/Vim/Neovim/Starship configuration; uses 9 OMZ plugins (+ brew on macOS when available) and 5 shared editor plugins.' \
         'Starship: official Pastel Powerline preset with transparent second-line input.' \
-        'Installs missing tools and Nerd Font; font failure uses Unicode fallback. --skip-packages skips both.' \
+        'All components are optional; failures skip affected integrations. --skip-packages skips installation.' \
         'Does not change your login shell. Start Zsh with: exec zsh'
       exit 0 ;;
     *) die "Unknown argument: $arg" ;;
@@ -43,8 +43,32 @@ run_privileged() {
   fi
 }
 
+# Make Homebrew available even when a new shell has not loaded its shellenv.
+activate_brew() {
+  local brew_path brew_env
+  if command -v brew >/dev/null && brew --version >/dev/null 2>&1; then
+    return 0
+  fi
+  for brew_path in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+    if [[ -x "$brew_path" ]]; then
+      brew_env=$("$brew_path" shellenv) || continue
+      eval "$brew_env"
+      if brew --version >/dev/null 2>&1; then
+        return 0
+      fi
+    fi
+  done
+  return 1
+}
+
+install_brew() {
+  download https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh "$work_dir/homebrew-install.sh" || return 1
+  NONINTERACTIVE=1 bash "$work_dir/homebrew-install.sh" || return 1
+  activate_brew
+}
+
 install_packages() {
-  local missing=() tool
+  local missing=() tool package
   for tool in zsh git curl vim nvim fzf tmux; do
     command -v "$tool" >/dev/null || missing+=("${tool/nvim/neovim}")
   done
@@ -54,8 +78,15 @@ install_packages() {
         missing+=(starship)
       fi
       [[ ${#missing[@]} -gt 0 ]] || return 0
-      command -v brew >/dev/null || die 'Homebrew is required: https://brew.sh'
-      brew install "${missing[@]}"
+      if ! $brew_ready; then
+        log 'NOTE: Homebrew unavailable; skipping macOS package installation.'
+        return 0
+      fi
+      for package in "${missing[@]}"; do
+          if ! brew install "$package"; then
+            log "NOTE: $package installation failed; continuing."
+          fi
+        done
       ;;
     Linux)
       for tool in tar gzip; do
@@ -63,26 +94,39 @@ install_packages() {
       done
       if [[ ${#missing[@]} -gt 0 ]]; then
         if [[ $(id -u) != 0 ]]; then
-          command -v sudo >/dev/null || die 'sudo is required to install system packages.'
+          command -v sudo >/dev/null || return 1
         fi
         if command -v apt-get >/dev/null; then
-          run_privileged apt-get update
-          run_privileged apt-get install -y "${missing[@]}"
+          run_privileged apt-get update || return 1
+          for package in "${missing[@]}"; do
+          if ! run_privileged apt-get install -y "$package"; then
+            log "NOTE: $package installation failed; continuing."
+          fi
+        done
         elif command -v dnf >/dev/null; then
-          run_privileged dnf install -y "${missing[@]/#vim/vim-enhanced}"
+          for package in "${missing[@]}"; do
+          [[ "$package" != vim ]] || package=vim-enhanced
+          if ! run_privileged dnf install -y "$package"; then
+            log "NOTE: $package installation failed; continuing."
+          fi
+        done
         elif command -v pacman >/dev/null; then
-          run_privileged pacman -S --needed --noconfirm "${missing[@]}"
+          for package in "${missing[@]}"; do
+          if ! run_privileged pacman -S --needed --noconfirm "$package"; then
+            log "NOTE: $package installation failed; continuing."
+          fi
+        done
         else
-          die 'Unsupported package manager. Install the required tools, then use --skip-packages.'
+          return 1
         fi
       fi
       if ! command -v starship >/dev/null && [[ ! -x "$setup_home/.local/bin/starship" ]]; then
         mkdir -p "$setup_home/.local/bin"
-        download https://starship.rs/install.sh "$work_dir/starship-install.sh"
-        sh "$work_dir/starship-install.sh" --yes --bin-dir "$setup_home/.local/bin"
+        download https://starship.rs/install.sh "$work_dir/starship-install.sh" || return 1
+        sh "$work_dir/starship-install.sh" --yes --bin-dir "$setup_home/.local/bin" || return 1
       fi
       ;;
-    *) die 'Supported operating systems: macOS and Linux.' ;;
+    *) return 1 ;;
   esac
 }
 
@@ -146,20 +190,43 @@ unicode_fallback() {
       -e 's//Rust/g' -e 's//Scala/g' -e 's//Shell/g' -e 's///g' "$1"
 }
 
-if ! $skip_packages; then
-  log 'Installing required packages...'
-  install_packages
+brew_ready=false
+if [[ $(uname -s) == Darwin ]]; then
+  if activate_brew; then
+    brew_ready=true
+  elif ! $skip_packages; then
+    log 'Installing Homebrew...'
+    if install_brew; then
+      brew_ready=true
+    else
+      log 'NOTE: Homebrew installation failed; continuing without the OMZ brew plugin.'
+    fi
+  fi
 fi
-for tool in zsh git curl vim nvim; do
-  command -v "$tool" >/dev/null || die "Missing dependency: $tool"
+
+if ! $skip_packages; then
+  log 'Installing missing optional tools...'
+  if ! install_packages; then
+    log 'NOTE: Package installation failed; configuring available components.'
+  fi
+fi
+for tool in zsh git curl vim nvim fzf tmux starship; do
+  command -v "$tool" >/dev/null || log "NOTE: $tool unavailable; skipping its integration."
 done
-if ! command -v starship >/dev/null && [[ ! -x "$setup_home/.local/bin/starship" ]]; then
-  die 'Missing dependency: starship'
+editor_ready=false
+if command -v vim >/dev/null || command -v nvim >/dev/null; then
+  editor_ready=true
+fi
+starship_ready=false
+if command -v starship >/dev/null || [[ -x "$setup_home/.local/bin/starship" ]]; then
+  starship_ready=true
 fi
 
 if ! $skip_packages; then
   log 'Installing the Nerd Font for Pastel Powerline...'
-  if ! install_font; then
+  if [[ $(uname -s) == Darwin ]] && ! $brew_ready; then
+    log 'NOTE: Homebrew unavailable; skipping Nerd Font installation.'
+  elif ! install_font; then
     log 'NOTE: Nerd Font installation failed; continuing setup.'
   fi
 fi
@@ -170,54 +237,63 @@ else
   log 'No Nerd Font found; using Unicode separators and text icons.'
 fi
 
-log 'Preparing Oh My Zsh and vim-plug...'
+log 'Preparing available shell and editor components...'
 omz_dir="$setup_home/.oh-my-zsh"
-if [[ ! -e "$omz_dir" ]]; then
-  git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$work_dir/oh-my-zsh"
-  mv "$work_dir/oh-my-zsh" "$omz_dir"
-fi
-[[ -f "$omz_dir/oh-my-zsh.sh" ]] || die "Invalid Oh My Zsh installation: $omz_dir"
-
 custom_plugins="$omz_dir/custom/plugins"
+omz_ready=false
+if command -v zsh >/dev/null; then
+  if [[ ! -e "$omz_dir" ]] && command -v git >/dev/null; then
+    if git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$work_dir/oh-my-zsh"; then
+      mv "$work_dir/oh-my-zsh" "$omz_dir"
+    else
+      log 'NOTE: Oh My Zsh installation failed; using plain Zsh.'
+    fi
+  fi
+  if [[ -f "$omz_dir/oh-my-zsh.sh" ]]; then
+    omz_ready=true
+  else
+    log 'NOTE: Oh My Zsh unavailable; using plain Zsh.'
+  fi
+fi
+
 install_omz_plugin() {
   local name="$1" repository="$2"
   if [[ -f "$custom_plugins/$name/$name.plugin.zsh" || \
         -f "$omz_dir/plugins/$name/$name.plugin.zsh" ]]; then
-    return
+    return 0
   fi
-  [[ ! -e "$custom_plugins/$name" ]] || die "Incomplete plugin installation: $custom_plugins/$name"
-  mkdir -p "$custom_plugins"
-  git clone --depth=1 "$repository" "$work_dir/$name"
-  [[ -f "$work_dir/$name/$name.plugin.zsh" ]] || die "Plugin entry point missing: $name"
+  command -v git >/dev/null || return 1
+  [[ ! -e "$custom_plugins/$name" ]] || return 1
+  mkdir -p "$custom_plugins" || return 1
+  git clone --depth=1 "$repository" "$work_dir/$name" || return 1
+  [[ -f "$work_dir/$name/$name.plugin.zsh" ]] || return 1
   mv "$work_dir/$name" "$custom_plugins/$name"
 }
-install_omz_plugin zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions.git
-install_omz_plugin zsh-syntax-highlighting https://github.com/zsh-users/zsh-syntax-highlighting.git
-
-# Preserve a user-owned env plugin; provide a lightweight default on fresh installs.
-if [[ ! -f "$custom_plugins/env/env.plugin.zsh" && ! -f "$omz_dir/plugins/env/env.plugin.zsh" ]]; then
-  mkdir -p "$custom_plugins/env"
-  cat > "$custom_plugins/env/env.plugin.zsh" <<'ENV_PLUGIN'
+if $omz_ready; then
+  for plugin in zsh-autosuggestions zsh-syntax-highlighting; do
+    if ! install_omz_plugin "$plugin" "https://github.com/zsh-users/$plugin.git"; then
+      log "NOTE: $plugin unavailable; skipping plugin."
+    fi
+  done
+  if [[ ! -f "$custom_plugins/env/env.plugin.zsh" && ! -f "$omz_dir/plugins/env/env.plugin.zsh" ]]; then
+    mkdir -p "$custom_plugins/env"
+    cat > "$custom_plugins/env/env.plugin.zsh" <<'ENV_PLUGIN'
 # Optional user environment settings, loaded before the remaining OMZ plugins.
 typeset -U path
 path=("$HOME/.local/bin" $path)
 [[ ! -r "$HOME/.config/zsh/env.zsh" ]] || source "$HOME/.config/zsh/env.zsh"
 ENV_PLUGIN
+  fi
 fi
 
-# Plugin integrations do not themselves provide these command-line tools.
-for tool in fzf tmux; do
-  command -v "$tool" >/dev/null || log "NOTE: $tool is not installed; its OMZ integration needs that tool."
-done
-if [[ ! -f "$setup_home/.nvm/nvm.sh" && ! -f "${NVM_DIR:-$setup_home/.nvm}/nvm.sh" ]]; then
-  log 'NOTE: nvm requires a separate installation if not already available through Homebrew or NVM_DIR: https://github.com/nvm-sh/nvm'
+if $editor_ready; then
+  if [[ -s "$setup_home/.vim/autoload/plug.vim" ]]; then
+    cp "$setup_home/.vim/autoload/plug.vim" "$work_dir/plug.vim"
+  elif ! download https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim "$work_dir/plug.vim"; then
+    rm -f -- "$work_dir/plug.vim"
+    log 'NOTE: vim-plug unavailable; editors will use built-in functionality.'
+  fi
 fi
-if [[ -s "$setup_home/.vim/autoload/plug.vim" ]]; then
-  cp "$setup_home/.vim/autoload/plug.vim" "$work_dir/plug.vim"
-else
-  download https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim "$work_dir/plug.vim"
-fi
-[[ -s "$work_dir/plug.vim" ]] || die 'Downloaded plug.vim is empty.'
 
 backup_root="$setup_home/.config/omz-starship-vim-backups"
 mkdir -p "$backup_root"
@@ -232,6 +308,20 @@ done
 cat > "$work_dir/zshrc" <<'ZSHRC'
 # Generated by omz-starship-vim.sh. Previous configuration is backed up.
 export PATH="$HOME/.local/bin:$PATH"
+if [[ "$OSTYPE" == darwin* ]] && ! command -v brew >/dev/null; then
+  for brew_path in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+    if [[ -x "$brew_path" ]]; then
+      eval "$("$brew_path" shellenv)"
+      break
+    fi
+  done
+  unset brew_path
+fi
+# Preserve the active nvm Node ahead of Homebrew when restarting Zsh.
+if [[ -n "$NVM_BIN" && -x "$NVM_BIN/node" ]]; then
+  typeset -U path
+  path=("$NVM_BIN" $path)
+fi
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME=""
 plugins=(
@@ -247,16 +337,46 @@ plugins=(
 )
 # Load Node immediately, as requested.
 zstyle ':omz:plugins:nvm' lazy no
-source "$ZSH/oh-my-zsh.sh"
+[[ ! -r "$ZSH/oh-my-zsh.sh" ]] || source "$ZSH/oh-my-zsh.sh"
+if (( ${plugins[(Ie)aliases]} && ${plugins[(Ie)z]} )); then
+  alias j=z
+fi
 if (( $+widgets[autosuggest-accept] )); then
   bindkey '^ ' autosuggest-accept
 fi
 
-export EDITOR=vim
-export VISUAL=vim
+if command -v vim >/dev/null; then
+  export EDITOR=vim VISUAL=vim
+elif command -v nvim >/dev/null; then
+  export EDITOR=nvim VISUAL=nvim
+fi
 [[ ! -f ~/.virtualenv/bin/activate ]] || source ~/.virtualenv/bin/activate
-eval "$(starship init zsh)"
+if command -v starship >/dev/null; then
+  eval "$(starship init zsh)"
+else
+  PROMPT=$'%~\n❯ '
+fi
 ZSHRC
+
+if $brew_ready; then
+  awk '{ print; if ($0 == "  aliases") print "  brew" }' "$work_dir/zshrc" > "$work_dir/zshrc-brew"
+  mv "$work_dir/zshrc-brew" "$work_dir/zshrc"
+fi
+
+for plugin in aliases brew env git nvm z fzf tmux zsh-autosuggestions zsh-syntax-highlighting; do
+  plugin_ready=false
+  if $omz_ready && [[ -f "$custom_plugins/$plugin/$plugin.plugin.zsh" || -f "$omz_dir/plugins/$plugin/$plugin.plugin.zsh" ]]; then
+    plugin_ready=true
+  fi
+  case "$plugin" in
+    git|fzf|tmux) command -v "$plugin" >/dev/null || plugin_ready=false ;;
+    brew) $brew_ready || plugin_ready=false ;;
+  esac
+  if ! $plugin_ready; then
+    awk -v plugin="$plugin" '$0 != "  " plugin' "$work_dir/zshrc" > "$work_dir/zshrc-filtered"
+    mv "$work_dir/zshrc-filtered" "$work_dir/zshrc"
+  fi
+done
 
 cat > "$work_dir/starship.toml" <<'STARSHIP'
 "$schema" = 'https://starship.rs/config-schema.json'
@@ -431,13 +551,15 @@ set nocompatible
 " Resolve paths from this vimrc so SETUP_HOME also isolates plugin installation.
 let s:vim_home = expand('<sfile>:p:h') . '/.vim'
 execute 'set runtimepath^=' . fnameescape(s:vim_home)
-call plug#begin(s:vim_home . '/plugged')
+if getfsize(s:vim_home . '/autoload/plug.vim') > 0
+  call plug#begin(s:vim_home . '/plugged')
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/vim-easy-align'
 Plug 'tomasr/molokai'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
-call plug#end()
+  call plug#end()
+endif
 
 filetype plugin indent on
 syntax enable
@@ -463,43 +585,68 @@ cat > "$work_dir/nvim-init.vim" <<'NVIM'
 execute 'source ' . fnameescape(fnamemodify(expand('<sfile>:p'), ':h:h:h') . '/.vimrc')
 NVIM
 
-mkdir -p "$setup_home/.vim/autoload" "$setup_home/.config" "$setup_home/.config/nvim"
-# Replacing symlinks here leaves their previous targets untouched.
-mv "$work_dir/zshrc" "$setup_home/.zshrc"
-mv "$work_dir/vimrc" "$setup_home/.vimrc"
-mv "$work_dir/plug.vim" "$setup_home/.vim/autoload/plug.vim"
-mv "$work_dir/starship.toml" "$setup_home/.config/starship.toml"
-# init.lua conflicts with init.vim; its previous contents are already backed up.
-if [[ -e "$setup_home/.config/nvim/init.lua" || -L "$setup_home/.config/nvim/init.lua" ]]; then
-  rm -- "$setup_home/.config/nvim/init.lua"
+# Replace only configurations for available components; symlink targets stay untouched.
+if command -v zsh >/dev/null; then
+  mv "$work_dir/zshrc" "$setup_home/.zshrc"
+  if ! zsh -n "$setup_home/.zshrc"; then
+    log 'NOTE: Zsh verification failed; other components are configured.'
+  fi
 fi
-mv "$work_dir/nvim-init.vim" "$setup_home/.config/nvim/init.vim"
+if $starship_ready; then
+  mkdir -p "$setup_home/.config"
+  mv "$work_dir/starship.toml" "$setup_home/.config/starship.toml"
+fi
+if $editor_ready; then
+  mkdir -p "$setup_home/.vim/autoload"
+  mv "$work_dir/vimrc" "$setup_home/.vimrc"
+  if [[ -s "$work_dir/plug.vim" ]]; then
+    mv "$work_dir/plug.vim" "$setup_home/.vim/autoload/plug.vim"
+  fi
+fi
+if command -v nvim >/dev/null; then
+  mkdir -p "$setup_home/.config/nvim"
+  # init.lua conflicts with init.vim; its previous contents are already backed up.
+  if [[ -e "$setup_home/.config/nvim/init.lua" || -L "$setup_home/.config/nvim/init.lua" ]]; then
+    rm -- "$setup_home/.config/nvim/init.lua"
+  fi
+  mv "$work_dir/nvim-init.vim" "$setup_home/.config/nvim/init.vim"
+fi
 
 vim_plugins=(auto-pairs vim-easy-align molokai vim-repeat vim-surround)
 vim_plugins_ready=true
 for plugin in "${vim_plugins[@]}"; do
   [[ -d "$setup_home/.vim/plugged/$plugin/.git" ]] || vim_plugins_ready=false
 done
-if ! $vim_plugins_ready; then
-  log 'Installing missing Vim plugins...'
-  vim_log="$backup_dir/PlugInstall.log"
-  if ! vim -Nu "$setup_home/.vimrc" -n -es -i NONE "-V1$vim_log" \
-    '+PlugInstall --sync' '+qa!'; then
-    die "Vim plugin installation failed. See $vim_log; backups: $backup_dir"
+if $editor_ready && ! $vim_plugins_ready && [[ -s "$setup_home/.vim/autoload/plug.vim" ]]; then
+  if command -v git >/dev/null; then
+    log 'Installing missing shared Vim/Neovim plugins...'
+    vim_log="$backup_dir/PlugInstall.log"
+    if command -v vim >/dev/null; then
+      editor=(vim -Nu "$setup_home/.vimrc" -n -es -i NONE "-V1$vim_log")
+    else
+      editor=(nvim --headless -u "$setup_home/.config/nvim/init.vim" -i NONE "-V1$vim_log")
+    fi
+    if ! "${editor[@]}" '+PlugInstall --sync' '+qa!'; then
+      log "NOTE: Editor plugin installation failed; see $vim_log."
+    fi
+    for plugin in "${vim_plugins[@]}"; do
+      [[ -d "$setup_home/.vim/plugged/$plugin/.git" ]] || log "NOTE: $plugin unavailable; continuing."
+    done
+  else
+    log 'NOTE: Git unavailable; skipping editor plugin downloads.'
   fi
 fi
-for plugin in "${vim_plugins[@]}"; do
-  [[ -d "$setup_home/.vim/plugged/$plugin/.git" ]] || \
-    die "Plugin missing: $plugin; backups: $backup_dir"
-done
-zsh -n "$setup_home/.zshrc"
-nvim --headless -u "$setup_home/.config/nvim/init.vim" -i NONE '+qa!'
+if command -v nvim >/dev/null; then
+  if ! nvim --headless -u "$setup_home/.config/nvim/init.vim" -i NONE '+qa!'; then
+    log 'NOTE: Neovim verification failed; other components are configured.'
+  fi
+fi
 
-log "Setup complete. Previous configuration: $backup_dir"
+log "Setup finished for available components. Previous configuration: $backup_dir"
 printf '%s\n' \
-  'Start the new prompt: exec zsh' \
-  'Vim/Neovim plugins: :PlugStatus | Update: :PlugUpdate | Remove unused: :PlugClean' \
-  'Vim: surround + repeat, auto-pairs, easy-align, and Molokai; built-in filetype support.' \
-  'Starship: official Pastel Powerline preset; type commands after the transparent second-line ❯.' \
-  'Terminal font: select JetBrainsMono Nerd Font Mono (Terminal/iTerm2 profile font).' \
-  'VS Code: set terminal.integrated.fontFamily to JetBrainsMono Nerd Font Mono.'
+  'Unavailable tools/plugins were skipped; rerun later to install them.' \
+  'Vim/Neovim share five plugins. Manage with :PlugStatus / :PlugUpdate when vim-plug is available.' \
+  'Starship uses a transparent second-line ❯; missing Nerd Font uses Unicode fallback.'
+if $nerd_font; then
+  printf '%s\n' 'Terminal font: select JetBrainsMono Nerd Font Mono.'
+fi
