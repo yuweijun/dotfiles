@@ -477,6 +477,7 @@ style = "fg:#1B4332 bg:#FCA17D"
 format = '[ $symbol $branch ]($style)'
 
 [git_status]
+use_git_executable = true
 style = "fg:#1B4332 bg:#FCA17D"
 format = '[$all_status$ahead_behind ]($style)'
 
