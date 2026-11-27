@@ -14,7 +14,7 @@ fi
 if [[ "${SHELL}" =~ "zsh" ]]; then
     export RCFILE="${HOME}/.zshrc"
     mv ${RCFILE} ${RCFILE}.bak
-    cp ${DIR}/zsh-custom/templates/powerlevel9k.clean.zsh-template ${RCFILE}
+    cp ${DIR}/zsh-custom/templates/powerlevel10k.zsh-template ${RCFILE}
     ./config/oh-my-zsh.sh
 else
     export RCFILE="${HOME}/.bashrc"
