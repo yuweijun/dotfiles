@@ -9,7 +9,6 @@ die() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
 
 # 国内 GitHub 加速代理前缀，逗号分隔，按顺序尝试。
 # 可用环境变量覆盖：GH_PROXY="https://your-proxy" bash omz-starship-vim.sh
-# 设为空字符串则直连 GitHub（不推荐）。
 GH_PROXY="${GH_PROXY:-https://gh-proxy.com,https://ghproxy.net,https://ghproxy.homeboyc.cn}"
 
 skip_packages=false
@@ -20,10 +19,11 @@ for arg in "$@"; do
       printf '%s\n' \
         'Usage: bash omz-starship-vim.sh [--skip-packages]' \
         'Backs up and replaces Zsh/Vim/Neovim/Starship configuration; uses 9 OMZ plugins (+ brew on macOS when available) and 5 shared editor plugins.' \
-        'Starship: official Pastel Powerline preset with transparent second-line input (256-color optimized for macOS Terminal).' \
+        'Starship: Pastel Powerline preset with transparent second-line input (ANSI 256-color optimized + Powerline escape sequences).' \
+        'Vim: Molokai colorscheme with robust termguicolors handling for legacy terminals.' \
         'All components are optional; failures skip affected integrations. --skip-packages skips installation.' \
         'Does not change your login shell. Start Zsh with: exec zsh' \
-        'GitHub downloads use GH_PROXY (default: gh-proxy.com,ghproxy.net,ghproxy.homeboyc.cn).'
+        'GitHub downloads use GH_PROXY (default: gh-proxy.com,ghproxy.net).'
       exit 0 ;;
     *) die "Unknown argument: $arg" ;;
   esac
@@ -208,12 +208,18 @@ install_packages() {
 # Pastel Powerline icons/separators require a Nerd Font in the terminal.
 install_font() {
   local font_dir face file changed=false
+  # 优先检查本地可能存在的 Mono 版本或通用版本
+  local local_font_mono="./nerd-fonts/Hack Regular Nerd Font Complete Mono.ttf"
   local local_font="./nerd-fonts/Hack Regular Nerd Font Complete.ttf"
 
   case "$(uname -s)" in
     Darwin)
-      # 优先检查本地是否有提供的文件
-      if [[ -s "$local_font" ]]; then
+      if [[ -s "$local_font_mono" ]]; then
+        log "Found local font: $local_font_mono. Installing without downloading..."
+        mkdir -p "$setup_home/Library/Fonts" || return 1
+        cp "$local_font_mono" "$setup_home/Library/Fonts/" || return 1
+        return 0
+      elif [[ -s "$local_font" ]]; then
         log "Found local font: $local_font. Installing without downloading..."
         mkdir -p "$setup_home/Library/Fonts" || return 1
         cp "$local_font" "$setup_home/Library/Fonts/" || return 1
@@ -226,10 +232,18 @@ install_font() {
       fi
       ;;
     Linux)
-      # 优先检查本地是否有提供的文件
-      if [[ -s "$local_font" ]]; then
+      font_dir="$setup_home/.local/share/fonts/HackNerdFont"
+      
+      if [[ -s "$local_font_mono" ]]; then
+        log "Found local font: $local_font_mono. Installing without downloading..."
+        mkdir -p "$font_dir" || return 1
+        cp "$local_font_mono" "$font_dir/HackNerdFontMono-Regular.ttf" || return 1
+        if command -v fc-cache >/dev/null; then
+          fc-cache -f "$font_dir" || return 1
+        fi
+        return 0
+      elif [[ -s "$local_font" ]]; then
         log "Found local font: $local_font. Installing without downloading..."
-        font_dir="$setup_home/.local/share/fonts/HackNerdFont"
         mkdir -p "$font_dir" || return 1
         cp "$local_font" "$font_dir/HackNerdFont-Regular.ttf" || return 1
         if command -v fc-cache >/dev/null; then
@@ -239,7 +253,6 @@ install_font() {
       fi
 
       # 如果本地没找到，走线上下载逻辑
-      font_dir="$setup_home/.local/share/fonts/HackNerdFont"
       mkdir -p "$font_dir" || return 1
       for face in Regular Bold Italic BoldItalic; do
         file="HackNerdFont-$face.ttf"
@@ -279,12 +292,14 @@ nerd_font_available() {
 
 unicode_fallback() {
   # Replace private-use font glyphs, keeping the preset's colors and layout.
-  sed -e 's//╭/g' -e 's//▶/g' \
+  # 将 \ue0b0 替换为普通 Unicode 箭头
+  sed -i.bak -e 's/\\ue0b0/▶/g' \
       -e 's/󰈙/Docs/g' -e 's//Downloads/g' -e 's//Music/g' -e 's//Pictures/g' \
       -e 's//C/g' -e 's//C++/g' -e 's//Docker/g' -e 's//Elixir/g' \
       -e 's//Elm/g' -e 's//Git/g' -e 's//Go/g' -e 's//Haskell/g' \
       -e 's//Java/g' -e 's//Julia/g' -e 's//Node/g' -e 's/󰆥/Nim/g' \
       -e 's//Rust/g' -e 's//Scala/g' -e 's//Shell/g' -e 's///g' "$1"
+  rm -f "$1.bak"
 }
 
 brew_ready=false
@@ -321,7 +336,7 @@ fi
 
 if ! $skip_packages; then
   log 'Installing the Nerd Font for Pastel Powerline...'
-  if [[ $(uname -s) == Darwin ]] && ! $brew_ready && [[ ! -s "./nerd-fonts/Hack Regular Nerd Font Complete.ttf" ]]; then
+  if [[ $(uname -s) == Darwin ]] && ! $brew_ready && [[ ! -s "./nerd-fonts/Hack Regular Nerd Font Complete Mono.ttf" ]] && [[ ! -s "./nerd-fonts/Hack Regular Nerd Font Complete.ttf" ]]; then
     log 'NOTE: Homebrew unavailable; skipping Nerd Font installation.'
   elif ! install_font; then
     log 'NOTE: Nerd Font installation failed; continuing setup.'
@@ -476,17 +491,18 @@ for plugin in aliases brew env git nvm z fzf tmux zsh-autosuggestions zsh-syntax
 done
 
 cat > "$work_dir/starship.toml" <<'STARSHIP'
+command_timeout = 1000
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
 $os\
 $username\
-[](bg:204 fg:164)\
+[\ue0b0](bg:204 fg:164)\
 $directory\
-[](fg:204 bg:216)\
+[\ue0b0](fg:204 bg:216)\
 $git_branch\
 $git_status\
-[](fg:216 bg:110)\
+[\ue0b0](fg:216 bg:110)\
 $c\
 $elixir\
 $elm\
@@ -499,18 +515,13 @@ $nodejs\
 $nim\
 $rust\
 $scala\
-[](fg:110 bg:30)\
+[\ue0b0](fg:110 bg:30)\
 $docker_context\
-[ ](fg:30)\
+[\ue0b0 ](fg:30)\
 $line_break\
 $character\
 """
 
-# Disable the blank line at the start of the prompt
-# add_newline = false
-
-# You can also replace your username with a neat symbol like   or disable this
-# and use the os module below
 [username]
 show_always = true
 style_user = "bg:164"
@@ -518,11 +529,9 @@ style_root = "bg:164"
 format = '[$user ]($style)'
 disabled = false
 
-# An alternative to the username module which displays a symbol that
-# represents the current operating system
 [os]
 style = "bg:164"
-disabled = true # Disabled by default
+disabled = true
 
 [directory]
 style = "bg:204"
@@ -530,8 +539,6 @@ format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
 
-# Here is how you can shorten some long paths by text replacement
-# similar to mapped_locations in Oh My Posh:
 [directory.substitutions]
 "Documents" = "󰈙 "
 "Downloads" = " "
@@ -569,7 +576,6 @@ style = "fg:22 bg:216"
 format = '[ $symbol $branch ]($style)'
 
 [git_status]
-use_git_executable = true
 style = "fg:22 bg:216"
 format = '[$all_status$ahead_behind ]($style)'
 
@@ -617,8 +623,6 @@ symbol = " "
 style = "bg:110"
 format = '[ $symbol ($version) ]($style)'
 
-
-# Command input on a second line, with the terminal's default background.
 [line_break]
 disabled = false
 
@@ -633,8 +637,7 @@ vimcmd_visual_symbol = '[❯](bold yellow)'
 STARSHIP
 
 if ! $nerd_font; then
-  unicode_fallback "$work_dir/starship.toml" > "$work_dir/starship-unicode.toml"
-  mv "$work_dir/starship-unicode.toml" "$work_dir/starship.toml"
+  unicode_fallback "$work_dir/starship.toml"
 fi
 
 cat > "$work_dir/vimrc" <<'VIMRC'
@@ -657,9 +660,11 @@ endif
 filetype plugin indent on
 syntax enable
 set background=dark
-if has('termguicolors')
-  set termguicolors
-endif
+
+" 某些老旧终端（如 Mac Terminal.app）开启 termguicolors 可能导致主题全黑。
+" 如果颜色异常，可以取消下面这行的注释。
+" set termguicolors
+
 set number
 set hidden
 set expandtab
@@ -667,10 +672,8 @@ set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 
-" First startup must also work before PlugInstall has fetched the theme.
-if !empty(globpath(&runtimepath, 'colors/molokai.vim'))
-  colorscheme molokai
-endif
+" 使用 silent! 防止未安装主题时启动报错中断
+silent! colorscheme molokai
 VIMRC
 
 cat > "$work_dir/nvim-init.vim" <<'NVIM'
