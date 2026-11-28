@@ -7,10 +7,6 @@ set -euo pipefail
 log() { printf '\n%s\n' "$*"; }
 die() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
 
-# 国内 GitHub 加速代理前缀，逗号分隔，按顺序尝试。
-# 可用环境变量覆盖：GH_PROXY="https://your-proxy" bash omz-starship-vim.sh
-GH_PROXY="${GH_PROXY:-https://gh-proxy.com,https://ghproxy.net,https://ghproxy.homeboyc.cn}"
-
 skip_packages=false
 for arg in "$@"; do
   case "$arg" in
@@ -18,12 +14,11 @@ for arg in "$@"; do
     -h|--help)
       printf '%s\n' \
         'Usage: bash omz-starship-vim.sh [--skip-packages]' \
-        'Backs up and replaces Zsh/Vim/Neovim/Starship configuration; uses 9 OMZ plugins (+ brew on macOS when available) and 5 shared editor plugins.' \
+        'Backs up and replaces Zsh/Vim/Neovim/Starship configuration; uses 9 OMZ plugins (+ brew on macOS when available) and 14 shared editor plugins.' \
         'Starship: Pastel Powerline preset with transparent second-line input (ANSI 256-color optimized + Powerline escape sequences).' \
-        'Vim: Molokai colorscheme with robust termguicolors handling for legacy terminals.' \
+        'Vim: Molokai colorscheme with robust termguicolors handling.' \
         'All components are optional; failures skip affected integrations. --skip-packages skips installation.' \
-        'Does not change your login shell. Start Zsh with: exec zsh' \
-        'GitHub downloads use GH_PROXY (default: gh-proxy.com,ghproxy.net).'
+        'Does not change your login shell. Start Zsh with: exec zsh'
       exit 0 ;;
     *) die "Unknown argument: $arg" ;;
   esac
@@ -36,61 +31,18 @@ mkdir -p "$setup_home"
 work_dir=$(mktemp -d "${TMPDIR:-/tmp}/omz-starship-vim.XXXXXXXX")
 trap 'rm -r -- "$work_dir"' EXIT
 
-# 下载文件并显示进度条；GitHub 链接自动套用国内代理前缀，其他链接直连。
+# 下载文件并显示进度条。
 download() {
-  local url="$1" out="$2" proxy candidate
-  case "$url" in
-    https://github.com/*|https://raw.githubusercontent.com/*|https://objects.githubusercontent.com/*|https://codeload.github.com/*)
-      if [[ -z "$GH_PROXY" ]]; then
-        curl --fail --location --progress-bar --show-error --retry 2 \
-          --connect-timeout 15 --speed-limit 1024 --speed-time 60 "$url" -o "$out"
-        return
-      fi
-      for proxy in ${GH_PROXY//,/ }; do
-        [[ -n "$proxy" ]] || continue
-        candidate="${proxy%/}/$url"
-        printf '  Trying proxy: %s\n' "$proxy"
-        if curl --fail --location --progress-bar --show-error --retry 1 \
-          --connect-timeout 15 --speed-limit 1024 --speed-time 60 "$candidate" -o "$out"; then
-          return 0
-        fi
-        printf '\n'
-      done
-      return 1
-      ;;
-    *)
-      curl --fail --location --progress-bar --show-error --retry 2 \
-        --connect-timeout 15 --speed-limit 1024 --speed-time 60 "$url" -o "$out"
-      ;;
-  esac
+  local url="$1" out="$2"
+  curl --fail --location --progress-bar --show-error --retry 2 \
+    --connect-timeout 15 --speed-limit 1024 --speed-time 60 "$url" -o "$out"
 }
 
-# git clone 并显示进度；GitHub 仓库自动套用国内代理前缀。
-git_clone_proxy() {
-  local repo_url="$1" dest="$2" proxy
-  case "$repo_url" in
-    https://github.com/*)
-      if [[ -z "$GH_PROXY" ]]; then
-        rm -rf -- "$dest"
-        git clone --depth=1 --progress "$repo_url" "$dest"
-        return
-      fi
-      for proxy in ${GH_PROXY//,/ }; do
-        [[ -n "$proxy" ]] || continue
-        rm -rf -- "$dest"
-        printf '  Trying proxy: %s\n' "$proxy"
-        if git clone --depth=1 --progress "${proxy%/}/$repo_url" "$dest"; then
-          return 0
-        fi
-        printf '\n'
-      done
-      rm -rf -- "$dest"
-      return 1
-      ;;
-    *)
-      git clone --depth=1 --progress "$repo_url" "$dest"
-      ;;
-  esac
+# git clone 并显示进度。
+git_clone() {
+  local repo_url="$1" dest="$2"
+  rm -rf -- "$dest"
+  git clone --depth=1 --progress "$repo_url" "$dest"
 }
 
 run_privileged() {
@@ -292,7 +244,6 @@ nerd_font_available() {
 
 unicode_fallback() {
   # Replace private-use font glyphs, keeping the preset's colors and layout.
-  # 将 \ue0b0 替换为普通 Unicode 箭头
   sed -i.bak -e 's/\\ue0b0/▶/g' \
       -e 's/󰈙/Docs/g' -e 's//Downloads/g' -e 's//Music/g' -e 's//Pictures/g' \
       -e 's//C/g' -e 's//C++/g' -e 's//Docker/g' -e 's//Elixir/g' \
@@ -355,7 +306,7 @@ custom_plugins="$omz_dir/custom/plugins"
 omz_ready=false
 if command -v zsh >/dev/null; then
   if [[ ! -e "$omz_dir" ]] && command -v git >/dev/null; then
-    if git_clone_proxy https://github.com/ohmyzsh/ohmyzsh.git "$work_dir/oh-my-zsh"; then
+    if git_clone https://github.com/ohmyzsh/ohmyzsh.git "$work_dir/oh-my-zsh"; then
       mv "$work_dir/oh-my-zsh" "$omz_dir"
     else
       log 'NOTE: Oh My Zsh installation failed; using plain Zsh.'
@@ -377,7 +328,7 @@ install_omz_plugin() {
   command -v git >/dev/null || return 1
   [[ ! -e "$custom_plugins/$name" ]] || return 1
   mkdir -p "$custom_plugins" || return 1
-  git_clone_proxy "$repository" "$work_dir/$name" || return 1
+  git_clone "$repository" "$work_dir/$name" || return 1
   [[ -f "$work_dir/$name/$name.plugin.zsh" ]] || return 1
   mv "$work_dir/$name" "$custom_plugins/$name"
 }
@@ -491,7 +442,6 @@ for plugin in aliases brew env git nvm z fzf tmux zsh-autosuggestions zsh-syntax
 done
 
 cat > "$work_dir/starship.toml" <<'STARSHIP'
-command_timeout = 1000
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
@@ -647,13 +597,23 @@ set nocompatible
 " Resolve paths from this vimrc so SETUP_HOME also isolates plugin installation.
 let s:vim_home = expand('<sfile>:p:h') . '/.vim'
 execute 'set runtimepath^=' . fnameescape(s:vim_home)
+
 if getfsize(s:vim_home . '/autoload/plug.vim') > 0
   call plug#begin(s:vim_home . '/plugged')
-Plug 'jiangmiao/auto-pairs'
-Plug 'junegunn/vim-easy-align'
-Plug 'tomasr/molokai'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-surround'
+  Plug 'jiangmiao/auto-pairs'
+  Plug 'Lokaltog/vim-easymotion'
+  Plug 'junegunn/vim-easy-align'
+  Plug 'ctrlpvim/ctrlp.vim'
+  Plug 'mileszs/ack.vim'
+  Plug 'scrooloose/nerdcommenter'
+  Plug 'scrooloose/nerdtree'
+  Plug 'tomasr/molokai'
+  Plug 'tpope/vim-endwise'
+  Plug 'tpope/vim-markdown'
+  Plug 'tpope/vim-repeat'
+  Plug 'tpope/vim-surround'
+  Plug 'tpope/vim-unimpaired'
+  Plug 'yuweijun/vim-monokai'
   call plug#end()
 endif
 
@@ -708,7 +668,22 @@ if command -v nvim >/dev/null; then
   mv "$work_dir/nvim-init.vim" "$setup_home/.config/nvim/init.vim"
 fi
 
-vim_plugins=(auto-pairs vim-easy-align molokai vim-repeat vim-surround)
+vim_plugins=(
+  auto-pairs
+  vim-easymotion
+  vim-easy-align
+  ctrlp.vim
+  ack.vim
+  nerdcommenter
+  nerdtree
+  molokai
+  vim-endwise
+  vim-markdown
+  vim-repeat
+  vim-surround
+  vim-unimpaired
+  vim-monokai
+)
 vim_plugins_ready=true
 for plugin in "${vim_plugins[@]}"; do
   [[ -d "$setup_home/.vim/plugged/$plugin/.git" ]] || vim_plugins_ready=false
@@ -742,12 +717,12 @@ log "Setup finished for available components. Previous configuration: $backup_di
 if $nerd_font; then
   printf '%s\n' \
     'Unavailable tools/plugins were skipped; rerun later to install them.' \
-    'Vim/Neovim share five plugins. Manage with :PlugStatus / :PlugUpdate when vim-plug is available.' \
+    'Vim/Neovim share 14 plugins. Manage with :PlugStatus / :PlugUpdate when vim-plug is available.' \
     'Starship is configured with the Pastel Powerline preset (ANSI 256-color optimized).' \
     'Terminal font: select Hack Nerd Font in your terminal settings.'
 else
   printf '%s\n' \
     'Unavailable tools/plugins were skipped; rerun later to install them.' \
-    'Vim/Neovim share five plugins. Manage with :PlugStatus / :PlugUpdate when vim-plug is available.' \
+    'Vim/Neovim share 14 plugins. Manage with :PlugStatus / :PlugUpdate when vim-plug is available.' \
     'Starship uses a transparent second-line ❯; missing Nerd Font uses Unicode fallback.'
 fi
